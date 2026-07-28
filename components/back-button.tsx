@@ -26,7 +26,7 @@ export function BackButton({
     <button
       type="button"
       onClick={goBack}
-      className={`inline-flex items-center gap-1.5 text-sm font-semibold tracking-wide text-muted uppercase transition hover:text-yellow ${className}`}
+      className={`inline-flex items-center gap-1.5 text-sm font-semibold tracking-wide text-muted uppercase transition hover:text-yellow md:hidden ${className}`}
       aria-label="Go back"
     >
       <ArrowLeft className="h-4 w-4" aria-hidden />
