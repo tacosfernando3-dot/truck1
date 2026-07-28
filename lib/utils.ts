@@ -2,8 +2,8 @@ export function cn(...inputs: Array<string | false | null | undefined>) {
   return inputs.filter(Boolean).join(" ");
 }
 
-export function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-US", {
+export function formatCurrency(amount: number, locale: string = "en-US") {
+  return new Intl.NumberFormat(locale === "es" ? "es-US" : "en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,

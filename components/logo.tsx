@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export function Logo({
@@ -9,6 +12,8 @@ export function Logo({
   className?: string;
   onClick?: () => void;
 }) {
+  const t = useT();
+
   return (
     <Link
       href="/"
@@ -17,11 +22,11 @@ export function Logo({
         "group relative inline-flex items-center transition hover:opacity-90",
         className,
       )}
-      aria-label="Street Crave Food Truck home"
+      aria-label={t("logo.home")}
     >
       <Image
         src="/images/street-crave-logo.png"
-        alt="Street Crave Food Truck"
+        alt={t("logo.alt")}
         width={602}
         height={245}
         priority

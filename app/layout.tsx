@@ -6,6 +6,7 @@ import { MobileCartBar } from "@/components/mobile-cart-bar";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SitePreloader } from "@/components/site-preloader";
+import { LanguageProvider } from "@/lib/i18n";
 import { business } from "@/data/locations";
 import "./globals.css";
 
@@ -61,14 +62,16 @@ export default function RootLayout({
       className={`${inter.variable} ${bebas.variable} ${marker.variable} h-full`}
     >
       <body className="min-h-full flex flex-col font-sans antialiased">
-        <SitePreloader />
-        <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <CartDrawer />
-          <MobileCartBar />
-        </CartProvider>
+        <LanguageProvider>
+          <SitePreloader />
+          <CartProvider>
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+            <CartDrawer />
+            <MobileCartBar />
+          </CartProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

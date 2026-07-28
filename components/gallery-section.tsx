@@ -1,14 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import { InstagramIcon } from "@/components/social-icons";
 import { galleryItems } from "@/data/gallery";
 import { business } from "@/data/locations";
+import { useT } from "@/lib/i18n";
 
 export function GallerySection() {
+  const t = useT();
+
   return (
     <section id="gallery" className="relative grain bg-cream py-16 text-background sm:py-20">
       <div className="container-site">
         <div className="mb-8 text-center md:mb-10">
-          <h2 className="font-brush text-fluid-section">FOLLOW THE FLAVOR</h2>
+          <h2 className="font-brush text-fluid-section">{t("gallery.title")}</h2>
           <a
             href={business.instagram}
             target="_blank"
@@ -27,7 +32,7 @@ export function GallerySection() {
               target="_blank"
               rel="noopener noreferrer"
               className="group relative aspect-square overflow-hidden rounded-lg"
-              aria-label={`View ${item.alt} on Instagram`}
+              aria-label={t("gallery.viewOnIg", { alt: item.alt })}
             >
               <Image
                 src={item.image}
@@ -51,7 +56,7 @@ export function GallerySection() {
               target="_blank"
               rel="noopener noreferrer"
               className="relative aspect-square w-[78vw] shrink-0 snap-start overflow-hidden rounded-lg"
-              aria-label={`View ${item.alt} on Instagram`}
+              aria-label={t("gallery.viewOnIg", { alt: item.alt })}
             >
               <Image
                 src={item.image}
@@ -64,7 +69,7 @@ export function GallerySection() {
           ))}
         </div>
         <p className="mt-3 text-center text-xs tracking-wide text-background/50 uppercase md:hidden">
-          Swipe gallery →
+          {t("gallery.swipe")}
         </p>
       </div>
     </section>

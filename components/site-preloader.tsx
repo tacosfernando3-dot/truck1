@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useT } from "@/lib/i18n";
 
 const SESSION_KEY = "street-crave-preloader-seen";
 const MIN_MS = 1400;
 
 export function SitePreloader() {
+  const t = useT();
   const [visible, setVisible] = useState(true);
   const [leaving, setLeaving] = useState(false);
 
@@ -60,12 +62,12 @@ export function SitePreloader() {
       }`}
       role="status"
       aria-live="polite"
-      aria-label="Loading Street Crave"
+      aria-label={t("preloader.loading")}
     >
       <div className="preloader-logo relative px-8">
         <Image
           src="/images/street-crave-logo.png"
-          alt="Street Crave Food Truck"
+          alt={t("preloader.alt")}
           width={602}
           height={245}
           priority
@@ -78,7 +80,7 @@ export function SitePreloader() {
       </div>
 
       <p className="mt-4 text-xs font-semibold tracking-[0.28em] text-muted uppercase">
-        Loading flavor
+        {t("preloader.flavor")}
       </p>
     </div>
   );

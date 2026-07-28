@@ -2,8 +2,10 @@
 
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/button";
+import { useT } from "@/lib/i18n";
 
 export function NewsletterSection({ compact = false }: { compact?: boolean }) {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
@@ -22,26 +24,22 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
       {!compact && (
         <>
           <h3 className="font-display text-xl tracking-wide uppercase">
-            Join the Crew
+            {t("newsletter.title")}
           </h3>
-          <p className="mt-2 text-sm text-muted">
-            Get stop alerts, secret menu drops, and catering deals.
-          </p>
+          <p className="mt-2 text-sm text-muted">{t("newsletter.subtitle")}</p>
         </>
       )}
       {compact && (
         <>
           <h3 className="font-display text-xl tracking-wide uppercase">
-            Join the Crew
+            {t("newsletter.title")}
           </h3>
-          <p className="mt-2 text-sm text-muted">
-            Fresh stops and specials in your inbox.
-          </p>
+          <p className="mt-2 text-sm text-muted">{t("newsletter.subtitleCompact")}</p>
         </>
       )}
       <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row">
         <label htmlFor="newsletter-email" className="sr-only">
-          Email address
+          {t("newsletter.emailLabel")}
         </label>
         <input
           id="newsletter-email"
@@ -51,22 +49,22 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
             setEmail(e.target.value);
             setStatus("idle");
           }}
-          placeholder="you@email.com"
+          placeholder={t("newsletter.placeholder")}
           className="min-h-11 flex-1 rounded-md border border-border-dark bg-surface-dark px-4 text-white outline-none placeholder:text-muted focus:border-yellow"
           required
         />
         <Button type="submit" className="w-full sm:w-auto">
-          Subscribe
+          {t("newsletter.subscribe")}
         </Button>
       </form>
       {status === "success" && (
         <p className="mt-2 text-sm text-yellow" role="status">
-          You&apos;re on the list. See you at the truck.
+          {t("newsletter.success")}
         </p>
       )}
       {status === "error" && (
         <p className="mt-2 text-sm text-red-400" role="alert">
-          Enter a valid email address.
+          {t("newsletter.invalid")}
         </p>
       )}
     </div>

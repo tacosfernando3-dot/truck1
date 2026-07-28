@@ -4,19 +4,21 @@ import { Button } from "@/components/button";
 import { MenuCard } from "@/components/menu-card";
 import { SectionHeading } from "@/components/section-heading";
 import { getFeaturedMenuItems } from "@/data/menu";
+import { useT } from "@/lib/i18n";
 
 export function MenuPreview() {
+  const t = useT();
   const items = getFeaturedMenuItems();
 
   return (
     <section id="menu" className="relative grain bg-cream py-16 text-background sm:py-20">
       <div className="container-site">
         <SectionHeading
-          eyebrow="The Menu"
-          title="MADE TO CRAVE"
+          eyebrow={t("menuPreview.eyebrow")}
+          title={t("menuPreview.title")}
           action={
             <Button href="/menu" variant="outline-dark" className="self-start md:self-auto">
-              View Full Menu
+              {t("menuPreview.viewFull")}
             </Button>
           }
         />

@@ -1,7 +1,12 @@
+"use client";
+
 import { Beef } from "lucide-react";
 import { Button } from "@/components/button";
+import { useT } from "@/lib/i18n";
 
 export function CallToActionBanner() {
+  const t = useT();
+
   return (
     <section className="bg-yellow py-10 text-background sm:py-12">
       <div className="container-site flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
@@ -10,16 +15,12 @@ export function CallToActionBanner() {
             <Beef className="h-6 w-6" aria-hidden />
           </div>
           <div>
-            <h2 className="font-brush text-3xl sm:text-4xl">
-              HUNGRY? WE GOT YOU.
-            </h2>
-            <p className="mt-1 text-background/80">
-              Order ahead and skip the line.
-            </p>
+            <h2 className="font-brush text-3xl sm:text-4xl">{t("cta.title")}</h2>
+            <p className="mt-1 text-background/80">{t("cta.subtitle")}</p>
           </div>
         </div>
         <Button href="/menu" variant="secondary" className="w-full md:w-auto">
-          Order Now
+          {t("cta.orderNow")}
         </Button>
       </div>
     </section>

@@ -9,6 +9,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useI18n } from "@/lib/i18n";
+import { localizeMenuItem } from "@/lib/localize-menu";
 import type { CartItem, MenuItem } from "@/lib/types";
 
 type CartContextValue = {
@@ -30,6 +32,7 @@ const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "street-flavor-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { t, locale } = useI18n();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -76,8 +79,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { ...item, quantity: 1 }];
     });
-    setLiveMessage(`${item.name} added to cart`);
-  }, []);
+    setLiveMessage(
+      t("cart.added", { name: localizeMenuItem(item, locale).localizedName }),
+    );
+  }, [t, locale]);
 
   const removeItem = useCallback((id: string) => {
     setItems((prev) => prev.filter((line) => line.id !== id));

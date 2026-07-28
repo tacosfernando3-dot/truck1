@@ -1,14 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import { ChevronDown, MapPin, Utensils } from "lucide-react";
 import { Button } from "@/components/button";
 import { images } from "@/data/images";
+import { useT } from "@/lib/i18n";
 
 export function HeroSection() {
+  const t = useT();
+
   return (
     <section className="relative isolate min-h-[680px] overflow-hidden lg:min-h-[620px] xl:min-h-[min(88vh,820px)]">
       <Image
         src={images.heroFoodTruck}
-        alt="Colorful black food truck with customers lined up at the service window"
+        alt={t("hero.altTruck")}
         fill
         priority
         className="object-cover object-[85%_center] sm:object-[75%_center] lg:object-[60%_center]"
@@ -22,7 +27,7 @@ export function HeroSection() {
         <div className="container-site animate-fade-up w-full">
           <Image
             src="/images/street-crave-logo.png"
-            alt="Street Crave Food Truck"
+            alt={t("hero.altLogo")}
             width={602}
             height={245}
             priority
@@ -33,32 +38,32 @@ export function HeroSection() {
 
       <div className="container-site relative flex min-h-[680px] flex-col justify-end pb-20 pt-28 lg:min-h-[620px] lg:justify-center lg:pb-24 lg:pt-24 xl:min-h-[min(88vh,820px)]">
         <p className="animate-fade-up mb-3 text-sm font-semibold tracking-[0.25em] text-yellow uppercase">
-          Gourmet street food
+          {t("hero.eyebrow")}
         </p>
         <h1 className="animate-fade-up delay-100 max-w-3xl font-brush text-fluid-hero">
-          <span className="text-white">BOLD FLAVOR.</span>
+          <span className="text-white">{t("hero.titleLine1")}</span>
           <br />
-          <span className="text-yellow">ANYWHERE.</span>
+          <span className="text-yellow">{t("hero.titleLine2")}</span>
         </h1>
         <p className="animate-fade-up delay-200 mt-5 max-w-md text-base text-muted sm:text-lg">
-          Gourmet street food made fresh and served with passion.
+          {t("hero.subtitle")}
         </p>
         <div className="animate-fade-up delay-300 mt-8 grid w-full max-w-md grid-cols-2 gap-3 lg:flex lg:max-w-none">
           <Button href="/menu" leftIcon={<Utensils className="h-4 w-4" aria-hidden />}>
-            View Menu
+            {t("hero.viewMenu")}
           </Button>
           <Button
             href="/locations"
             variant="outline-light"
             leftIcon={<MapPin className="h-4 w-4" aria-hidden />}
           >
-            Find Us
+            {t("hero.findUs")}
           </Button>
         </div>
       </div>
 
       <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-xs tracking-[0.2em] text-muted uppercase lg:hidden">
-        <span>Scroll to explore</span>
+        <span>{t("hero.scroll")}</span>
         <ChevronDown className="h-4 w-4 animate-bounce" aria-hidden />
       </div>
     </section>

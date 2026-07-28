@@ -26,7 +26,7 @@ export type CartItem = MenuItem & {
 
 export type NavLink = {
   href: string;
-  label: string;
+  key: string;
 };
 
 export type LocationStop = {

@@ -8,6 +8,7 @@ import { NewsletterSection } from "@/components/newsletter-section";
 import { FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/social-icons";
 import { business } from "@/data/locations";
 import { footerInfo, footerPages } from "@/data/navigation";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function FooterGroup({
@@ -46,6 +47,7 @@ function FooterGroup({
 }
 
 export function SiteFooter() {
+  const t = useT();
   const year = new Date().getFullYear();
 
   return (
@@ -53,10 +55,7 @@ export function SiteFooter() {
       <div className="container-site grid gap-8 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-sm text-muted">
-            Bold flavor on wheels. Catch us in Jackson Heights, Queens and book
-            us for your next event.
-          </p>
+          <p className="mt-4 max-w-xs text-sm text-muted">{t("footer.blurb")}</p>
           <div className="mt-5 flex gap-3">
             <a
               href={business.instagram}
@@ -88,26 +87,26 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <FooterGroup title="Pages">
+        <FooterGroup title={t("common.pages")}>
           {footerPages.map((link) => (
             <Link
-              key={link.href + link.label}
+              key={link.href + link.key}
               href={link.href}
               className="block text-sm text-muted hover:text-white"
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
         </FooterGroup>
 
-        <FooterGroup title="Info">
+        <FooterGroup title={t("common.info")}>
           {footerInfo.map((link) => (
             <Link
-              key={link.href + link.label}
+              key={link.href + link.key}
               href={link.href}
               className="block text-sm text-muted hover:text-white"
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
         </FooterGroup>
@@ -120,14 +119,14 @@ export function SiteFooter() {
       <div className="border-t border-border-dark">
         <div className="container-site flex flex-col gap-3 py-4 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {business.name}. All Rights Reserved.
+            © {year} {business.name}. {t("common.allRights")}
           </p>
           <div className="flex gap-4">
             <Link href="/#contact" className="hover:text-white">
-              Privacy Policy
+              {t("common.privacy")}
             </Link>
             <Link href="/#contact" className="hover:text-white">
-              Terms
+              {t("common.terms")}
             </Link>
           </div>
         </div>

@@ -1,26 +1,26 @@
 import type { NavLink } from "@/lib/types";
 
 export const primaryNav: NavLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/menu", label: "Menu" },
-  { href: "/locations", label: "Locations" },
-  { href: "/catering", label: "Catering" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/", key: "nav.home" },
+  { href: "/menu", key: "nav.menu" },
+  { href: "/locations", key: "nav.locations" },
+  { href: "/catering", key: "nav.catering" },
+  { href: "/#about", key: "nav.about" },
+  { href: "/#contact", key: "nav.contact" },
 ];
 
 export const footerPages: NavLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/menu", label: "Menu" },
-  { href: "/locations", label: "Locations" },
-  { href: "/catering", label: "Catering" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/", key: "nav.home" },
+  { href: "/menu", key: "nav.menu" },
+  { href: "/locations", key: "nav.locations" },
+  { href: "/catering", key: "nav.catering" },
+  { href: "/#about", key: "nav.about" },
+  { href: "/#contact", key: "nav.contact" },
 ];
 
 export const footerInfo: NavLink[] = [
-  { href: "/catering", label: "Catering & Events" },
-  { href: "/catering#packages", label: "Private Parties" },
-  { href: "/#gallery", label: "Gallery" },
-  { href: "/catering#faq", label: "FAQs" },
+  { href: "/catering", key: "nav.cateringEvents" },
+  { href: "/catering#packages", key: "nav.privateParties" },
+  { href: "/#gallery", key: "nav.gallery" },
+  { href: "/catering#faq", key: "nav.faqs" },
 ];

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/button";
+import { useT } from "@/lib/i18n";
 
 type FormState = {
   fullName: string;
@@ -29,7 +30,22 @@ const initial: FormState = {
   message: "",
 };
 
+const eventTypeOptions = [
+  { value: "corporate", key: "cateringForm.typeCorporate" },
+  { value: "wedding", key: "cateringForm.typeWedding" },
+  { value: "festival", key: "cateringForm.typeFestival" },
+  { value: "film", key: "cateringForm.typeFilm" },
+  { value: "other", key: "cateringForm.typeOther" },
+] as const;
+
+const packageOptions = [
+  { value: "essentials", key: "catering.pkgEssentials" },
+  { value: "crowd", key: "catering.pkgCrowd" },
+  { value: "full-truck", key: "catering.pkgFull" },
+] as const;
+
 export function CateringInquiryForm() {
+  const t = useT();
   const [form, setForm] = useState<FormState>(initial);
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
@@ -42,22 +58,22 @@ export function CateringInquiryForm() {
 
   function validate(): FormErrors {
     const next: FormErrors = {};
-    if (!form.fullName.trim()) next.fullName = "Full name is required.";
+    if (!form.fullName.trim()) next.fullName = t("cateringForm.nameRequired");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      next.email = "Enter a valid email.";
+      next.email = t("cateringForm.emailInvalid");
     }
-    if (!form.phone.trim()) next.phone = "Phone is required.";
-    if (!form.eventType.trim()) next.eventType = "Select an event type.";
-    if (!form.eventDate) next.eventDate = "Event date is required.";
+    if (!form.phone.trim()) next.phone = t("cateringForm.phoneRequired");
+    if (!form.eventType.trim()) next.eventType = t("cateringForm.eventTypeRequired");
+    if (!form.eventDate) next.eventDate = t("cateringForm.dateRequired");
     const guests = Number(form.guestCount);
     if (!form.guestCount || Number.isNaN(guests) || guests <= 0) {
-      next.guestCount = "Guest count must be greater than zero.";
+      next.guestCount = t("cateringForm.guestsInvalid");
     }
     if (!form.eventLocation.trim()) {
-      next.eventLocation = "Event location is required.";
+      next.eventLocation = t("cateringForm.locationRequired");
     }
-    if (!form.packageId) next.packageId = "Choose a package.";
-    if (!form.message.trim()) next.message = "Message is required.";
+    if (!form.packageId) next.packageId = t("cateringForm.packageRequired");
+    if (!form.message.trim()) next.message = t("cateringForm.messageRequired");
     return next;
   }
 
@@ -83,14 +99,11 @@ export function CateringInquiryForm() {
         role="status"
       >
         <h3 className="font-display text-2xl tracking-wide uppercase text-yellow">
-          Inquiry received
+          {t("cateringForm.successTitle")}
         </h3>
-        <p className="mt-2 text-muted">
-          Thanks for reaching out. Our catering team will reply within one
-          business day with availability and a custom quote.
-        </p>
+        <p className="mt-2 text-muted">{t("cateringForm.successBody")}</p>
         <Button className="mt-5" onClick={() => setSuccess(false)}>
-          Send another inquiry
+          {t("cateringForm.sendAnother")}
         </Button>
       </div>
     );
@@ -104,7 +117,7 @@ export function CateringInquiryForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="fullName" className="text-sm text-muted">
-            Full name
+            {t("cateringForm.fullName")}
           </label>
           <input
             id="fullName"
@@ -122,7 +135,7 @@ export function CateringInquiryForm() {
         </div>
         <div>
           <label htmlFor="email" className="text-sm text-muted">
-            Email
+            {t("cateringForm.email")}
           </label>
           <input
             id="email"
@@ -144,7 +157,7 @@ export function CateringInquiryForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="phone" className="text-sm text-muted">
-            Phone
+            {t("cateringForm.phone")}
           </label>
           <input
             id="phone"
@@ -163,7 +176,7 @@ export function CateringInquiryForm() {
         </div>
         <div>
           <label htmlFor="eventType" className="text-sm text-muted">
-            Event type
+            {t("cateringForm.eventType")}
           </label>
           <select
             id="eventType"
@@ -173,12 +186,12 @@ export function CateringInquiryForm() {
             aria-invalid={!!errors.eventType}
             aria-describedby={errors.eventType ? "eventType-error" : undefined}
           >
-            <option value="">Select type</option>
-            <option>Corporate lunch</option>
-            <option>Wedding / private party</option>
-            <option>Festival / market</option>
-            <option>Film / production</option>
-            <option>Other</option>
+            <option value="">{t("cateringForm.selectType")}</option>
+            {eventTypeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {t(option.key)}
+              </option>
+            ))}
           </select>
           {errors.eventType && (
             <p id="eventType-error" className="mt-1 text-sm text-red-400" role="alert">
@@ -191,7 +204,7 @@ export function CateringInquiryForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="eventDate" className="text-sm text-muted">
-            Event date
+            {t("cateringForm.eventDate")}
           </label>
           <input
             id="eventDate"
@@ -210,7 +223,7 @@ export function CateringInquiryForm() {
         </div>
         <div>
           <label htmlFor="guestCount" className="text-sm text-muted">
-            Guest count
+            {t("cateringForm.guestCount")}
           </label>
           <input
             id="guestCount"
@@ -232,7 +245,7 @@ export function CateringInquiryForm() {
 
       <div>
         <label htmlFor="eventLocation" className="text-sm text-muted">
-          Event location
+          {t("cateringForm.eventLocation")}
         </label>
         <input
           id="eventLocation"
@@ -253,7 +266,7 @@ export function CateringInquiryForm() {
 
       <div>
         <label htmlFor="packageId" className="text-sm text-muted">
-          Package
+          {t("cateringForm.package")}
         </label>
         <select
           id="packageId"
@@ -263,10 +276,12 @@ export function CateringInquiryForm() {
           aria-invalid={!!errors.packageId}
           aria-describedby={errors.packageId ? "packageId-error" : undefined}
         >
-          <option value="">Select package</option>
-          <option value="essentials">Street Essentials</option>
-          <option value="crowd">Crowd Favorite</option>
-          <option value="full-truck">Full Truck Experience</option>
+          <option value="">{t("cateringForm.selectPackage")}</option>
+          {packageOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.key)}
+            </option>
+          ))}
         </select>
         {errors.packageId && (
           <p id="packageId-error" className="mt-1 text-sm text-red-400" role="alert">
@@ -277,7 +292,7 @@ export function CateringInquiryForm() {
 
       <div>
         <label htmlFor="message" className="text-sm text-muted">
-          Message
+          {t("cateringForm.message")}
         </label>
         <textarea
           id="message"
@@ -296,7 +311,7 @@ export function CateringInquiryForm() {
       </div>
 
       <Button type="submit" loading={loading}>
-        Submit Inquiry
+        {t("cateringForm.submit")}
       </Button>
     </form>
   );

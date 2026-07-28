@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { CheckCircle2, Lock, X } from "lucide-react";
 import { Button } from "@/components/button";
 import { useCart } from "@/components/cart-provider";
+import { useI18n, useT } from "@/lib/i18n";
 import { formatCurrency } from "@/lib/utils";
 
 type Props = {
@@ -38,6 +39,8 @@ function formatExpiry(value: string) {
 
 export function CheckoutSimulator({ open, onClose }: Props) {
   const { items, subtotal, clearCart, closeCart } = useCart();
+  const t = useT();
+  const { locale } = useI18n();
   const [email, setEmail] = useState("");
   const [card, setCard] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -79,23 +82,23 @@ export function CheckoutSimulator({ open, onClose }: Props) {
   function validate(): FieldErrors {
     const next: FieldErrors = {};
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      next.email = "Enter a valid email.";
+      next.email = t("checkout.validEmail");
     }
     const cardDigits = onlyDigits(card);
     if (cardDigits.length < 15) {
-      next.card = "Enter a complete card number.";
+      next.card = t("checkout.completeCard");
     }
     const expDigits = onlyDigits(expiry);
     if (expDigits.length !== 4) {
-      next.expiry = "Use MM/YY.";
+      next.expiry = t("checkout.useMmYy");
     } else {
       const month = Number(expDigits.slice(0, 2));
-      if (month < 1 || month > 12) next.expiry = "Invalid month.";
+      if (month < 1 || month > 12) next.expiry = t("checkout.invalidMonth");
     }
     if (onlyDigits(cvc).length < 3) {
-      next.cvc = "Enter CVC.";
+      next.cvc = t("checkout.enterCvc");
     }
-    if (!name.trim()) next.name = "Name on card is required.";
+    if (!name.trim()) next.name = t("checkout.nameRequired");
     return next;
   }
 
@@ -137,29 +140,29 @@ export function CheckoutSimulator({ open, onClose }: Props) {
       <button
         type="button"
         className="absolute inset-0 bg-black/75 animate-fade-in"
-        aria-label="Close checkout"
+        aria-label={t("checkout.close")}
         onClick={() => status !== "processing" && onClose()}
       />
 
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Stripe checkout simulator"
+        aria-label={t("checkout.simulatorAria")}
         className="relative z-10 flex max-h-[min(92vh,720px)] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-white text-background shadow-2xl animate-slide-up sm:rounded-2xl"
       >
         <div className="flex items-center justify-between border-b border-black/10 px-5 py-4">
           <div>
             <p className="text-xs font-semibold tracking-wide text-[#635bff] uppercase">
-              Stripe · Simulator
+              {t("checkout.stripeSim")}
             </p>
-            <h2 className="text-lg font-semibold">Street Flavor</h2>
+            <h2 className="text-lg font-semibold">{t("checkout.brand")}</h2>
           </div>
           {status !== "processing" && (
             <button
               type="button"
               onClick={status === "success" ? finish : onClose}
               className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md hover:bg-black/5"
-              aria-label="Close checkout"
+              aria-label={t("checkout.close")}
             >
               <X className="h-5 w-5" />
             </button>
@@ -170,58 +173,56 @@ export function CheckoutSimulator({ open, onClose }: Props) {
           {status === "success" ? (
             <div className="flex flex-col items-center py-8 text-center">
               <CheckCircle2 className="h-14 w-14 text-emerald-500" aria-hidden />
-              <h3 className="mt-4 text-2xl font-semibold">Payment successful</h3>
-              <p className="mt-2 text-sm text-background/65">
-                Simulated charge — no real card was charged.
-              </p>
+              <h3 className="mt-4 text-2xl font-semibold">{t("checkout.success")}</h3>
+              <p className="mt-2 text-sm text-background/65">{t("checkout.simulated")}</p>
               <div className="mt-6 w-full rounded-xl border border-black/10 bg-[#f6f9fc] p-4 text-left text-sm">
                 <div className="flex justify-between">
-                  <span className="text-background/60">Order</span>
+                  <span className="text-background/60">{t("checkout.order")}</span>
                   <span className="font-medium">{orderId}</span>
                 </div>
                 <div className="mt-2 flex justify-between">
-                  <span className="text-background/60">Total paid</span>
-                  <span className="font-semibold">{formatCurrency(paidTotal)}</span>
+                  <span className="text-background/60">{t("checkout.totalPaid")}</span>
+                  <span className="font-semibold">{formatCurrency(paidTotal, locale)}</span>
                 </div>
                 <p className="mt-3 text-xs text-background/55">
-                  Show this confirmation at the truck window for pickup.
+                  {t("checkout.showConfirmation")}
                 </p>
               </div>
               <Button className="mt-6 w-full" onClick={finish}>
-                Done
+                {t("common.done")}
               </Button>
             </div>
           ) : status === "processing" ? (
             <div className="flex flex-col items-center py-16 text-center">
               <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#635bff] border-t-transparent" />
-              <p className="mt-5 font-medium">Processing payment…</p>
-              <p className="mt-1 text-sm text-background/60">
-                Simulating Stripe authorization
-              </p>
+              <p className="mt-5 font-medium">{t("checkout.processing")}</p>
+              <p className="mt-1 text-sm text-background/60">{t("checkout.simulating")}</p>
             </div>
           ) : (
             <>
               <div className="mb-5 rounded-xl border border-black/10 bg-[#f6f9fc] p-4">
                 <div className="flex justify-between text-sm">
                   <span className="text-background/60">
-                    {items.length} item{items.length === 1 ? "" : "s"}
+                    {t(items.length === 1 ? "checkout.item" : "checkout.items", {
+                      count: items.length,
+                    })}
                   </span>
-                  <span>{formatCurrency(subtotal)}</span>
+                  <span>{formatCurrency(subtotal, locale)}</span>
                 </div>
                 <div className="mt-1 flex justify-between text-sm">
-                  <span className="text-background/60">Est. tax</span>
-                  <span>{formatCurrency(tax)}</span>
+                  <span className="text-background/60">{t("checkout.estTax")}</span>
+                  <span>{formatCurrency(tax, locale)}</span>
                 </div>
                 <div className="mt-3 flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
-                  <span>Total due</span>
-                  <span>{formatCurrency(total)}</span>
+                  <span>{t("checkout.totalDue")}</span>
+                  <span>{formatCurrency(total, locale)}</span>
                 </div>
               </div>
 
               <form onSubmit={onSubmit} className="space-y-4" noValidate>
                 <div>
                   <label htmlFor="stripe-email" className="text-sm font-medium">
-                    Email
+                    {t("checkout.email")}
                   </label>
                   <input
                     id="stripe-email"
@@ -244,13 +245,13 @@ export function CheckoutSimulator({ open, onClose }: Props) {
 
                 <div>
                   <label htmlFor="stripe-card" className="text-sm font-medium">
-                    Card information
+                    {t("checkout.cardInfo")}
                   </label>
                   <input
                     id="stripe-card"
                     inputMode="numeric"
                     autoComplete="cc-number"
-                    placeholder="Card number"
+                    placeholder={t("checkout.cardNumber")}
                     className={`${field} rounded-b-none`}
                     value={card}
                     onChange={(e) => {
@@ -264,7 +265,7 @@ export function CheckoutSimulator({ open, onClose }: Props) {
                       id="stripe-expiry"
                       inputMode="numeric"
                       autoComplete="cc-exp"
-                      placeholder="MM / YY"
+                      placeholder={t("checkout.mmYy")}
                       className={`${field} mt-0 rounded-none rounded-bl-md border-t-0`}
                       value={expiry}
                       onChange={(e) => {
@@ -272,13 +273,13 @@ export function CheckoutSimulator({ open, onClose }: Props) {
                         setErrors((prev) => ({ ...prev, expiry: undefined }));
                       }}
                       aria-invalid={!!errors.expiry}
-                      aria-label="Expiry"
+                      aria-label={t("checkout.expiry")}
                     />
                     <input
                       id="stripe-cvc"
                       inputMode="numeric"
                       autoComplete="cc-csc"
-                      placeholder="CVC"
+                      placeholder={t("checkout.cvc")}
                       className={`${field} mt-0 rounded-none rounded-br-md border-t-0 border-l-0`}
                       value={cvc}
                       onChange={(e) => {
@@ -286,7 +287,7 @@ export function CheckoutSimulator({ open, onClose }: Props) {
                         setErrors((prev) => ({ ...prev, cvc: undefined }));
                       }}
                       aria-invalid={!!errors.cvc}
-                      aria-label="CVC"
+                      aria-label={t("checkout.cvc")}
                     />
                   </div>
                   {(errors.card || errors.expiry || errors.cvc) && (
@@ -298,7 +299,7 @@ export function CheckoutSimulator({ open, onClose }: Props) {
 
                 <div>
                   <label htmlFor="stripe-name" className="text-sm font-medium">
-                    Name on card
+                    {t("checkout.nameOnCard")}
                   </label>
                   <input
                     id="stripe-name"
@@ -323,7 +324,7 @@ export function CheckoutSimulator({ open, onClose }: Props) {
                   className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-[#635bff] px-5 py-2.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-[#5851ea] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#635bff]"
                 >
                   <Lock className="h-4 w-4" aria-hidden />
-                  Pay {formatCurrency(total)}
+                  {t("checkout.pay", { total: formatCurrency(total, locale) })}
                 </button>
               </form>
             </>
@@ -331,7 +332,7 @@ export function CheckoutSimulator({ open, onClose }: Props) {
         </div>
 
         <div className="border-t border-black/10 px-5 py-3 text-center text-[11px] text-background/45">
-          Powered by Stripe · Checkout simulator · No real charges
+          {t("checkout.powered")}
         </div>
       </div>
     </div>
