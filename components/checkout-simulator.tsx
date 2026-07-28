@@ -1,0 +1,339 @@
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+import { CheckCircle2, Lock, X } from "lucide-react";
+import { Button } from "@/components/button";
+import { useCart } from "@/components/cart-provider";
+import { formatCurrency } from "@/lib/utils";
+
+type Props = {
+  open: boolean;
+  onClose: () => void;
+};
+
+type FieldErrors = {
+  email?: string;
+  card?: string;
+  expiry?: string;
+  cvc?: string;
+  name?: string;
+};
+
+function onlyDigits(value: string) {
+  return value.replace(/\D/g, "");
+}
+
+function formatCardNumber(value: string) {
+  return onlyDigits(value)
+    .slice(0, 16)
+    .replace(/(\d{4})(?=\d)/g, "$1 ")
+    .trim();
+}
+
+function formatExpiry(value: string) {
+  const digits = onlyDigits(value).slice(0, 4);
+  if (digits.length <= 2) return digits;
+  return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+}
+
+export function CheckoutSimulator({ open, onClose }: Props) {
+  const { items, subtotal, clearCart, closeCart } = useCart();
+  const [email, setEmail] = useState("");
+  const [card, setCard] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvc, setCvc] = useState("");
+  const [name, setName] = useState("");
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [status, setStatus] = useState<"form" | "processing" | "success">(
+    "form",
+  );
+  const [orderId, setOrderId] = useState("");
+  const [paidTotal, setPaidTotal] = useState(0);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && status !== "processing") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open, onClose, status]);
+
+  useEffect(() => {
+    if (!open) {
+      setStatus("form");
+      setErrors({});
+    }
+  }, [open]);
+
+  if (!open) return null;
+
+  const tax = Math.round(subtotal * 0.08875 * 100) / 100;
+  const total = Math.round((subtotal + tax) * 100) / 100;
+
+  function validate(): FieldErrors {
+    const next: FieldErrors = {};
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      next.email = "Enter a valid email.";
+    }
+    const cardDigits = onlyDigits(card);
+    if (cardDigits.length < 15) {
+      next.card = "Enter a complete card number.";
+    }
+    const expDigits = onlyDigits(expiry);
+    if (expDigits.length !== 4) {
+      next.expiry = "Use MM/YY.";
+    } else {
+      const month = Number(expDigits.slice(0, 2));
+      if (month < 1 || month > 12) next.expiry = "Invalid month.";
+    }
+    if (onlyDigits(cvc).length < 3) {
+      next.cvc = "Enter CVC.";
+    }
+    if (!name.trim()) next.name = "Name on card is required.";
+    return next;
+  }
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    const next = validate();
+    if (Object.keys(next).length) {
+      setErrors(next);
+      return;
+    }
+
+    setStatus("processing");
+    setPaidTotal(total);
+    const id = `SC-${Date.now().toString().slice(-6)}`;
+    setOrderId(id);
+
+    await new Promise((r) => setTimeout(r, 1600));
+
+    clearCart();
+    setStatus("success");
+  }
+
+  function finish() {
+    setEmail("");
+    setCard("");
+    setExpiry("");
+    setCvc("");
+    setName("");
+    setStatus("form");
+    onClose();
+    closeCart();
+  }
+
+  const field =
+    "mt-1.5 w-full min-h-11 rounded-md border border-black/15 bg-white px-3 text-[15px] text-background outline-none focus:border-[#635bff] focus:ring-2 focus:ring-[#635bff]/30";
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center sm:p-4">
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/75 animate-fade-in"
+        aria-label="Close checkout"
+        onClick={() => status !== "processing" && onClose()}
+      />
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Stripe checkout simulator"
+        className="relative z-10 flex max-h-[min(92vh,720px)] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-white text-background shadow-2xl animate-slide-up sm:rounded-2xl"
+      >
+        <div className="flex items-center justify-between border-b border-black/10 px-5 py-4">
+          <div>
+            <p className="text-xs font-semibold tracking-wide text-[#635bff] uppercase">
+              Stripe · Simulator
+            </p>
+            <h2 className="text-lg font-semibold">Street Flavor</h2>
+          </div>
+          {status !== "processing" && (
+            <button
+              type="button"
+              onClick={status === "success" ? finish : onClose}
+              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md hover:bg-black/5"
+              aria-label="Close checkout"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-5 py-5">
+          {status === "success" ? (
+            <div className="flex flex-col items-center py-8 text-center">
+              <CheckCircle2 className="h-14 w-14 text-emerald-500" aria-hidden />
+              <h3 className="mt-4 text-2xl font-semibold">Payment successful</h3>
+              <p className="mt-2 text-sm text-background/65">
+                Simulated charge — no real card was charged.
+              </p>
+              <div className="mt-6 w-full rounded-xl border border-black/10 bg-[#f6f9fc] p-4 text-left text-sm">
+                <div className="flex justify-between">
+                  <span className="text-background/60">Order</span>
+                  <span className="font-medium">{orderId}</span>
+                </div>
+                <div className="mt-2 flex justify-between">
+                  <span className="text-background/60">Total paid</span>
+                  <span className="font-semibold">{formatCurrency(paidTotal)}</span>
+                </div>
+                <p className="mt-3 text-xs text-background/55">
+                  Show this confirmation at the truck window for pickup.
+                </p>
+              </div>
+              <Button className="mt-6 w-full" onClick={finish}>
+                Done
+              </Button>
+            </div>
+          ) : status === "processing" ? (
+            <div className="flex flex-col items-center py-16 text-center">
+              <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#635bff] border-t-transparent" />
+              <p className="mt-5 font-medium">Processing payment…</p>
+              <p className="mt-1 text-sm text-background/60">
+                Simulating Stripe authorization
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="mb-5 rounded-xl border border-black/10 bg-[#f6f9fc] p-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-background/60">
+                    {items.length} item{items.length === 1 ? "" : "s"}
+                  </span>
+                  <span>{formatCurrency(subtotal)}</span>
+                </div>
+                <div className="mt-1 flex justify-between text-sm">
+                  <span className="text-background/60">Est. tax</span>
+                  <span>{formatCurrency(tax)}</span>
+                </div>
+                <div className="mt-3 flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
+                  <span>Total due</span>
+                  <span>{formatCurrency(total)}</span>
+                </div>
+              </div>
+
+              <form onSubmit={onSubmit} className="space-y-4" noValidate>
+                <div>
+                  <label htmlFor="stripe-email" className="text-sm font-medium">
+                    Email
+                  </label>
+                  <input
+                    id="stripe-email"
+                    type="email"
+                    autoComplete="email"
+                    className={field}
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setErrors((prev) => ({ ...prev, email: undefined }));
+                    }}
+                    aria-invalid={!!errors.email}
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="stripe-card" className="text-sm font-medium">
+                    Card information
+                  </label>
+                  <input
+                    id="stripe-card"
+                    inputMode="numeric"
+                    autoComplete="cc-number"
+                    placeholder="Card number"
+                    className={`${field} rounded-b-none`}
+                    value={card}
+                    onChange={(e) => {
+                      setCard(formatCardNumber(e.target.value));
+                      setErrors((prev) => ({ ...prev, card: undefined }));
+                    }}
+                    aria-invalid={!!errors.card}
+                  />
+                  <div className="grid grid-cols-2">
+                    <input
+                      id="stripe-expiry"
+                      inputMode="numeric"
+                      autoComplete="cc-exp"
+                      placeholder="MM / YY"
+                      className={`${field} mt-0 rounded-none rounded-bl-md border-t-0`}
+                      value={expiry}
+                      onChange={(e) => {
+                        setExpiry(formatExpiry(e.target.value));
+                        setErrors((prev) => ({ ...prev, expiry: undefined }));
+                      }}
+                      aria-invalid={!!errors.expiry}
+                      aria-label="Expiry"
+                    />
+                    <input
+                      id="stripe-cvc"
+                      inputMode="numeric"
+                      autoComplete="cc-csc"
+                      placeholder="CVC"
+                      className={`${field} mt-0 rounded-none rounded-br-md border-t-0 border-l-0`}
+                      value={cvc}
+                      onChange={(e) => {
+                        setCvc(onlyDigits(e.target.value).slice(0, 4));
+                        setErrors((prev) => ({ ...prev, cvc: undefined }));
+                      }}
+                      aria-invalid={!!errors.cvc}
+                      aria-label="CVC"
+                    />
+                  </div>
+                  {(errors.card || errors.expiry || errors.cvc) && (
+                    <p className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.card || errors.expiry || errors.cvc}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="stripe-name" className="text-sm font-medium">
+                    Name on card
+                  </label>
+                  <input
+                    id="stripe-name"
+                    autoComplete="cc-name"
+                    className={field}
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      setErrors((prev) => ({ ...prev, name: undefined }));
+                    }}
+                    aria-invalid={!!errors.name}
+                  />
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-[#635bff] px-5 py-2.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-[#5851ea] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#635bff]"
+                >
+                  <Lock className="h-4 w-4" aria-hidden />
+                  Pay {formatCurrency(total)}
+                </button>
+              </form>
+            </>
+          )}
+        </div>
+
+        <div className="border-t border-black/10 px-5 py-3 text-center text-[11px] text-background/45">
+          Powered by Stripe · Checkout simulator · No real charges
+        </div>
+      </div>
+    </div>
+  );
+}

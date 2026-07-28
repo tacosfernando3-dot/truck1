@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Street Flavor Food Truck
 
-## Getting Started
+Premium, mobile-responsive site for **Street Flavor Food Truck**.
 
-First, run the development server:
+Stack: Next.js (App Router) · TypeScript · Tailwind CSS · Lucide React · `next/font` · `next/image`
+
+## Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Routes
 
-## Learn More
+| Path | Description |
+|------|-------------|
+| `/` | Home — hero, features, menu preview, locations, gallery, about, CTA |
+| `/menu` | Full menu with filters + cart |
+| `/locations` | Weekly schedule + geolocation distance |
+| `/catering` | Packages, inquiry form, FAQs |
 
-To learn more about Next.js, take a look at the following resources:
+## Image replacement
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All remote image URLs live in [`data/images.ts`](data/images.ts) (also referenced from [`data/menu.ts`](data/menu.ts) and [`data/gallery.ts`](data/gallery.ts)).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To use local files:
 
-## Deploy on Vercel
+1. Add JPGs under `public/images/` using the names in `localImageFiles` inside `data/images.ts`.
+2. Point each key in `images` to the matching `/images/...` path.
+3. `next.config.ts` already allows `images.unsplash.com` for temporary remote assets.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Cart
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Persists in `localStorage` (`street-flavor-cart`). Checkout is a placeholder alert (no Stripe).
+
+## Deploy (Vercel)
+
+1. Push to GitHub (e.g. `https://github.com/ODIOdev/foodtruck.git`).
+2. Import in Vercel with Next.js defaults (`npm run build`).
+
+## Project layout
+
+```
+app/                 # routes + globals
+components/          # UI sections, cart, header/footer
+data/                # menu, locations, gallery, images, nav
+lib/                 # types + utils
+public/images/       # local asset drop zone
+```
