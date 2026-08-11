@@ -109,7 +109,7 @@ export function MenuCard({
           type="button"
           onClick={handleAdd}
           className={cn(
-            "pointer-events-auto mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-yellow px-4 py-2 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-yellow-hover md:opacity-90 md:group-hover:opacity-100",
+            "pointer-events-auto mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-yellow px-4 py-2 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-gold hover:text-background md:opacity-90 md:group-hover:opacity-100",
           )}
           aria-label={t("menuPage.addToCart", { name: localized.localizedName })}
         >

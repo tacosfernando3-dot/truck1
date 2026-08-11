@@ -98,7 +98,10 @@ export function SiteHeader() {
               )}
             </button>
 
-            <Button href="/menu" className="hidden sm:inline-flex">
+            <Button
+              href="/menu"
+              className="hidden sm:inline-flex hover:!bg-green"
+            >
               {t("nav.orderNow")}
             </Button>
 

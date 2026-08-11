@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { BusinessContactDetails } from "@/components/business-contact-details";
+import { useContent } from "@/components/content-provider";
 import { Logo } from "@/components/logo";
 import { NewsletterSection } from "@/components/newsletter-section";
 import { FacebookIcon, InstagramIcon, TikTokIcon } from "@/components/social-icons";
-import { business } from "@/data/locations";
 import { footerInfo, footerPages } from "@/data/navigation";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -48,20 +49,28 @@ function FooterGroup({
 
 export function SiteFooter() {
   const t = useT();
+  const { content } = useContent();
+  const business = content.business;
   const year = new Date().getFullYear();
 
   return (
     <footer id="contact" className="border-t border-border-dark bg-background">
       <div className="container-site grid gap-8 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div className="min-w-0">
-          <Logo />
-          <p className="mt-4 max-w-xs text-sm text-muted">{t("footer.blurb")}</p>
+          <Logo imageClassName="h-14 sm:h-16" />
+          <p className="mt-4 max-w-xs text-sm text-muted">
+            {business.footerBlurb || t("footer.blurb")}
+          </p>
+          <BusinessContactDetails
+            business={business}
+            className="mt-3 max-w-xs"
+          />
           <div className="mt-5 flex gap-3">
             <a
               href={business.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border-dark hover:border-yellow hover:text-yellow"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
               aria-label="Instagram"
             >
               <InstagramIcon className="h-4 w-4" />
@@ -70,7 +79,7 @@ export function SiteFooter() {
               href={business.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border-dark hover:border-yellow hover:text-yellow"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
               aria-label="Facebook"
             >
               <FacebookIcon className="h-5 w-5" />
@@ -79,7 +88,7 @@ export function SiteFooter() {
               href={business.tiktok}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border-dark hover:border-yellow hover:text-yellow"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
               aria-label="TikTok"
             >
               <TikTokIcon className="h-4 w-4" />

@@ -66,10 +66,10 @@ export function SitePreloader() {
     >
       <div className="preloader-logo relative px-8">
         <Image
-          src="/images/street-crave-logo.png"
+          src="/images/los-compadres-banner.png"
           alt={t("preloader.alt")}
-          width={602}
-          height={245}
+          width={1018}
+          height={395}
           priority
           className="h-auto w-[min(78vw,320px)] object-contain sm:w-[360px]"
         />

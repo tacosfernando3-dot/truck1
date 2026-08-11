@@ -1,21 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { BackButton } from "@/components/back-button";
+import { useContent } from "@/components/content-provider";
 import { MenuCard } from "@/components/menu-card";
 import { MenuFilter } from "@/components/menu-filter";
-import { menuItems } from "@/data/menu";
+import { categorySectionId } from "@/lib/cms/utils";
 import { useT } from "@/lib/i18n";
+
+function categoryLabel(category: string, t: (key: string) => string) {
+  const translated = t(`categories.${category}`);
+  return translated === `categories.${category}` ? category : translated;
+}
 
 export function MenuPageClient() {
   const t = useT();
-  const [category, setCategory] = useState("All");
+  const { content } = useContent();
 
-  const filtered = useMemo(() => {
-    if (category === "All") return menuItems;
-    return menuItems.filter((item) => item.category === category);
-  }, [category]);
+  const sections = useMemo(
+    () =>
+      content.categories.map((category) => ({
+        category,
+        items: content.menu.filter((item) => item.category === category),
+      })),
+    [content.categories, content.menu],
+  );
 
   return (
     <>
@@ -43,27 +53,47 @@ export function MenuPageClient() {
           <p className="mt-3 text-muted">{t("menuPage.subtitle")}</p>
         </div>
 
-        <MenuFilter active={category} onChange={setCategory} />
+        <MenuFilter />
 
-        <div className="grid gap-4 md:hidden">
-          {filtered.map((item) => (
-            <div key={`${category}-${item.id}`} className="animate-fade-up">
-              <MenuCard item={item} compact />
-            </div>
+        <div className="space-y-14">
+          {sections.map(({ category, items }) => (
+            <section
+              key={category}
+              id={categorySectionId(category)}
+              className="scroll-mt-28"
+              aria-labelledby={`menu-heading-${categorySectionId(category)}`}
+            >
+              <h3
+                id={`menu-heading-${categorySectionId(category)}`}
+                className="mb-5 border-b border-border-dark pb-3 font-display text-3xl tracking-wide text-yellow uppercase"
+              >
+                {categoryLabel(category, t)}
+              </h3>
+
+              {items.length === 0 ? (
+                <p className="text-muted">{t("menuPage.empty")}</p>
+              ) : (
+                <>
+                  <div className="grid gap-4 md:hidden">
+                    {items.map((item) => (
+                      <div key={item.id} className="animate-fade-up">
+                        <MenuCard item={item} compact />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-3">
+                    {items.map((item) => (
+                      <div key={item.id} className="animate-fade-up">
+                        <MenuCard item={item} />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </section>
           ))}
         </div>
-
-        <div className="hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((item) => (
-            <div key={`${category}-desk-${item.id}`} className="animate-fade-up">
-              <MenuCard item={item} />
-            </div>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <p className="text-muted">{t("menuPage.empty")}</p>
-        )}
 
         <p className="sr-only">
           <Link href="/">{t("common.returnHome")}</Link>

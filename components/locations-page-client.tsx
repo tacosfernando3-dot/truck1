@@ -4,19 +4,21 @@ import Image from "next/image";
 import { useState } from "react";
 import { MapPin, Navigation } from "lucide-react";
 import { BackButton } from "@/components/back-button";
+import { BusinessContactDetails } from "@/components/business-contact-details";
 import { Button } from "@/components/button";
+import { useContent } from "@/components/content-provider";
 import { GoogleMapEmbed } from "@/components/google-map-embed";
 import { images } from "@/data/images";
-import {
-  fullAddress,
-  getTodaysLocation,
-  weeklyLocations,
-} from "@/data/locations";
+import { getTodaysLocation, weeklyLocations } from "@/data/locations";
 import { useT } from "@/lib/i18n";
+import { formatBusinessAddress } from "@/lib/cms/utils";
 import { directionsUrl, haversineMiles } from "@/lib/utils";
 
 export function LocationsPageClient() {
   const t = useT();
+  const { content } = useContent();
+  const { business } = content;
+  const address = formatBusinessAddress(business);
   const today = getTodaysLocation();
   const [distance, setDistance] = useState<number | null>(null);
   const [geoStatus, setGeoStatus] = useState<
@@ -88,7 +90,7 @@ export function LocationsPageClient() {
               {t("locationsPage.enableLocation")}
             </Button>
             <Button
-              href={directionsUrl(fullAddress(today))}
+              href={directionsUrl(address)}
               variant="outline-light"
               leftIcon={<MapPin className="h-4 w-4" aria-hidden />}
             >
@@ -139,17 +141,23 @@ export function LocationsPageClient() {
                   <p className="text-sm text-white">
                     {localizedNeighborhood(stop.neighborhood)}
                   </p>
-                  <p className="text-sm text-muted">
-                    {stop.isPrivate ? t("locations.privateAddress") : stop.address}
-                    {!stop.isPrivate && ` · ${stop.city} ${stop.zip}`}
-                  </p>
+                  {stop.isPrivate ? (
+                    <p className="text-sm text-muted">
+                      {t("locations.privateAddress")}
+                    </p>
+                  ) : (
+                    <BusinessContactDetails
+                      business={business}
+                      className="mt-0"
+                    />
+                  )}
                   <p className="mt-1 text-sm text-muted">
                     {localizedHours(stop.hours)}
                   </p>
                 </div>
                 {!stop.isPrivate ? (
                   <a
-                    href={directionsUrl(fullAddress(stop))}
+                    href={directionsUrl(address)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex min-h-11 items-center justify-center rounded-md border border-yellow px-4 text-sm font-semibold text-yellow hover:bg-yellow hover:text-white"
@@ -174,10 +182,10 @@ export function LocationsPageClient() {
             <h2 className="mt-2 font-display text-3xl tracking-wide uppercase">
               {localizedNeighborhood(today.neighborhood)}
             </h2>
-            <p className="mt-3 text-sm text-muted">{fullAddress(today)}</p>
+            <BusinessContactDetails business={business} className="mt-3" />
             <p className="mt-1 text-sm text-white">{localizedHours(today.hours)}</p>
             <Button
-              href={directionsUrl(fullAddress(today))}
+              href={directionsUrl(address)}
               className="mt-6 w-full sm:w-auto"
             >
               {t("common.getDirections")}
@@ -185,9 +193,7 @@ export function LocationsPageClient() {
           </div>
 
           <GoogleMapEmbed
-            lat={today.lat}
-            lng={today.lng}
-            query={fullAddress(today)}
+            query={address}
             title={t("locationsPage.mapTitle", {
               neighborhood: localizedNeighborhood(today.neighborhood),
             })}

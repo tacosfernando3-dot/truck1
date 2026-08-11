@@ -62,7 +62,11 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
         />
         <Button
           type="submit"
-          className={compact ? "w-full shrink-0" : "w-full shrink-0 sm:w-auto"}
+          className={
+            compact
+              ? "w-full shrink-0 hover:!bg-white hover:!text-background"
+              : "w-full shrink-0 hover:!bg-white hover:!text-background sm:w-auto"
+          }
         >
           {t("newsletter.subscribe")}
         </Button>

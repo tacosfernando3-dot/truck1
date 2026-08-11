@@ -21,7 +21,12 @@ export function CateringSection() {
           </h2>
           <p className="mt-4 max-w-xl text-muted">{t("about.body")}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button href="/catering">{t("about.cateringEvents")}</Button>
+            <Button
+              href="/catering"
+              className="hover:!bg-gold hover:!text-background"
+            >
+              {t("about.cateringEvents")}
+            </Button>
             <Button href="/#contact" variant="outline-light">
               {t("about.contactCrew")}
             </Button>

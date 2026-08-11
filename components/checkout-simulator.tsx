@@ -112,13 +112,54 @@ export function CheckoutSimulator({ open, onClose }: Props) {
 
     setStatus("processing");
     setPaidTotal(total);
-    const id = `SC-${Date.now().toString().slice(-6)}`;
-    setOrderId(id);
+    setErrors({});
 
-    await new Promise((r) => setTimeout(r, 1600));
+    const cardDigits = onlyDigits(card);
+    const cardLast4 = cardDigits.slice(-4);
 
-    clearCart();
-    setStatus("success");
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          customerName: name.trim(),
+          subtotal,
+          tax,
+          total,
+          cardLast4,
+          paymentProvider: "simulator",
+          items: items.map((item) => ({
+            menuItemId: item.id,
+            name: item.name,
+            unitPrice: item.price,
+            quantity: item.quantity,
+            image: item.image,
+          })),
+        }),
+      });
+
+      const data = (await res.json().catch(() => null)) as {
+        order?: { id: string };
+        error?: string;
+      } | null;
+
+      if (!res.ok || !data?.order?.id) {
+        throw new Error(data?.error || "Payment failed");
+      }
+
+      setOrderId(data.order.id);
+      clearCart();
+      setStatus("success");
+    } catch (error) {
+      setStatus("form");
+      setErrors({
+        name:
+          error instanceof Error
+            ? error.message
+            : "Could not complete payment. Try again.",
+      });
+    }
   }
 
   function finish() {
@@ -175,6 +216,13 @@ export function CheckoutSimulator({ open, onClose }: Props) {
               <CheckCircle2 className="h-14 w-14 text-emerald-500" aria-hidden />
               <h3 className="mt-4 text-2xl font-semibold">{t("checkout.success")}</h3>
               <p className="mt-2 text-sm text-background/65">{t("checkout.simulated")}</p>
+              <p className="mt-2 text-sm text-background/65">
+                Look up this order anytime at{" "}
+                <a href="/orders" className="font-medium text-[#635bff] underline">
+                  /orders
+                </a>{" "}
+                with your email.
+              </p>
               <div className="mt-6 w-full rounded-xl border border-black/10 bg-[#f6f9fc] p-4 text-left text-sm">
                 <div className="flex justify-between">
                   <span className="text-background/60">{t("checkout.order")}</span>

@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { useContent } from "@/components/content-provider";
 import { InstagramIcon } from "@/components/social-icons";
-import { galleryItems } from "@/data/gallery";
-import { business } from "@/data/locations";
 import { useT } from "@/lib/i18n";
 
 export function GallerySection() {
   const t = useT();
+  const { content } = useContent();
+  const { business, gallery } = content;
 
   return (
     <section id="gallery" className="relative grain bg-cream py-16 text-background sm:py-20">
@@ -25,7 +26,7 @@ export function GallerySection() {
         </div>
 
         <div className="hidden gap-4 md:grid md:grid-cols-5">
-          {galleryItems.map((item) => (
+          {gallery.map((item) => (
             <a
               key={item.id}
               href={business.instagram}
@@ -40,6 +41,7 @@ export function GallerySection() {
                 fill
                 className="object-cover transition duration-500 group-hover:scale-105"
                 sizes="20vw"
+                unoptimized={item.image.startsWith("/uploads/")}
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:bg-black/45 group-hover:opacity-100">
                 <InstagramIcon className="h-7 w-7 text-white" />
@@ -49,7 +51,7 @@ export function GallerySection() {
         </div>
 
         <div className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 md:hidden">
-          {galleryItems.map((item) => (
+          {gallery.map((item) => (
             <a
               key={item.id}
               href={business.instagram}
@@ -64,6 +66,7 @@ export function GallerySection() {
                 fill
                 className="object-cover"
                 sizes="78vw"
+                unoptimized={item.image.startsWith("/uploads/")}
               />
             </a>
           ))}

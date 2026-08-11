@@ -1,17 +1,20 @@
 "use client";
 
+import { BusinessContactDetails } from "@/components/business-contact-details";
 import { Button } from "@/components/button";
-import { getTodaysLocation, fullAddress } from "@/data/locations";
+import { useContent } from "@/components/content-provider";
+import { getTodaysLocation } from "@/data/locations";
 import { useT } from "@/lib/i18n";
+import { formatBusinessAddress } from "@/lib/cms/utils";
 import { directionsUrl, mapsEmbedUrl } from "@/lib/utils";
 
 export function LocationSection() {
   const t = useT();
+  const { content } = useContent();
   const today = getTodaysLocation();
-  const address = fullAddress(today);
+  const { business } = content;
+  const address = formatBusinessAddress(business);
   const mapSrc = mapsEmbedUrl({
-    lat: today.lat,
-    lng: today.lng,
     query: address,
     zoom: 15,
   });
@@ -29,7 +32,10 @@ export function LocationSection() {
             {t("locationHome.titleLine2")}
           </h2>
           <p className="mt-4 max-w-sm text-muted">{t("locationHome.subtitle")}</p>
-          <Button href="/locations" className="mt-6 self-start">
+          <Button
+            href="/locations"
+            className="mt-6 self-start hover:!bg-white hover:!text-background"
+          >
             {t("locationHome.viewSchedule")}
           </Button>
         </div>
@@ -51,11 +57,7 @@ export function LocationSection() {
             <h3 className="mt-2 font-display text-2xl tracking-wide uppercase">
               {today.neighborhood}
             </h3>
-            <p className="mt-2 text-sm text-muted">
-              {today.address}
-              <br />
-              {today.city} {today.zip}
-            </p>
+            <BusinessContactDetails business={business} className="mt-2" />
             <p className="mt-2 text-sm text-white">{today.hours}</p>
             <a
               href={directionsUrl(address)}

@@ -4,10 +4,12 @@ import { GallerySection } from "@/components/gallery-section";
 import { HeroSection } from "@/components/hero-section";
 import { LocationSection } from "@/components/location-section";
 import { MenuPreview } from "@/components/menu-preview";
-import { business, getTodaysLocation, fullAddress } from "@/data/locations";
+import { readCms } from "@/lib/cms/store";
+import { formatBusinessAddress } from "@/lib/cms/utils";
 
-function LocalBusinessJsonLd() {
-  const today = getTodaysLocation();
+async function LocalBusinessJsonLd() {
+  const cms = await readCms();
+  const { business } = cms;
   const schema = {
     "@context": "https://schema.org",
     "@type": "FoodEstablishment",
@@ -21,10 +23,10 @@ function LocalBusinessJsonLd() {
     url: "https://streetflavortruck.com",
     address: {
       "@type": "PostalAddress",
-      streetAddress: today.address,
-      addressLocality: "Jackson Heights",
-      addressRegion: "NY",
-      postalCode: today.zip,
+      streetAddress: business.streetAddress,
+      addressLocality: business.city,
+      addressRegion: business.state,
+      postalCode: business.zip,
       addressCountry: "US",
     },
     sameAs: [business.instagram, business.facebook, business.tiktok],
@@ -38,7 +40,9 @@ function LocalBusinessJsonLd() {
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const address = formatBusinessAddress((await readCms()).business);
+
   return (
     <>
       <LocalBusinessJsonLd />
@@ -48,7 +52,7 @@ export default function HomePage() {
       <GallerySection />
       <CateringSection />
       <CallToActionBanner />
-      <span className="sr-only">{fullAddress(getTodaysLocation())}</span>
+      <span className="sr-only">{address}</span>
     </>
   );
 }

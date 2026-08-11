@@ -15,6 +15,8 @@ export const dictionaries = {
       privateParties: "Private Parties",
       gallery: "Gallery",
       faqs: "FAQs",
+      admin: "Admin",
+      orders: "Your Orders",
       main: "Main",
       orderNow: "Order Now",
       openCart: "Open cart, {count} items",
@@ -290,13 +292,13 @@ export const dictionaries = {
       submit: "Submit Inquiry",
     },
     preloader: {
-      loading: "Loading Street Crave",
+      loading: "Loading Los Compadres",
       flavor: "Loading flavor",
-      alt: "Street Crave Food Truck",
+      alt: "Los Compadres",
     },
     logo: {
-      home: "Street Crave Food Truck home",
-      alt: "Street Crave Food Truck",
+      home: "Los Compadres home",
+      alt: "Los Compadres",
     },
     days: {
       Monday: "Monday",
@@ -531,6 +533,8 @@ export const dictionaries = {
       privateParties: "Fiestas privadas",
       gallery: "Galería",
       faqs: "Preguntas",
+      admin: "Admin",
+      orders: "Tus pedidos",
       main: "Principal",
       orderNow: "Ordenar",
       openCart: "Abrir carrito, {count} artículos",
@@ -810,13 +814,13 @@ export const dictionaries = {
       submit: "Enviar consulta",
     },
     preloader: {
-      loading: "Cargando Street Crave",
+      loading: "Cargando Los Compadres",
       flavor: "Cargando sabor",
-      alt: "Street Crave Food Truck",
+      alt: "Los Compadres",
     },
     logo: {
-      home: "Inicio Street Crave Food Truck",
-      alt: "Street Crave Food Truck",
+      home: "Inicio Los Compadres",
+      alt: "Los Compadres",
     },
     days: {
       Monday: "Lunes",

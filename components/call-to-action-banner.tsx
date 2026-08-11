@@ -19,7 +19,11 @@ export function CallToActionBanner() {
             <p className="mt-1 text-white/85">{t("cta.subtitle")}</p>
           </div>
         </div>
-        <Button href="/menu" variant="secondary" className="w-full border-white/30 md:w-auto">
+        <Button
+          href="/menu"
+          variant="secondary"
+          className="w-full border-white/30 hover:!bg-yellow md:w-auto"
+        >
           {t("cta.orderNow")}
         </Button>
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Inter, Permanent_Marker } from "next/font/google";
 import { CartProvider } from "@/components/cart-provider";
 import { CartDrawer } from "@/components/cart-drawer";
+import { ContentProvider } from "@/components/content-provider";
 import { MobileCartBar } from "@/components/mobile-cart-bar";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -63,16 +64,18 @@ export default function RootLayout({
     >
       <body className="min-h-full font-sans antialiased">
         <LanguageProvider>
-          <SitePreloader />
-          <CartProvider>
-            <div className="site-frame">
-              <SiteHeader />
-              <main className="flex-1">{children}</main>
-              <SiteFooter />
-            </div>
-            <CartDrawer />
-            <MobileCartBar />
-          </CartProvider>
+          <ContentProvider>
+            <SitePreloader />
+            <CartProvider>
+              <div className="site-frame">
+                <SiteHeader />
+                <main className="flex-1">{children}</main>
+                <SiteFooter />
+              </div>
+              <CartDrawer />
+              <MobileCartBar />
+            </CartProvider>
+          </ContentProvider>
         </LanguageProvider>
       </body>
     </html>

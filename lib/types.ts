@@ -1,9 +1,4 @@
-export type MenuCategory =
-  | "Tacos"
-  | "Burgers"
-  | "Bowls"
-  | "Sides"
-  | "Drinks";
+export type MenuCategory = string;
 
 export type MenuItem = {
   id: string;

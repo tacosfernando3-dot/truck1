@@ -36,6 +36,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# supabase CLI local state
+supabase/.temp
+
+# local CMS uploads (keep folder)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

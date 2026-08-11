@@ -1,14 +1,19 @@
 "use client";
 
+import { useMemo } from "react";
 import { Button } from "@/components/button";
+import { useContent } from "@/components/content-provider";
 import { MenuCard } from "@/components/menu-card";
 import { SectionHeading } from "@/components/section-heading";
-import { getFeaturedMenuItems } from "@/data/menu";
 import { useT } from "@/lib/i18n";
 
 export function MenuPreview() {
   const t = useT();
-  const items = getFeaturedMenuItems();
+  const { content } = useContent();
+  const items = useMemo(
+    () => content.menu.filter((item) => item.featured).slice(0, 4),
+    [content.menu],
+  );
 
   return (
     <section id="menu" className="relative grain bg-cream py-16 text-background sm:py-20">
