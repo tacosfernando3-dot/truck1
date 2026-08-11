@@ -58,12 +58,9 @@ export function SiteFooter() {
       <div className="container-site grid gap-8 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div className="min-w-0">
           <Logo imageClassName="h-14 sm:h-16" />
-          <p className="mt-4 max-w-xs text-sm text-muted">
-            {business.footerBlurb || t("footer.blurb")}
-          </p>
           <BusinessContactDetails
             business={business}
-            className="mt-3 max-w-xs"
+            className="mt-4 max-w-xs"
           />
           {(business.showInstagram ||
             business.showFacebook ||
