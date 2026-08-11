@@ -21,14 +21,14 @@ function FooterGroup({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-border-dark py-3 md:border-0 md:py-0">
+    <div className="min-w-0 border-b border-border-dark py-3 md:border-0 md:py-0">
       <button
         type="button"
         className="flex w-full items-center justify-between py-1 text-left md:pointer-events-none"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
-        <h3 className="font-display text-lg tracking-wide text-yellow uppercase">
+        <h3 className="font-display text-lg tracking-wide text-red uppercase">
           {title}
         </h3>
         <ChevronDown
@@ -53,7 +53,7 @@ export function SiteFooter() {
   return (
     <footer id="contact" className="border-t border-border-dark bg-background">
       <div className="container-site grid gap-8 py-14 md:grid-cols-2 lg:grid-cols-4">
-        <div>
+        <div className="min-w-0">
           <Logo />
           <p className="mt-4 max-w-xs text-sm text-muted">{t("footer.blurb")}</p>
           <div className="mt-5 flex gap-3">
@@ -111,7 +111,7 @@ export function SiteFooter() {
           ))}
         </FooterGroup>
 
-        <div>
+        <div className="min-w-0">
           <NewsletterSection compact />
         </div>
       </div>

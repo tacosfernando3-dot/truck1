@@ -21,7 +21,7 @@ export function MenuPageClient() {
     <>
       <div className="hidden border-b border-border-dark bg-surface-dark py-10 md:block">
         <div className="container-site">
-          <p className="text-sm font-semibold tracking-[0.22em] text-yellow uppercase">
+          <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
             {t("menuPage.orderAhead")}
           </p>
           <h1 className="mt-2 font-display text-4xl tracking-wide text-white uppercase sm:text-5xl">
@@ -34,7 +34,7 @@ export function MenuPageClient() {
         <BackButton className="mb-6" />
 
         <div className="mb-8 max-w-2xl">
-          <p className="text-sm font-semibold tracking-[0.22em] text-yellow uppercase">
+          <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
             {t("menuPage.eyebrow")}
           </p>
           <h2 className="mt-2 font-brush text-fluid-section text-white">

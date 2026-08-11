@@ -61,13 +61,15 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${bebas.variable} ${marker.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col font-sans antialiased">
+      <body className="min-h-full font-sans antialiased">
         <LanguageProvider>
           <SitePreloader />
           <CartProvider>
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
+            <div className="site-frame">
+              <SiteHeader />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+            </div>
             <CartDrawer />
             <MobileCartBar />
           </CartProvider>

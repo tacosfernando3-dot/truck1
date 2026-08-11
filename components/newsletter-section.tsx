@@ -37,7 +37,14 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
           <p className="mt-2 text-sm text-muted">{t("newsletter.subtitleCompact")}</p>
         </>
       )}
-      <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row">
+      <form
+        onSubmit={onSubmit}
+        className={
+          compact
+            ? "mt-4 flex min-w-0 flex-col gap-2"
+            : "mt-4 flex min-w-0 flex-col gap-2 sm:flex-row"
+        }
+      >
         <label htmlFor="newsletter-email" className="sr-only">
           {t("newsletter.emailLabel")}
         </label>
@@ -50,10 +57,13 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
             setStatus("idle");
           }}
           placeholder={t("newsletter.placeholder")}
-          className="min-h-11 flex-1 rounded-md border border-border-dark bg-surface-dark px-4 text-white outline-none placeholder:text-muted focus:border-yellow"
+          className="min-h-11 w-full min-w-0 flex-1 rounded-md border border-border-dark bg-surface-dark px-4 text-white outline-none placeholder:text-muted focus:border-yellow"
           required
         />
-        <Button type="submit" className="w-full sm:w-auto">
+        <Button
+          type="submit"
+          className={compact ? "w-full shrink-0" : "w-full shrink-0 sm:w-auto"}
+        >
           {t("newsletter.subscribe")}
         </Button>
       </form>

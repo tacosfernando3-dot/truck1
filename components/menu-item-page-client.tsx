@@ -45,7 +45,7 @@ export function MenuItemPageClient({
           </div>
 
           <div>
-            <p className="text-sm font-semibold tracking-[0.22em] text-yellow uppercase">
+            <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
               {localized.localizedCategory}
             </p>
             <h1 className="mt-2 font-brush text-fluid-section text-white">
@@ -79,7 +79,7 @@ export function MenuItemPageClient({
 
             {localized.localizedIncludes && localized.localizedIncludes.length > 0 && (
               <div className="mt-8">
-                <h2 className="text-sm font-semibold tracking-[0.18em] text-yellow uppercase">
+                <h2 className="text-sm font-semibold tracking-[0.18em] text-green uppercase">
                   {t("common.whatsIncluded")}
                 </h2>
                 <ul className="mt-3 grid gap-2 sm:grid-cols-2">

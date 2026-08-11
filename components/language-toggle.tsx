@@ -28,7 +28,7 @@ export function LanguageToggle({ className }: { className?: string }) {
           className={cn(
             "min-h-8 min-w-9 rounded px-2 uppercase transition",
             locale === code
-              ? "bg-yellow text-background"
+              ? "bg-yellow text-white"
               : "text-muted hover:text-white",
           )}
           aria-pressed={locale === code}

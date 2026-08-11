@@ -39,7 +39,7 @@ export function SiteHeader() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-40 border-b border-border-dark transition-all duration-300",
+          "site-header-fixed fixed inset-x-0 top-0 z-40 border-b border-border-dark transition-all duration-300",
           scrolled
             ? "bg-background/95 shadow-lg shadow-black/40 backdrop-blur-md"
             : "bg-background/90 backdrop-blur-sm",
@@ -92,7 +92,7 @@ export function SiteHeader() {
             >
               <ShoppingBag className="h-5 w-5" />
               {cartCount > 0 && (
-                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-yellow px-1 text-[10px] font-bold text-background">
+                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-yellow px-1 text-[10px] font-bold text-white">
                   {cartCount}
                 </span>
               )}

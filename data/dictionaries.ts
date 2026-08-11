@@ -64,7 +64,7 @@ export const dictionaries = {
       scroll: "Scroll to explore",
       altTruck:
         "Colorful black food truck with customers lined up at the service window",
-      altLogo: "Street Crave Food Truck",
+      altLogo: "Los Compadres Taquería",
     },
     menuPreview: {
       eyebrow: "The Menu",
@@ -581,7 +581,7 @@ export const dictionaries = {
       scroll: "Desliza para explorar",
       altTruck:
         "Food truck negro colorido con clientes en la ventana de servicio",
-      altLogo: "Street Crave Food Truck",
+      altLogo: "Los Compadres Taquería",
     },
     menuPreview: {
       eyebrow: "El menú",

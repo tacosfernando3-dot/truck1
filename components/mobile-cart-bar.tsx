@@ -17,7 +17,7 @@ export function MobileCartBar() {
       <button
         type="button"
         onClick={openCart}
-        className="mx-auto flex w-full max-w-lg min-h-12 items-center justify-between rounded-md bg-yellow px-5 py-3 font-semibold tracking-wide text-background uppercase shadow-lg shadow-yellow/20"
+        className="mx-auto flex w-full max-w-lg min-h-12 items-center justify-between rounded-md bg-yellow px-5 py-3 font-semibold tracking-wide text-white uppercase shadow-lg shadow-yellow/30"
         aria-label={t("cart.viewCartAria", {
           count: cartCount,
           subtotal: formatCurrency(subtotal, locale),

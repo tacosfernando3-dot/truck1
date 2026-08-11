@@ -13,7 +13,7 @@ export function CateringSection() {
     <section id="about" className="bg-background-soft py-14 sm:py-16">
       <div className="container-site grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <p className="text-sm font-semibold tracking-[0.22em] text-yellow uppercase">
+          <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
             {t("about.eyebrow")}
           </p>
           <h2 className="mt-2 font-brush text-fluid-section text-white">

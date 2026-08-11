@@ -12,7 +12,7 @@ type Variant =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-yellow text-background hover:bg-background hover:text-yellow border border-transparent hover:border-yellow",
+    "bg-yellow text-white hover:bg-yellow-hover border border-transparent",
   secondary:
     "bg-background text-white hover:bg-surface-dark-2",
   "outline-light":

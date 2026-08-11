@@ -26,7 +26,7 @@ export function MenuItemAddButton({
         addItem(item);
         openCart();
       }}
-      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-yellow px-6 text-sm font-semibold tracking-wide text-background uppercase transition hover:bg-yellow-hover ${className}`}
+      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-yellow px-6 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-yellow-hover ${className}`}
       aria-label={t("menuPage.addToCart", { name: localized.localizedName })}
     >
       <Plus className="h-4 w-4" aria-hidden />

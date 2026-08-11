@@ -1,18 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #080b0c;
-  --background-soft: #101415;
-  --surface-dark: #111516;
-  --surface-dark-2: #171b1c;
-  --cream: #f3efe6;
-  --cream-dark: #e6dfd3;
-  --yellow: #f9bd05;
-  --yellow-hover: #dca600;
+  /* Los Compadres logo palette — banner red, flag green, sombrero gold */
+  --background: #140a0a;
+  --background-soft: #1c1010;
+  --surface-dark: #261414;
+  --surface-dark-2: #321a1a;
+  --cream: #f7f1e6;
+  --cream-dark: #e8dcc8;
+  /* Primary accent maps to logo banner red (used by bg-yellow / text-yellow utilities) */
+  --yellow: #e21419;
+  --yellow-hover: #b61012;
+  --red: #e21419;
+  --red-hover: #b61012;
+  --green: #07663f;
+  --green-hover: #054d2f;
+  --gold: #e8b84a;
+  --gold-hover: #c69d37;
+  --orange: #e36c12;
   --white: #ffffff;
-  --muted: #b5b5b5;
-  --border-dark: rgba(255, 255, 255, 0.12);
-  --border-light: rgba(0, 0, 0, 0.12);
+  --muted: #d0c0b0;
+  --border-dark: rgba(226, 20, 25, 0.28);
+  --border-light: rgba(20, 10, 10, 0.14);
+  /* Locked desktop canvas */
+  --site-max: 1280px;
+  --site-rail: #080303;
 }
 
 @theme inline {
@@ -24,6 +36,13 @@
   --color-cream-dark: var(--cream-dark);
   --color-yellow: var(--yellow);
   --color-yellow-hover: var(--yellow-hover);
+  --color-red: var(--red);
+  --color-red-hover: var(--red-hover);
+  --color-green: var(--green);
+  --color-green-hover: var(--green-hover);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-orange: var(--orange);
   --color-white: var(--white);
   --color-muted: var(--muted);
   --color-border-dark: var(--border-dark);
@@ -47,7 +66,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  background: var(--background);
+  background: var(--site-rail);
   color: var(--white);
   font-family: var(--font-inter), system-ui, sans-serif;
   font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
@@ -57,6 +76,34 @@ body {
   scrollbar-width: none;
 }
 
+/* Mobile: full-bleed. Desktop: site locked to center with side rails */
+.site-frame {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  overflow-x: clip;
+}
+
+@media (min-width: 1024px) {
+  .site-frame {
+    max-width: var(--site-max);
+    margin-inline: auto;
+    border-left: 3px solid var(--green);
+    border-right: 3px solid var(--red);
+    box-shadow:
+      -28px 0 48px -20px rgba(0, 0, 0, 0.7),
+      28px 0 48px -20px rgba(0, 0, 0, 0.7);
+  }
+
+  .site-header-fixed {
+    left: max(0px, calc(50vw - var(--site-max) / 2));
+    right: max(0px, calc(50vw - var(--site-max) / 2));
+    width: auto;
+  }
+}
+
 body::-webkit-scrollbar {
   display: none;
   width: 0;
@@ -64,8 +111,8 @@ body::-webkit-scrollbar {
 }
 
 ::selection {
-  background: var(--yellow);
-  color: var(--background);
+  background: var(--red);
+  color: var(--white);
 }
 
 :focus-visible {
@@ -75,7 +122,7 @@ body::-webkit-scrollbar {
 
 .container-site {
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--site-max);
   margin-inline: auto;
   padding-inline: 20px;
 }

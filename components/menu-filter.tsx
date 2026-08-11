@@ -31,7 +31,7 @@ export function MenuFilter({
             className={cn(
               "shrink-0 rounded-md px-4 py-2.5 text-sm font-semibold tracking-wide uppercase transition min-h-11",
               isActive
-                ? "bg-yellow text-background"
+                ? "bg-yellow text-white"
                 : "border border-border-dark bg-surface-dark text-muted hover:text-white",
             )}
           >

@@ -76,7 +76,7 @@ export function SitePreloader() {
       </div>
 
       <div className="mt-10 h-1 w-40 overflow-hidden rounded-full bg-white/10">
-        <div className="preloader-bar h-full w-1/2 rounded-full bg-yellow" />
+        <div className="preloader-bar h-full w-1/2 rounded-full bg-gold" />
       </div>
 
       <p className="mt-4 text-xs font-semibold tracking-[0.28em] text-muted uppercase">
