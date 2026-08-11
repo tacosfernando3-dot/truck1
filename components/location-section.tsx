@@ -23,7 +23,7 @@ export function LocationSection() {
     <section className="bg-background py-16 sm:py-20">
       <div className="container-site grid gap-8 lg:grid-cols-[34%_66%] lg:items-stretch">
         <div className="flex flex-col justify-center">
-          <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
+          <p className="text-sm font-semibold tracking-[0.22em] text-gold uppercase">
             {t("locationHome.eyebrow")}
           </p>
           <h2 className="mt-2 font-brush text-fluid-section text-white">
@@ -51,7 +51,7 @@ export function LocationSection() {
           />
 
           <aside className="absolute inset-x-4 bottom-4 z-10 rounded-xl border border-border-dark bg-surface-dark/95 p-5 backdrop-blur sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-[min(100%,20rem)]">
-            <p className="text-xs font-semibold tracking-[0.2em] text-green uppercase">
+            <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">
               {t("locationHome.todaysLocation")}
             </p>
             <h3 className="mt-2 font-display text-2xl tracking-wide uppercase">

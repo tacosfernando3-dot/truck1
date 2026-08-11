@@ -51,7 +51,7 @@ export function LocationsPageClient() {
   }
 
   function localizedNeighborhood(neighborhood: string) {
-    if (neighborhood === "Jackson Heights") return t("locations.jacksonHeights");
+    if (neighborhood === "Elmhurst, Queens") return t("locations.elmhurstQueens");
     if (neighborhood === "Private Events") return t("locations.privateEvents");
     return neighborhood;
   }
@@ -74,7 +74,7 @@ export function LocationsPageClient() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/60" />
         <div className="container-site relative">
           <BackButton className="mb-6" />
-          <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
+          <p className="text-sm font-semibold tracking-[0.22em] text-yellow uppercase">
             {t("locationsPage.eyebrow")}
           </p>
           <h1 className="mt-2 max-w-2xl font-brush text-fluid-section text-white">
@@ -176,7 +176,7 @@ export function LocationsPageClient() {
 
         <aside className="space-y-6">
           <div className="rounded-xl border border-yellow/40 bg-surface-dark p-6">
-            <p className="text-xs font-semibold tracking-[0.2em] text-green uppercase">
+            <p className="text-xs font-semibold tracking-[0.2em] text-yellow uppercase">
               {t("locationsPage.todaysLocation")}
             </p>
             <h2 className="mt-2 font-display text-3xl tracking-wide uppercase">

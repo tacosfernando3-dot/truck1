@@ -1,5 +1,7 @@
 import type { GalleryItem, MenuItem } from "@/lib/types";
 
+export type GallerySocial = "instagram" | "facebook" | "tiktok";
+
 export type CmsBusiness = {
   name: string;
   shortName: string;
@@ -11,6 +13,11 @@ export type CmsBusiness = {
   instagram: string;
   facebook: string;
   tiktok: string;
+  showInstagram: boolean;
+  showFacebook: boolean;
+  showTikTok: boolean;
+  /** Social profile used by the homepage gallery section */
+  gallerySocial: GallerySocial;
   streetAddress: string;
   city: string;
   state: string;

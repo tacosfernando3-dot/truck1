@@ -39,23 +39,19 @@ export function SiteHeader() {
     <>
       <header
         className={cn(
-          "site-header-fixed fixed inset-x-0 top-0 z-40 border-b border-border-dark transition-all duration-300",
+          "site-header-fixed fixed inset-x-0 top-0 z-40 border-b border-border-dark transition-colors duration-300",
           scrolled
-            ? "bg-background/95 shadow-lg shadow-black/40 backdrop-blur-md"
+            ? "bg-background/95 backdrop-blur-md"
             : "bg-background/90 backdrop-blur-sm",
         )}
       >
-        <div className="container-site flex h-[68px] items-center justify-between gap-4 lg:h-[78px]">
-          <div className="flex items-center gap-3">
-            <div className="lg:hidden">
-              <LanguageToggle />
-            </div>
-            <div className="hidden lg:block">
-              <Logo />
-            </div>
-          </div>
+        <div className="container-site flex h-[68px] items-center gap-4 lg:h-[78px]">
+          <Logo imageClassName="h-9 sm:h-11" className="shrink-0" />
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label={t("nav.main")}>
+          <nav
+            className="ml-2 hidden flex-1 items-center justify-center gap-1 lg:flex"
+            aria-label={t("nav.main")}
+          >
             {navItems.map((link) => {
               const active =
                 link.href === "/"
@@ -69,8 +65,8 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "rounded-md px-3 py-2 text-sm font-medium tracking-wide uppercase transition",
-                    active ? "text-yellow" : "text-muted hover:text-white",
+                    "px-3 py-2 text-sm font-semibold tracking-wide uppercase transition",
+                    active ? "text-gold" : "text-muted hover:text-white",
                   )}
                 >
                   {t(link.key)}
@@ -79,20 +75,18 @@ export function SiteHeader() {
             })}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2">
-            <div className="hidden lg:block">
-              <LanguageToggle />
-            </div>
+          <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <LanguageToggle />
 
             <button
               type="button"
               onClick={openCart}
-              className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-white hover:bg-surface-dark"
+              className="relative inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-white transition hover:bg-surface-dark hover:text-gold sm:h-11 sm:w-11"
               aria-label={t("nav.openCart", { count: cartCount })}
             >
               <ShoppingBag className="h-5 w-5" />
               {cartCount > 0 && (
-                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-yellow px-1 text-[10px] font-bold text-white">
+                <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-md bg-yellow px-1 text-[10px] font-bold text-white sm:right-1 sm:top-1">
                   {cartCount}
                 </span>
               )}
@@ -100,14 +94,14 @@ export function SiteHeader() {
 
             <Button
               href="/menu"
-              className="hidden sm:inline-flex hover:!bg-green"
+              className="h-9 min-h-0 px-3 text-xs hover:!bg-green sm:h-11 sm:px-5 sm:text-sm"
             >
               {t("nav.orderNow")}
             </Button>
 
             <button
               type="button"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-white hover:bg-surface-dark lg:hidden"
+              className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-white transition hover:bg-surface-dark sm:h-11 sm:w-11 lg:hidden"
               aria-label={t("nav.openMenu")}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen(true)}

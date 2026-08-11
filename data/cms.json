@@ -1,302 +1,986 @@
 {
   "categories": [
-    "Tacos",
     "Burgers",
-    "Bowls",
-    "Sides",
-    "Drinks"
+    "Tortas",
+    "Cemitas",
+    "Tostadas",
+    "Quesadillas",
+    "Flautas",
+    "Tacos - 3 Pieces",
+    "Single Tacos",
+    "Sides / Extras",
+    "Burritos - Normal or Bowl",
+    "Loaded Birria Fries",
+    "Soups",
+    "Nachos",
+    "Drinks",
+    "Elotes Street Corn"
   ],
   "menu": [
     {
-      "id": "street-tacos",
-      "name": "Street Tacos",
-      "category": "Tacos",
-      "description": "Marinated grilled meat, onions, cilantro, house sauce.",
-      "longDescription": "Three soft corn tortillas loaded with marinated grilled meat, diced onion, fresh cilantro, and our house sauce. Built for the sidewalk — messy in the best way.",
-      "price": 12,
-      "image": "/images/street-tacos.jpg",
-      "featured": true,
-      "serves": "3 tacos",
-      "heat": "mild",
-      "includes": [
-        "Corn tortillas",
-        "Grilled meat",
-        "Onion & cilantro",
-        "House sauce"
-      ],
-      "allergens": [
-        "Contains: corn"
-      ]
-    },
-    {
-      "id": "birria-tacos",
-      "name": "Birria Tacos",
-      "category": "Tacos",
-      "description": "Slow-braised beef, melted cheese, consommé for dipping.",
-      "longDescription": "Slow-braised beef tucked into crispy-edged tortillas with melted cheese, served with a cup of rich consommé for dipping. Weekend energy, every day.",
-      "price": 14,
-      "image": "/images/birria-tacos.jpg",
-      "serves": "3 tacos + consommé",
-      "heat": "medium",
-      "includes": [
-        "Braised beef",
-        "Melted cheese",
-        "Crispy tortillas",
-        "Consommé"
-      ],
-      "allergens": [
-        "Contains: dairy"
-      ]
-    },
-    {
-      "id": "chicken-tacos",
-      "name": "Chicken Tacos",
-      "category": "Tacos",
-      "description": "Citrus-marinated chicken, pickled onion, avocado crema.",
-      "longDescription": "Citrus-marinated chicken piled onto soft tortillas with bright pickled onion and cool avocado crema. Fresh, sharp, and easy to finish in three bites.",
-      "price": 12,
-      "image": "/images/chicken-tacos.jpg",
-      "serves": "3 tacos",
-      "heat": "mild",
-      "includes": [
-        "Citrus chicken",
-        "Pickled onion",
-        "Avocado crema",
-        "Corn tortillas"
-      ],
-      "allergens": [
-        "Contains: avocado"
-      ]
-    },
-    {
-      "id": "smash-burger",
-      "name": "Smash Burger",
+      "id": "burgers-los-compadres-burger",
+      "name": "Los Compadres Burger",
       "category": "Burgers",
-      "description": "Smash patty, cheese, pickles, onions, street sauce.",
-      "longDescription": "A thin smash patty with crispy lace edges, melted cheese, pickles, onions, and street sauce on a toasted bun. The classic truck order for a reason.",
-      "price": 13,
-      "image": "/images/smash-burger.jpg",
-      "featured": true,
-      "serves": "1 burger",
-      "heat": "mild",
-      "includes": [
-        "Smash patty",
-        "Cheese",
-        "Pickles & onions",
-        "Street sauce",
-        "Toasted bun"
-      ],
-      "allergens": [
-        "Contains: gluten, dairy"
-      ]
+      "description": "Los Compadres Burger. Stacked on a toasted bun with our house fixings.",
+      "longDescription": "Los Compadres Burger. Stacked on a toasted bun with our house fixings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 17,
+      "image": "/images/menu/burgers-los-compadres-burger.jpg",
+      "featured": true
     },
     {
-      "id": "double-street-burger",
-      "name": "Double Street Burger",
+      "id": "burgers-chicken-burger",
+      "name": "Chicken Burger",
       "category": "Burgers",
-      "description": "Two smash patties, cheddar, bacon, crispy onions.",
-      "longDescription": "Two smash patties stacked with cheddar, bacon, and crispy onions. Bigger bite, same street-side heat — made for when one patty isn’t enough.",
+      "description": "Chicken Burger. Stacked on a toasted bun with our house fixings.",
+      "longDescription": "Chicken Burger. Stacked on a toasted bun with our house fixings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
       "price": 16,
-      "image": "/images/double-burger.jpg",
-      "serves": "1 burger",
-      "heat": "mild",
-      "includes": [
-        "Two smash patties",
-        "Cheddar",
-        "Bacon",
-        "Crispy onions",
-        "Toasted bun"
-      ],
-      "allergens": [
-        "Contains: gluten, dairy"
-      ]
+      "image": "/images/menu/burgers-chicken-burger.jpg",
+      "featured": false
     },
     {
-      "id": "spicy-chicken-sandwich",
-      "name": "Spicy Chicken Sandwich",
+      "id": "burgers-chicken-fingers",
+      "name": "Chicken Fingers",
       "category": "Burgers",
-      "description": "Crispy thigh, hot honey, slaw, pickles on a toasted bun.",
-      "longDescription": "Crispy chicken thigh with hot honey glaze, cool slaw, and pickles on a toasted bun. Sweet heat that hits hard without burying the crunch.",
-      "price": 14,
-      "image": "/images/spicy-chicken.jpg",
-      "serves": "1 sandwich",
-      "heat": "hot",
-      "includes": [
-        "Crispy chicken thigh",
-        "Hot honey",
-        "Slaw",
-        "Pickles",
-        "Toasted bun"
-      ],
-      "allergens": [
-        "Contains: gluten"
-      ]
-    },
-    {
-      "id": "korean-bowl",
-      "name": "Korean Bowl",
-      "category": "Bowls",
-      "description": "Marinated protein, rice, slaw, kimchi, spicy aioli.",
-      "longDescription": "Marinated protein over rice with crisp slaw, kimchi, and spicy aioli. Balanced heat and crunch in one bowl — no fork wrestling required.",
-      "price": 13,
-      "image": "/images/korean-bowl.jpg",
-      "featured": true,
-      "serves": "1 bowl",
-      "heat": "medium",
-      "includes": [
-        "Marinated protein",
-        "Rice",
-        "Slaw",
-        "Kimchi",
-        "Spicy aioli"
-      ],
-      "allergens": [
-        "Contains: soy, egg"
-      ]
-    },
-    {
-      "id": "street-rice-bowl",
-      "name": "Street Rice Bowl",
-      "category": "Bowls",
-      "description": "Cilantro rice, grilled steak, pico, cotija, lime.",
-      "longDescription": "Cilantro rice topped with grilled steak, fresh pico, cotija, and a squeeze of lime. A full plate that still eats clean from the cart.",
-      "price": 13,
-      "image": "/images/street-rice-bowl.jpg",
-      "serves": "1 bowl",
-      "heat": "mild",
-      "includes": [
-        "Cilantro rice",
-        "Grilled steak",
-        "Pico de gallo",
-        "Cotija",
-        "Lime"
-      ],
-      "allergens": [
-        "Contains: dairy"
-      ]
-    },
-    {
-      "id": "veggie-bowl",
-      "name": "Veggie Bowl",
-      "category": "Bowls",
-      "description": "Roasted squash, black beans, greens, chili-lime vinaigrette.",
-      "longDescription": "Roasted squash, black beans, and greens finished with chili-lime vinaigrette. Hearty without the heavy — built for the plant-forward line.",
-      "price": 12,
-      "image": "/images/veggie-bowl.jpg",
-      "serves": "1 bowl",
-      "heat": "mild",
-      "includes": [
-        "Roasted squash",
-        "Black beans",
-        "Greens",
-        "Chili-lime vinaigrette"
-      ]
-    },
-    {
-      "id": "loaded-fries",
-      "name": "Loaded Fries",
-      "category": "Sides",
-      "description": "Crispy fries, cheese sauce, bacon, scallions, special sauce.",
-      "longDescription": "Crispy fries buried under cheese sauce, bacon, scallions, and special sauce. Share if you must — most don’t.",
+      "description": "Chicken Fingers. Stacked on a toasted bun with our house fixings.",
+      "longDescription": "Chicken Fingers. Stacked on a toasted bun with our house fixings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
       "price": 11,
-      "image": "/images/loaded-fries.jpg",
+      "image": "/images/menu/burgers-chicken-fingers.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-milanesa-de-pollo-breaded-chicken",
+      "name": "Milanesa de Pollo / Breaded Chicken",
+      "category": "Tortas",
+      "description": "Milanesa de Pollo / Breaded Chicken. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Milanesa de Pollo / Breaded Chicken. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-milanesa-de-pollo-breaded-chicken.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-milanesa-de-res-breaded-beef",
+      "name": "Milanesa de Res / Breaded Beef",
+      "category": "Tortas",
+      "description": "Milanesa de Res / Breaded Beef. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Milanesa de Res / Breaded Beef. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-milanesa-de-res-breaded-beef.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Tortas",
+      "description": "Asada / Steak. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Asada / Steak. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-asada-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Tortas",
+      "description": "Pollo / Chicken. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Pollo / Chicken. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-pollo-chicken.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-chorizo-pork-sausage",
+      "name": "Chorizo / Pork Sausage",
+      "category": "Tortas",
+      "description": "Chorizo / Pork Sausage. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Chorizo / Pork Sausage. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-chorizo-pork-sausage.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-carnitas-roast-pork",
+      "name": "Carnitas / Roast Pork",
+      "category": "Tortas",
+      "description": "Carnitas / Roast Pork. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Carnitas / Roast Pork. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-carnitas-roast-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-birria-stew-meat",
+      "name": "Birria / Stew Meat",
+      "category": "Tortas",
+      "description": "Birria / Stew Meat. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Birria / Stew Meat. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-birria-stew-meat.jpg",
+      "featured": false
+    },
+    {
+      "id": "tortas-pastor-sweet-pork",
+      "name": "Pastor / Sweet Pork",
+      "category": "Tortas",
+      "description": "Pastor / Sweet Pork. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings.",
+      "longDescription": "Pastor / Sweet Pork. Pressed Mexican sandwich loaded with your choice of protein, beans, and fresh toppings. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/tortas-pastor-sweet-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "cemitas-cemita",
+      "name": "Cemita",
+      "category": "Cemitas",
+      "description": "Cemita. Puebla-style cemita on a sesame roll with avocado, cheese, and chipotle.",
+      "longDescription": "Cemita. Puebla-style cemita on a sesame roll with avocado, cheese, and chipotle. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/cemitas-cemita.jpg",
+      "featured": true
+    },
+    {
+      "id": "tostadas-birria",
+      "name": "Birria",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Birria. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Birria. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-birria.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-carnitas",
+      "name": "Carnitas",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Carnitas. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Carnitas. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-carnitas.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-pastor",
+      "name": "Pastor",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Pastor. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Pastor. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-pastor.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Pollo / Chicken. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Pollo / Chicken. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-pollo-chicken.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-chorizo",
+      "name": "Chorizo",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Chorizo. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Chorizo. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-chorizo.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-camaron-shrimp",
+      "name": "Camaron / Shrimp",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Camaron / Shrimp. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Camaron / Shrimp. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-camaron-shrimp.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-vegetariano-vegetarian",
+      "name": "Vegetariano / Vegetarian",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Vegetariano / Vegetarian. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Vegetariano / Vegetarian. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-vegetariano-vegetarian.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "tostadas-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Tostadas",
+      "description": "$5 each \u00b7 3 for $15. Asada / Steak. Crispy tostada base topped with protein, crema, cheese, and salsa.",
+      "longDescription": "Asada / Steak. Crispy tostada base topped with protein, crema, cheese, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/tostadas-asada-steak.jpg",
+      "featured": false,
+      "serves": "1 tostada"
+    },
+    {
+      "id": "quesadillas-birria-stew-meat",
+      "name": "Birria / Stew Meat",
+      "category": "Quesadillas",
+      "description": "Birria / Stew Meat. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Birria / Stew Meat. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-birria-stew-meat.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-carnitas-pork",
+      "name": "Carnitas / Pork",
+      "category": "Quesadillas",
+      "description": "Carnitas / Pork. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Carnitas / Pork. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-carnitas-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-pastor-sweet-pork",
+      "name": "Pastor / Sweet Pork",
+      "category": "Quesadillas",
+      "description": "Pastor / Sweet Pork. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Pastor / Sweet Pork. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-pastor-sweet-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Quesadillas",
+      "description": "Pollo / Chicken. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Pollo / Chicken. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-pollo-chicken.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-chorizo-pork-sausage",
+      "name": "Chorizo / Pork Sausage",
+      "category": "Quesadillas",
+      "description": "Chorizo / Pork Sausage. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Chorizo / Pork Sausage. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-chorizo-pork-sausage.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-camaron-shrimp",
+      "name": "Camaron / Shrimp",
+      "category": "Quesadillas",
+      "description": "Camaron / Shrimp. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Camaron / Shrimp. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-camaron-shrimp.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-vegetariano-vegetarian",
+      "name": "Vegetariano / Vegetarian",
+      "category": "Quesadillas",
+      "description": "Vegetariano / Vegetarian. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Vegetariano / Vegetarian. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-vegetariano-vegetarian.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Quesadillas",
+      "description": "Asada / Steak. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Asada / Steak. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/quesadillas-asada-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "quesadillas-arrachera-skirt-steak",
+      "name": "Arrachera / Skirt Steak",
+      "category": "Quesadillas",
+      "description": "Arrachera / Skirt Steak. Griddled tortilla packed with melted cheese and your protein of choice.",
+      "longDescription": "Arrachera / Skirt Steak. Griddled tortilla packed with melted cheese and your protein of choice. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 18,
+      "image": "/images/menu/quesadillas-arrachera-skirt-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "flautas-flautas-3-pieces",
+      "name": "Flautas - 3 pieces",
+      "category": "Flautas",
+      "description": "Flautas - 3 pieces. Crispy rolled flautas, three pieces, served hot with crema and salsa.",
+      "longDescription": "Flautas - 3 pieces. Crispy rolled flautas, three pieces, served hot with crema and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 14,
+      "image": "/images/menu/flautas-flautas-3-pieces.jpg",
       "featured": true,
-      "serves": "1 large side",
-      "heat": "mild",
-      "includes": [
-        "Crispy fries",
-        "Cheese sauce",
-        "Bacon",
-        "Scallions",
-        "Special sauce"
-      ],
-      "allergens": [
-        "Contains: dairy"
-      ]
+      "serves": "3 pieces"
     },
     {
-      "id": "street-corn",
-      "name": "Street Corn",
-      "category": "Sides",
-      "description": "Charred corn, mayo, chili powder, cotija, lime.",
-      "longDescription": "Charred corn with mayo, chili powder, cotija, and lime. Smoky, creamy, and bright — the side that steals the order.",
-      "price": 7,
-      "image": "/images/street-corn.jpg",
-      "serves": "1 ear / cup",
-      "heat": "medium",
-      "includes": [
-        "Charred corn",
-        "Mayo",
-        "Chili powder",
-        "Cotija",
-        "Lime"
-      ],
-      "allergens": [
-        "Contains: dairy, egg"
-      ]
+      "id": "tacos-3-pieces-pastor-pork",
+      "name": "Pastor / Pork",
+      "category": "Tacos - 3 Pieces",
+      "description": "Pastor / Pork. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Pastor / Pork. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 14,
+      "image": "/images/menu/tacos-3-pieces-pastor-pork.jpg",
+      "featured": false,
+      "serves": "3 tacos"
     },
     {
-      "id": "crispy-plantains",
-      "name": "Crispy Plantains",
-      "category": "Sides",
-      "description": "Golden plantains with garlic aioli and sea salt.",
-      "longDescription": "Golden fried plantains with garlic aioli and sea salt. Sweet edges, savory dip — a simple side that disappears fast.",
+      "id": "tacos-3-pieces-carnitas-pork",
+      "name": "Carnitas / Pork",
+      "category": "Tacos - 3 Pieces",
+      "description": "Carnitas / Pork. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Carnitas / Pork. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 14,
+      "image": "/images/menu/tacos-3-pieces-carnitas-pork.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-chorizo-pork",
+      "name": "Chorizo / Pork",
+      "category": "Tacos - 3 Pieces",
+      "description": "Chorizo / Pork. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Chorizo / Pork. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 14,
+      "image": "/images/menu/tacos-3-pieces-chorizo-pork.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-vegetariano-veggie",
+      "name": "Vegetariano / Veggie",
+      "category": "Tacos - 3 Pieces",
+      "description": "Vegetariano / Veggie. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Vegetariano / Veggie. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 14,
+      "image": "/images/menu/tacos-3-pieces-vegetariano-veggie.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Tacos - 3 Pieces",
+      "description": "Pollo / Chicken. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Pollo / Chicken. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-pollo-chicken.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Tacos - 3 Pieces",
+      "description": "Asada / Steak. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Asada / Steak. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-asada-steak.jpg",
+      "featured": true,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-camaron-shrimp",
+      "name": "Camaron / Shrimp",
+      "category": "Tacos - 3 Pieces",
+      "description": "Camaron / Shrimp. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Camaron / Shrimp. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-camaron-shrimp.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-birria",
+      "name": "Birria",
+      "category": "Tacos - 3 Pieces",
+      "description": "Birria. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Birria. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-birria.jpg",
+      "featured": true,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-arrachera-skirt-steak",
+      "name": "Arrachera / Skirt Steak",
+      "category": "Tacos - 3 Pieces",
+      "description": "Arrachera / Skirt Steak. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Arrachera / Skirt Steak. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 18,
+      "image": "/images/menu/tacos-3-pieces-arrachera-skirt-steak.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-lengua-tongue",
+      "name": "Lengua / Tongue",
+      "category": "Tacos - 3 Pieces",
+      "description": "Lengua / Tongue. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Lengua / Tongue. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/tacos-3-pieces-lengua-tongue.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-suadero",
+      "name": "Suadero",
+      "category": "Tacos - 3 Pieces",
+      "description": "Suadero. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Suadero. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-suadero.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-campechano-mixed-meats-and-sausage",
+      "name": "Campechano / Mixed Meats and Sausage",
+      "category": "Tacos - 3 Pieces",
+      "description": "Campechano / Mixed Meats and Sausage. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Campechano / Mixed Meats and Sausage. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-campechano-mixed-meats-and-sausage.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "tacos-3-pieces-cecina-beef",
+      "name": "Cecina / Beef",
+      "category": "Tacos - 3 Pieces",
+      "description": "Cecina / Beef. Three street tacos with onion, cilantro, and salsa \u2014 truck classic.",
+      "longDescription": "Cecina / Beef. Three street tacos with onion, cilantro, and salsa \u2014 truck classic. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/tacos-3-pieces-cecina-beef.jpg",
+      "featured": false,
+      "serves": "3 tacos"
+    },
+    {
+      "id": "single-tacos-standard-taco",
+      "name": "Standard taco",
+      "category": "Single Tacos",
+      "description": "$5 each. Standard taco. One taco, done right. Order as many as you need.",
+      "longDescription": "Standard taco. One taco, done right. Order as many as you need. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/single-tacos-standard-taco.jpg",
+      "featured": false,
+      "serves": "1 taco"
+    },
+    {
+      "id": "single-tacos-birria-taco",
+      "name": "Birria taco",
+      "category": "Single Tacos",
+      "description": "$5.50 each. Birria taco. One taco, done right. Order as many as you need.",
+      "longDescription": "Birria taco. One taco, done right. Order as many as you need. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5.5,
+      "image": "/images/menu/single-tacos-birria-taco.jpg",
+      "featured": false,
+      "serves": "1 taco"
+    },
+    {
+      "id": "single-tacos-lengua-taco",
+      "name": "Lengua taco",
+      "category": "Single Tacos",
+      "description": "$5.50 each. Lengua taco. One taco, done right. Order as many as you need.",
+      "longDescription": "Lengua taco. One taco, done right. Order as many as you need. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5.5,
+      "image": "/images/menu/single-tacos-lengua-taco.jpg",
+      "featured": false,
+      "serves": "1 taco"
+    },
+    {
+      "id": "sides-extras-guacamole-with-chips",
+      "name": "Guacamole with Chips",
+      "category": "Sides / Extras",
+      "description": "Guacamole with Chips. Perfect add-on to round out your plate.",
+      "longDescription": "Guacamole with Chips. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 12,
+      "image": "/images/menu/sides-extras-guacamole-with-chips.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-pico-de-gallo-with-chips",
+      "name": "Pico de Gallo with Chips",
+      "category": "Sides / Extras",
+      "description": "Pico de Gallo with Chips. Perfect add-on to round out your plate.",
+      "longDescription": "Pico de Gallo with Chips. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 10,
+      "image": "/images/menu/sides-extras-pico-de-gallo-with-chips.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-arroz-rice",
+      "name": "Arroz / Rice",
+      "category": "Sides / Extras",
+      "description": "Arroz / Rice. Perfect add-on to round out your plate.",
+      "longDescription": "Arroz / Rice. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/sides-extras-arroz-rice.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-frijol-beans",
+      "name": "Frijol / Beans",
+      "category": "Sides / Extras",
+      "description": "Frijol / Beans. Perfect add-on to round out your plate.",
+      "longDescription": "Frijol / Beans. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/sides-extras-frijol-beans.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-chips-and-salsa-sauce",
+      "name": "Chips and Salsa / Sauce",
+      "category": "Sides / Extras",
+      "description": "Chips and Salsa / Sauce. Perfect add-on to round out your plate.",
+      "longDescription": "Chips and Salsa / Sauce. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 10,
+      "image": "/images/menu/sides-extras-chips-and-salsa-sauce.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-papas-fritas-fries",
+      "name": "Papas Fritas / Fries",
+      "category": "Sides / Extras",
+      "description": "Papas Fritas / Fries. Perfect add-on to round out your plate.",
+      "longDescription": "Papas Fritas / Fries. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-papas-fritas-fries.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-crema-cream",
+      "name": "Crema / Cream",
+      "category": "Sides / Extras",
+      "description": "Crema / Cream. Perfect add-on to round out your plate.",
+      "longDescription": "Crema / Cream. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 1.5,
+      "image": "/images/menu/sides-extras-crema-cream.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-chipotle-salsa-mayo",
+      "name": "Chipotle Salsa / Mayo",
+      "category": "Sides / Extras",
+      "description": "Chipotle Salsa / Mayo. Perfect add-on to round out your plate.",
+      "longDescription": "Chipotle Salsa / Mayo. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 1.5,
+      "image": "/images/menu/sides-extras-chipotle-salsa-mayo.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-guacamole",
+      "name": "Guacamole",
+      "category": "Sides / Extras",
+      "description": "Guacamole. Perfect add-on to round out your plate.",
+      "longDescription": "Guacamole. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
       "price": 8,
-      "image": "/images/plantains.jpg",
-      "serves": "1 side",
-      "heat": "mild",
-      "includes": [
-        "Fried plantains",
-        "Garlic aioli",
-        "Sea salt"
-      ],
-      "allergens": [
-        "Contains: egg"
-      ]
+      "image": "/images/menu/sides-extras-guacamole.jpg",
+      "featured": false
     },
     {
-      "id": "house-lemonade",
-      "name": "House Lemonade",
-      "category": "Drinks",
-      "description": "Fresh-squeezed lemons, cane sugar, mint.",
-      "longDescription": "Fresh-squeezed lemons, cane sugar, and mint over ice. Bright enough to cut through spice and grease after a heavy plate.",
-      "price": 4,
-      "image": "/images/house-lemonade.jpg",
-      "serves": "16 oz",
-      "includes": [
-        "Fresh lemon",
-        "Cane sugar",
-        "Mint",
-        "Ice"
-      ]
+      "id": "sides-extras-sweet-plantain-platano-frito",
+      "name": "Sweet Plantain / Platano Frito",
+      "category": "Sides / Extras",
+      "description": "Sweet Plantain / Platano Frito. Perfect add-on to round out your plate.",
+      "longDescription": "Sweet Plantain / Platano Frito. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-sweet-plantain-platano-frito.jpg",
+      "featured": false
     },
     {
-      "id": "hibiscus-tea",
-      "name": "Hibiscus Tea",
-      "category": "Drinks",
-      "description": "Tart hibiscus iced tea with a citrus finish.",
-      "longDescription": "Tart hibiscus iced tea with a clean citrus finish. Light, floral, and made to cool down a hot order.",
-      "price": 4,
-      "image": "/images/hibiscus-tea.jpg",
-      "serves": "16 oz",
-      "includes": [
-        "Hibiscus tea",
-        "Citrus",
-        "Ice"
-      ]
+      "id": "sides-extras-birria-stew-meat",
+      "name": "Birria / Stew Meat",
+      "category": "Sides / Extras",
+      "description": "Birria / Stew Meat. Perfect add-on to round out your plate.",
+      "longDescription": "Birria / Stew Meat. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 7,
+      "image": "/images/menu/sides-extras-birria-stew-meat.jpg",
+      "featured": false
     },
     {
-      "id": "bottled-water",
-      "name": "Bottled Water",
+      "id": "sides-extras-carnitas-pork",
+      "name": "Carnitas / Pork",
+      "category": "Sides / Extras",
+      "description": "Carnitas / Pork. Perfect add-on to round out your plate.",
+      "longDescription": "Carnitas / Pork. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-carnitas-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-pastor-sweet-pork",
+      "name": "Pastor / Sweet Pork",
+      "category": "Sides / Extras",
+      "description": "Pastor / Sweet Pork. Perfect add-on to round out your plate.",
+      "longDescription": "Pastor / Sweet Pork. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-pastor-sweet-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Sides / Extras",
+      "description": "Pollo / Chicken. Perfect add-on to round out your plate.",
+      "longDescription": "Pollo / Chicken. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-pollo-chicken.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-chorizo-pork-sausage",
+      "name": "Chorizo / Pork Sausage",
+      "category": "Sides / Extras",
+      "description": "Chorizo / Pork Sausage. Perfect add-on to round out your plate.",
+      "longDescription": "Chorizo / Pork Sausage. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-chorizo-pork-sausage.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-camaron-shrimp",
+      "name": "Camaron / Shrimp",
+      "category": "Sides / Extras",
+      "description": "Camaron / Shrimp. Perfect add-on to round out your plate.",
+      "longDescription": "Camaron / Shrimp. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 7,
+      "image": "/images/menu/sides-extras-camaron-shrimp.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Sides / Extras",
+      "description": "Asada / Steak. Perfect add-on to round out your plate.",
+      "longDescription": "Asada / Steak. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6,
+      "image": "/images/menu/sides-extras-asada-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-arrachera-skirt-steak",
+      "name": "Arrachera / Skirt Steak",
+      "category": "Sides / Extras",
+      "description": "Arrachera / Skirt Steak. Perfect add-on to round out your plate.",
+      "longDescription": "Arrachera / Skirt Steak. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 12,
+      "image": "/images/menu/sides-extras-arrachera-skirt-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "sides-extras-elote-corn",
+      "name": "Elote / Corn",
+      "category": "Sides / Extras",
+      "description": "Elote / Corn. Perfect add-on to round out your plate.",
+      "longDescription": "Elote / Corn. Perfect add-on to round out your plate. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/sides-extras-elote-corn.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-birria-stew-meat",
+      "name": "Birria / Stew Meat",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Birria / Stew Meat. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Birria / Stew Meat. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-birria-stew-meat.jpg",
+      "featured": true
+    },
+    {
+      "id": "burritos-normal-or-bowl-carnitas-pork",
+      "name": "Carnitas / Pork",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Carnitas / Pork. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Carnitas / Pork. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-carnitas-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-pastor-sweet-pork",
+      "name": "Pastor / Sweet Pork",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Pastor / Sweet Pork. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Pastor / Sweet Pork. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-pastor-sweet-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Pollo / Chicken. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Pollo / Chicken. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-pollo-chicken.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-chorizo-pork-sausage",
+      "name": "Chorizo / Pork Sausage",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Chorizo / Pork Sausage. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Chorizo / Pork Sausage. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-chorizo-pork-sausage.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-camaron-shrimp",
+      "name": "Camaron / Shrimp",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Camaron / Shrimp. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Camaron / Shrimp. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 17,
+      "image": "/images/menu/burritos-normal-or-bowl-camaron-shrimp.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-vegetariano-vegetarian",
+      "name": "Vegetariano / Vegetarian",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Vegetariano / Vegetarian. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Vegetariano / Vegetarian. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-vegetariano-vegetarian.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Asada / Steak. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Asada / Steak. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 16,
+      "image": "/images/menu/burritos-normal-or-bowl-asada-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-bistec-skirt-steak",
+      "name": "Bistec / Skirt Steak",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Bistec / Skirt Steak. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Bistec / Skirt Steak. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 20,
+      "image": "/images/menu/burritos-normal-or-bowl-bistec-skirt-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "burritos-normal-or-bowl-pescado-fish",
+      "name": "Pescado / Fish",
+      "category": "Burritos - Normal or Bowl",
+      "description": "Pescado / Fish. Loaded burrito \u2014 ask for bowl style if you want it fork-ready.",
+      "longDescription": "Pescado / Fish. Loaded burrito \u2014 ask for bowl style if you want it fork-ready. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 17,
+      "image": "/images/menu/burritos-normal-or-bowl-pescado-fish.jpg",
+      "featured": false
+    },
+    {
+      "id": "loaded-birria-fries-loaded-birria-fries",
+      "name": "Loaded Birria Fries",
+      "category": "Loaded Birria Fries",
+      "description": "Loaded Birria Fries. Crispy fries drowned in birria, cheese, and consomm\u00e9 vibes.",
+      "longDescription": "Loaded Birria Fries. Crispy fries drowned in birria, cheese, and consomm\u00e9 vibes. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 13,
+      "image": "/images/menu/loaded-birria-fries-loaded-birria-fries.jpg",
+      "featured": true
+    },
+    {
+      "id": "soups-ramen-birria",
+      "name": "Ramen Birria",
+      "category": "Soups",
+      "description": "Ramen Birria. Hot, rich, and made for late nights.",
+      "longDescription": "Ramen Birria. Hot, rich, and made for late nights. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 14,
+      "image": "/images/menu/soups-ramen-birria.jpg",
+      "featured": true
+    },
+    {
+      "id": "nachos-birria-stew-meat",
+      "name": "Birria / Stew Meat",
+      "category": "Nachos",
+      "description": "Birria / Stew Meat. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Birria / Stew Meat. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-birria-stew-meat.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-carnitas-pork",
+      "name": "Carnitas / Pork",
+      "category": "Nachos",
+      "description": "Carnitas / Pork. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Carnitas / Pork. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-carnitas-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-pastor-pork",
+      "name": "Pastor / Pork",
+      "category": "Nachos",
+      "description": "Pastor / Pork. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Pastor / Pork. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-pastor-pork.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-pollo-chicken",
+      "name": "Pollo / Chicken",
+      "category": "Nachos",
+      "description": "Pollo / Chicken. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Pollo / Chicken. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-pollo-chicken.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-chorizo-sausage",
+      "name": "Chorizo / Sausage",
+      "category": "Nachos",
+      "description": "Chorizo / Sausage. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Chorizo / Sausage. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-chorizo-sausage.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-camaron-shrimp",
+      "name": "Camaron / Shrimp",
+      "category": "Nachos",
+      "description": "Camaron / Shrimp. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Camaron / Shrimp. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-camaron-shrimp.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-vegetariano-vegetarian",
+      "name": "Vegetariano / Vegetarian",
+      "category": "Nachos",
+      "description": "Vegetariano / Vegetarian. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Vegetariano / Vegetarian. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-vegetariano-vegetarian.jpg",
+      "featured": false
+    },
+    {
+      "id": "nachos-asada-steak",
+      "name": "Asada / Steak",
+      "category": "Nachos",
+      "description": "Asada / Steak. Chips piled high with protein, cheese, crema, and salsa.",
+      "longDescription": "Asada / Steak. Chips piled high with protein, cheese, crema, and salsa. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 15,
+      "image": "/images/menu/nachos-asada-steak.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-jarritos",
+      "name": "Jarritos",
       "category": "Drinks",
-      "description": "Still spring water, ice-cold from the truck.",
-      "longDescription": "Still spring water, kept ice-cold on the truck. The essential reset between tacos and fries.",
-      "price": 2,
-      "image": "/images/bottled-water.jpg",
-      "serves": "16.9 oz bottle",
-      "includes": [
-        "Spring water"
-      ]
+      "description": "Jarritos. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Jarritos. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 2.75,
+      "image": "/images/menu/drinks-jarritos.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-boing",
+      "name": "Boing",
+      "category": "Drinks",
+      "description": "Boing. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Boing. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 2.75,
+      "image": "/images/menu/drinks-boing.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-coca-cola-glass-bottle",
+      "name": "Coca-Cola Glass Bottle",
+      "category": "Drinks",
+      "description": "Coca-Cola Glass Bottle. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Coca-Cola Glass Bottle. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 2.75,
+      "image": "/images/menu/drinks-coca-cola-glass-bottle.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-coca-cola-can",
+      "name": "Coca-Cola Can",
+      "category": "Drinks",
+      "description": "Coca-Cola Can. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Coca-Cola Can. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 2.0,
+      "image": "/images/menu/drinks-coca-cola-can.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-pepsi",
+      "name": "Pepsi",
+      "category": "Drinks",
+      "description": "Pepsi. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Pepsi. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 2.0,
+      "image": "/images/menu/drinks-pepsi.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-agua-water",
+      "name": "Agua / Water",
+      "category": "Drinks",
+      "description": "Agua / Water. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Agua / Water. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 1.5,
+      "image": "/images/menu/drinks-agua-water.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-horchata",
+      "name": "Horchata",
+      "category": "Drinks",
+      "description": "Horchata. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Horchata. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6.0,
+      "image": "/images/menu/drinks-horchata.jpg",
+      "featured": false
+    },
+    {
+      "id": "drinks-jamaica",
+      "name": "Jamaica",
+      "category": "Drinks",
+      "description": "Jamaica. Cold drinks and aguas frescas to cut the heat.",
+      "longDescription": "Jamaica. Cold drinks and aguas frescas to cut the heat. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 6.0,
+      "image": "/images/menu/drinks-jamaica.jpg",
+      "featured": false
+    },
+    {
+      "id": "elotes-street-corn-elotes-street-corn",
+      "name": "Elotes Street Corn",
+      "category": "Elotes Street Corn",
+      "description": "Elotes Street Corn. Street corn with mayo, cheese, chili, and lime.",
+      "longDescription": "Elotes Street Corn. Street corn with mayo, cheese, chili, and lime. Fresh from Los Compadres Taquer\u00eda in Elmhurst, Queens.",
+      "price": 5,
+      "image": "/images/menu/elotes-street-corn-elotes-street-corn.jpg",
+      "featured": true
     }
   ],
   "gallery": [
@@ -330,17 +1014,21 @@
     "name": "Street Flavor Food Truck",
     "shortName": "Street Flavor",
     "handle": "@STREETFLAVORTRUCK",
-    "phone": "(718) 555-6969",
+    "phone": "(929) 283-0153",
     "email": "hello@streetflavortruck.com",
     "cuisine": "American street food, tacos, burgers, and bowls",
     "priceRange": "$$",
     "instagram": "https://instagram.com",
     "facebook": "https://facebook.com",
     "tiktok": "https://tiktok.com",
+    "showInstagram": true,
+    "showFacebook": true,
+    "showTikTok": true,
+    "gallerySocial": "instagram",
     "streetAddress": "82-12 Broadway",
     "city": "Elmhurst",
     "state": "NY",
     "zip": "11373",
-    "footerBlurb": "Bold flavor on wheels. Catch us in Jackson Heights, Queens and book us for your next event."
+    "footerBlurb": "Bold flavor on wheels. Catch us in Elmhurst, Queens and book us for your next event."
   }
 }

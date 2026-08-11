@@ -26,7 +26,7 @@ export function LanguageToggle({ className }: { className?: string }) {
           type="button"
           onClick={() => select(code)}
           className={cn(
-            "min-h-8 min-w-9 rounded px-2 uppercase transition",
+            "min-h-8 min-w-9 cursor-pointer rounded px-2 uppercase transition",
             locale === code
               ? "bg-yellow text-white"
               : "text-muted hover:text-white",

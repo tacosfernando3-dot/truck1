@@ -15,7 +15,8 @@ import {
   Utensils,
 } from "lucide-react";
 import { Button } from "@/components/button";
-import type { CmsBusiness, CmsContent } from "@/lib/cms/types";
+import type { CmsBusiness, CmsContent, GallerySocial } from "@/lib/cms/types";
+import { autoDescribeMenuItem } from "@/lib/cms/menu-copy";
 import { formatPhoneInput } from "@/lib/cms/utils";
 import type { OrderRecord } from "@/lib/orders/types";
 import type { GalleryItem, MenuItem } from "@/lib/types";
@@ -24,14 +25,16 @@ import { cn, formatCurrency } from "@/lib/utils";
 type Tab = "menu" | "pictures" | "info" | "orders";
 
 function blankMenuItem(category: string): MenuItem {
+  const name = "New item";
+  const copy = autoDescribeMenuItem(name, category);
   return {
     id: `item-${Date.now()}`,
-    name: "New item",
+    name,
     category,
-    description: "",
-    longDescription: "",
+    description: copy.description,
+    longDescription: copy.longDescription,
     price: 0,
-    image: "/images/street-tacos.jpg",
+    image: "/images/menu/burgers-los-compadres-burger.jpg",
     featured: false,
   };
 }
@@ -795,7 +798,28 @@ export function AdminDashboard() {
                         </Field>
                       </div>
 
-                      <Field label="Description">
+                      <div>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs font-medium tracking-wide text-muted uppercase">
+                            Description
+                          </span>
+                          <button
+                            type="button"
+                            className="text-[11px] font-semibold tracking-wide text-gold uppercase hover:text-white"
+                            onClick={() => {
+                              const copy = autoDescribeMenuItem(
+                                selectedItem.name,
+                                selectedItem.category,
+                              );
+                              updateMenuItem(selectedItem.id, {
+                                description: copy.description,
+                                longDescription: copy.longDescription,
+                              });
+                            }}
+                          >
+                            Auto-generate
+                          </button>
+                        </div>
                         <textarea
                           value={selectedItem.description}
                           onChange={(e) =>
@@ -807,7 +831,7 @@ export function AdminDashboard() {
                           rows={3}
                           className={fieldClass}
                         />
-                      </Field>
+                      </div>
 
                       <label className="flex items-center gap-2 text-sm text-muted">
                         <input
@@ -1079,7 +1103,7 @@ export function AdminDashboard() {
                             updateBusiness({ city: e.target.value })
                           }
                           className={fieldClass}
-                          placeholder="Jackson Heights"
+                          placeholder="Elmhurst"
                           autoComplete="address-level2"
                         />
                       </Field>
@@ -1131,31 +1155,187 @@ export function AdminDashboard() {
                       Social media
                     </h3>
                     <p className="mt-1 text-xs text-muted">
-                      Links used in the footer, gallery, and sitewide social
-                      buttons.
+                      Check Show to display a network sitewide. Use Gallery to
+                      pick which profile powers the Follow the Flavor section.
                     </p>
+                  </div>
+                  <div className="mb-3">
+                    <Field label="Gallery handle">
+                      <input
+                        value={content.business.handle}
+                        onChange={(e) =>
+                          updateBusiness({ handle: e.target.value })
+                        }
+                        className={fieldClass}
+                        placeholder="@YOURHANDLE"
+                      />
+                    </Field>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-1">
                     {(
                       [
-                        ["instagram", "Instagram"],
-                        ["facebook", "Facebook"],
-                        ["tiktok", "TikTok"],
+                        ["instagram", "showInstagram", "Instagram"],
+                        ["facebook", "showFacebook", "Facebook"],
+                        ["tiktok", "showTikTok", "TikTok"],
                       ] as const
-                    ).map(([key, label]) => (
-                      <Field key={key} label={label}>
-                        <input
-                          type="url"
-                          value={content.business[key]}
-                          onChange={(e) =>
-                            updateBusiness({ [key]: e.target.value })
-                          }
-                          className={fieldClass}
-                          placeholder={`https://${key}.com/...`}
-                        />
-                      </Field>
+                    ).map(([key, showKey, label]) => {
+                      const isGalleryDefault =
+                        content.business.gallerySocial === key;
+                      return (
+                        <div
+                          key={key}
+                          className="flex flex-wrap items-end gap-3"
+                        >
+                          <label className="mb-2 flex shrink-0 cursor-pointer items-center gap-2 pb-2 text-xs text-muted">
+                            <input
+                              type="checkbox"
+                              checked={content.business[showKey]}
+                              onChange={(e) =>
+                                updateBusiness({ [showKey]: e.target.checked })
+                              }
+                              className="h-4 w-4 accent-green"
+                            />
+                            <span className="whitespace-nowrap">Show</span>
+                          </label>
+                          <div className="min-w-0 flex-1 basis-[12rem]">
+                            <Field label={label}>
+                              <input
+                                type="url"
+                                value={content.business[key]}
+                                onChange={(e) =>
+                                  updateBusiness({ [key]: e.target.value })
+                                }
+                                className={fieldClass}
+                                placeholder={`https://${key}.com/...`}
+                              />
+                            </Field>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const patch: Partial<CmsBusiness> = {
+                                gallerySocial: key as GallerySocial,
+                              };
+                              if (key === "instagram") {
+                                patch.showInstagram = true;
+                              } else if (key === "facebook") {
+                                patch.showFacebook = true;
+                              } else {
+                                patch.showTikTok = true;
+                              }
+                              updateBusiness(patch);
+                            }}
+                            className={cn(
+                              "mb-2 inline-flex min-h-11 shrink-0 items-center rounded-md border px-3 text-xs font-semibold uppercase tracking-wide transition",
+                              isGalleryDefault
+                                ? "border-green bg-green/20 text-white"
+                                : "border-white/15 text-muted hover:border-white/30 hover:text-white",
+                            )}
+                            aria-pressed={isGalleryDefault}
+                          >
+                            {isGalleryDefault ? "Gallery default" : "Use for gallery"}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-sm font-semibold tracking-wide text-white uppercase">
+                        Homepage gallery
+                      </h3>
+                      <p className="mt-1 text-xs text-muted">
+                        Photos shown in the Follow the Flavor section.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setTab("pictures")}
+                      className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-white/15 px-3 text-xs font-semibold text-white uppercase hover:bg-white/10"
+                    >
+                      <ImagePlus className="h-4 w-4" aria-hidden />
+                      Open full editor
+                    </button>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {content.gallery.map((item) => (
+                      <div
+                        key={item.id}
+                        className="rounded-lg border border-white/10 bg-black/30 p-3"
+                      >
+                        <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-lg border border-border-dark">
+                          <Image
+                            src={item.image}
+                            alt={item.alt}
+                            fill
+                            className="object-cover"
+                            sizes="280px"
+                            unoptimized={item.image.startsWith("/uploads/")}
+                          />
+                        </div>
+                        <Field label="Alt text">
+                          <input
+                            value={item.alt}
+                            onChange={(e) =>
+                              updateGalleryItem(item.id, {
+                                alt: e.target.value,
+                              })
+                            }
+                            className={fieldClass}
+                          />
+                        </Field>
+                        <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]">
+                          <input
+                            value={item.image}
+                            onChange={(e) =>
+                              updateGalleryItem(item.id, {
+                                image: e.target.value,
+                              })
+                            }
+                            className={fieldClass}
+                          />
+                          <label className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-border-dark bg-background px-3 text-sm font-semibold uppercase tracking-wide text-muted hover:text-white">
+                            Upload
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="sr-only"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const url = await uploadImage(file);
+                                if (url) {
+                                  updateGalleryItem(item.id, { image: url });
+                                  setStatus("Image uploaded.");
+                                }
+                                e.target.value = "";
+                              }}
+                            />
+                          </label>
+                        </div>
+                      </div>
                     ))}
                   </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setContent((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              gallery: [blankGalleryItem(), ...prev.gallery],
+                            }
+                          : prev,
+                      )
+                    }
+                    className="mt-3 inline-flex min-h-9 items-center gap-1.5 rounded-md bg-green/90 px-3 text-xs font-semibold text-white uppercase hover:bg-green"
+                  >
+                    <Plus className="h-4 w-4" aria-hidden />
+                    Add photo
+                  </button>
                 </div>
             </div>
           )}

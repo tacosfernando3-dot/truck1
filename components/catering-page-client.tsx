@@ -80,7 +80,7 @@ export function CateringPageClient() {
         <div className="container-site relative flex min-h-[420px] flex-col pb-14 pt-8 sm:pt-12">
           <BackButton className="mb-6 shrink-0" />
           <div className="mt-auto">
-            <p className="text-sm font-semibold tracking-[0.22em] text-green uppercase">
+            <p className="text-sm font-semibold tracking-[0.22em] text-yellow uppercase">
               {t("catering.eyebrow")}
             </p>
             <h1 className="mt-2 max-w-3xl font-brush text-fluid-section text-white">

@@ -47,6 +47,6 @@ export function mapsEmbedUrl({
   const q =
     typeof lat === "number" && typeof lng === "number"
       ? `${lat},${lng}`
-      : (query ?? "Jackson Heights, Queens, NY");
+      : (query ?? "Elmhurst, Queens, NY");
   return `https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=${zoom}&hl=en&output=embed`;
 }

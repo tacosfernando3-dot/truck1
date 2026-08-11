@@ -13,9 +13,11 @@ import { cn, formatCurrency } from "@/lib/utils";
 export function MenuCard({
   item,
   compact = false,
+  compactMode = "grid",
 }: {
   item: MenuItem;
   compact?: boolean;
+  compactMode?: "grid" | "list";
 }) {
   const { addItem, openCart } = useCart();
   const t = useT();
@@ -30,13 +32,15 @@ export function MenuCard({
     openCart();
   }
 
-  if (compact) {
+  if (compact && compactMode === "list") {
     return (
       <article className="group relative flex gap-3.5 overflow-hidden rounded-2xl border border-background/8 bg-white p-3.5 text-background shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)] animate-fade-up active:scale-[0.99] transition">
         <Link
           href={href}
           className="absolute inset-0 z-0 rounded-2xl"
-          aria-label={t("menuPage.viewDetails", { name: localized.localizedName })}
+          aria-label={t("menuPage.viewDetails", {
+            name: localized.localizedName,
+          })}
         />
         <div className="relative z-[1] h-[5.5rem] w-[5.5rem] shrink-0 overflow-hidden rounded-full ring-2 ring-yellow/70 ring-offset-2 ring-offset-white pointer-events-none">
           <Image
@@ -69,10 +73,57 @@ export function MenuCard({
             type="button"
             onClick={handleAdd}
             className="pointer-events-auto mt-2.5 inline-flex min-h-10 items-center gap-1.5 rounded-full bg-background px-3.5 text-xs font-semibold tracking-wide text-white uppercase transition hover:bg-background/90"
-            aria-label={t("menuPage.addToCart", { name: localized.localizedName })}
+            aria-label={t("menuPage.addToCart", {
+              name: localized.localizedName,
+            })}
           >
             <Plus className="h-3.5 w-3.5 text-yellow" aria-hidden />
             {t("menuPage.addToOrder")}
+          </button>
+        </div>
+      </article>
+    );
+  }
+
+  if (compact) {
+    return (
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-background/8 bg-white text-background shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)] animate-fade-up active:scale-[0.99] transition">
+        <Link
+          href={href}
+          className="absolute inset-0 z-0 rounded-2xl"
+          aria-label={t("menuPage.viewDetails", {
+            name: localized.localizedName,
+          })}
+        />
+        <div className="relative z-[1] aspect-square overflow-hidden pointer-events-none">
+          <Image
+            src={item.image}
+            alt={localized.localizedName}
+            fill
+            className="object-cover"
+            sizes="45vw"
+          />
+        </div>
+
+        <div className="relative z-[1] flex flex-1 flex-col p-2.5 pointer-events-none">
+          <div className="flex items-start justify-between gap-1.5">
+            <h3 className="line-clamp-2 min-w-0 font-display text-[1.05rem] leading-none tracking-wide uppercase">
+              {localized.localizedName}
+            </h3>
+            <span className="shrink-0 rounded-md bg-yellow px-1.5 py-0.5 text-xs font-bold text-white">
+              {formatCurrency(item.price, locale)}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleAdd}
+            className="pointer-events-auto mt-2.5 inline-flex min-h-9 w-full items-center justify-center gap-1 rounded-full bg-background px-2.5 text-[10px] font-semibold tracking-wide text-white uppercase transition hover:bg-background/90"
+            aria-label={t("menuPage.addToCart", {
+              name: localized.localizedName,
+            })}
+          >
+            <Plus className="h-3.5 w-3.5 text-yellow" aria-hidden />
+            {t("menuPage.add")}
           </button>
         </div>
       </article>
@@ -84,7 +135,9 @@ export function MenuCard({
       <Link
         href={href}
         className="absolute inset-0 z-0"
-        aria-label={t("menuPage.viewDetails", { name: localized.localizedName })}
+        aria-label={t("menuPage.viewDetails", {
+          name: localized.localizedName,
+        })}
       />
       <div className="relative z-[1] aspect-[4/3] overflow-hidden pointer-events-none">
         <Image
@@ -104,14 +157,18 @@ export function MenuCard({
             {formatCurrency(item.price, locale)}
           </span>
         </div>
-        <p className="mt-2 text-sm text-background/65">{localized.localizedDescription}</p>
+        <p className="mt-2 text-sm text-background/65">
+          {localized.localizedDescription}
+        </p>
         <button
           type="button"
           onClick={handleAdd}
           className={cn(
             "pointer-events-auto mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-yellow px-4 py-2 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-gold hover:text-background md:opacity-90 md:group-hover:opacity-100",
           )}
-          aria-label={t("menuPage.addToCart", { name: localized.localizedName })}
+          aria-label={t("menuPage.addToCart", {
+            name: localized.localizedName,
+          })}
         >
           <Plus className="h-4 w-4" aria-hidden />
           {t("menuPage.add")}

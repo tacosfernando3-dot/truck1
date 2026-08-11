@@ -1,10 +1,49 @@
-import type { CmsBusiness } from "@/lib/cms/types";
+import type { CmsBusiness, GallerySocial } from "@/lib/cms/types";
 
 export function categorySectionId(category: string) {
   return `menu-${category
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")}`;
+}
+
+const GALLERY_SOCIALS: GallerySocial[] = [
+  "instagram",
+  "facebook",
+  "tiktok",
+];
+
+export function normalizeGallerySocial(
+  value: unknown,
+): GallerySocial {
+  return GALLERY_SOCIALS.includes(value as GallerySocial)
+    ? (value as GallerySocial)
+    : "instagram";
+}
+
+/** Profile URL + visibility for the homepage gallery section. */
+export function getGallerySocial(business: CmsBusiness) {
+  const network = normalizeGallerySocial(business.gallerySocial);
+  const labels = {
+    instagram: "Instagram",
+    facebook: "Facebook",
+    tiktok: "TikTok",
+  } as const;
+
+  const url = business[network];
+  const visible =
+    network === "instagram"
+      ? business.showInstagram
+      : network === "facebook"
+        ? business.showFacebook
+        : business.showTikTok;
+
+  return {
+    network,
+    label: labels[network],
+    url,
+    enabled: visible && Boolean(url?.trim()),
+  };
 }
 
 /** Format as (XXX) XXX-XXXX while typing. */

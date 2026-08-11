@@ -52,7 +52,7 @@ export function Button(props: AsButton | AsLink) {
   } = props;
 
   const classes = cn(
-    "inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold tracking-wide uppercase transition duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold tracking-wide uppercase transition duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
     className,
   );

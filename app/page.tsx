@@ -29,7 +29,11 @@ async function LocalBusinessJsonLd() {
       postalCode: business.zip,
       addressCountry: "US",
     },
-    sameAs: [business.instagram, business.facebook, business.tiktok],
+    sameAs: [
+      business.showInstagram ? business.instagram : null,
+      business.showFacebook ? business.facebook : null,
+      business.showTikTok ? business.tiktok : null,
+    ].filter(Boolean),
   };
 
   return (

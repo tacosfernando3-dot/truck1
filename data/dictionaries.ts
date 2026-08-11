@@ -93,11 +93,21 @@ export const dictionaries = {
     },
     categories: {
       All: "All",
-      Tacos: "Tacos",
       Burgers: "Burgers",
-      Bowls: "Bowls",
-      Sides: "Sides",
+      Tortas: "Tortas",
+      Cemitas: "Cemitas",
+      Tostadas: "Tostadas",
+      Quesadillas: "Quesadillas",
+      Flautas: "Flautas",
+      "Tacos - 3 Pieces": "Tacos - 3 Pieces",
+      "Single Tacos": "Single Tacos",
+      "Sides / Extras": "Sides / Extras",
+      "Burritos - Normal or Bowl": "Burritos - Normal or Bowl",
+      "Loaded Birria Fries": "Loaded Birria Fries",
+      Soups: "Soups",
+      Nachos: "Nachos",
       Drinks: "Drinks",
+      "Elotes Street Corn": "Elotes Street Corn",
     },
     locationHome: {
       eyebrow: "Find Us",
@@ -112,7 +122,7 @@ export const dictionaries = {
       eyebrow: "Locations",
       title: "FIND THE TRUCK",
       subtitle:
-        "We roll different Jackson Heights stops almost every day. Here's this week's schedule — or enable location to see how far you are from today's pin.",
+        "We roll different Elmhurst stops almost every day. Here's this week's schedule — or enable location to see how far you are from today's pin.",
       enableLocation: "Enable Location",
       directionsToday: "Directions Today",
       distance:
@@ -128,7 +138,7 @@ export const dictionaries = {
     about: {
       eyebrow: "About",
       title: "Built for the city craving",
-      body: "Street Flavor is a blacked-out Jackson Heights truck cooking bold street plates from scratch — tacos, smash burgers, bowls, and sides made fresh every service. Catch us around Queens, or book catering for parties, offices, and film sets.",
+      body: "Street Flavor is a blacked-out Elmhurst truck cooking bold street plates from scratch — tacos, smash burgers, bowls, and sides made fresh every service. Catch us around Queens, or book catering for parties, offices, and film sets.",
       cateringEvents: "Catering & Events",
       contactCrew: "Contact the Crew",
       preferPackages: "Prefer a full package breakdown?",
@@ -138,6 +148,7 @@ export const dictionaries = {
     gallery: {
       title: "FOLLOW THE FLAVOR",
       viewOnIg: "View {alt} on Instagram",
+      viewOnSocial: "View {alt} on {network}",
       swipe: "Swipe gallery →",
     },
     cta: {
@@ -147,7 +158,7 @@ export const dictionaries = {
     },
     footer: {
       blurb:
-        "Bold flavor on wheels. Catch us in Jackson Heights, Queens and book us for your next event.",
+        "Bold flavor on wheels. Catch us in Elmhurst, Queens and book us for your next event.",
     },
     newsletter: {
       title: "Join the Crew",
@@ -249,7 +260,7 @@ export const dictionaries = {
       faq1q: "How far in advance should we book?",
       faq1a:
         "Two to four weeks is ideal for standard packages. Full truck bookings fill faster on weekends.",
-      faq2q: "Do you travel outside Jackson Heights?",
+      faq2q: "Do you travel outside Elmhurst?",
       faq2a:
         "Yes — we cover Queens and Greater NYC. Travel fees may apply outside the borough.",
       faq3q: "Can you accommodate dietary needs?",
@@ -310,10 +321,10 @@ export const dictionaries = {
       Sunday: "Sunday",
     },
     locations: {
-      jacksonHeights: "Jackson Heights",
+      elmhurstQueens: "Elmhurst, Queens",
       privateEvents: "Private Events",
       byAppointment: "By appointment",
-      privateAddress: "Contact us for availability in Jackson Heights & Queens",
+      privateAddress: "Contact us for availability in Elmhurst & Queens",
     },
     menu: {
       "street-tacos": {
@@ -613,11 +624,21 @@ export const dictionaries = {
     },
     categories: {
       All: "Todos",
-      Tacos: "Tacos",
       Burgers: "Burgers",
-      Bowls: "Bowls",
-      Sides: "Guarniciones",
+      Tortas: "Tortas",
+      Cemitas: "Cemitas",
+      Tostadas: "Tostadas",
+      Quesadillas: "Quesadillas",
+      Flautas: "Flautas",
+      "Tacos - 3 Pieces": "Tacos - 3 Piezas",
+      "Single Tacos": "Tacos individuales",
+      "Sides / Extras": "Guarniciones / Extras",
+      "Burritos - Normal or Bowl": "Burritos - Normal o Bowl",
+      "Loaded Birria Fries": "Papas Birria Loaded",
+      Soups: "Sopas",
+      Nachos: "Nachos",
       Drinks: "Bebidas",
+      "Elotes Street Corn": "Elotes",
     },
     locationHome: {
       eyebrow: "Encuéntranos",
@@ -632,7 +653,7 @@ export const dictionaries = {
       eyebrow: "Ubicaciones",
       title: "ENCUENTRA EL TRUCK",
       subtitle:
-        "Rodamos por distintas paradas de Jackson Heights casi todos los días. Aquí está el horario de la semana — o activa la ubicación para ver qué tan lejos estás del pin de hoy.",
+        "Rodamos por distintas paradas de Elmhurst casi todos los días. Aquí está el horario de la semana — o activa la ubicación para ver qué tan lejos estás del pin de hoy.",
       enableLocation: "Activar ubicación",
       directionsToday: "Cómo llegar hoy",
       distance:
@@ -648,7 +669,7 @@ export const dictionaries = {
     about: {
       eyebrow: "Nosotros",
       title: "Hecho para el antojo de la ciudad",
-      body: "Street Flavor es un truck negro en Jackson Heights que cocina platos de la calle desde cero — tacos, smash burgers, bowls y guarniciones frescas en cada servicio. Encuéntranos por Queens, o reserva catering para fiestas, oficinas y sets de filmación.",
+      body: "Street Flavor es un truck negro en Elmhurst que cocina platos de la calle desde cero — tacos, smash burgers, bowls y guarniciones frescas en cada servicio. Encuéntranos por Queens, o reserva catering para fiestas, oficinas y sets de filmación.",
       cateringEvents: "Catering y eventos",
       contactCrew: "Contacta al equipo",
       preferPackages: "¿Prefieres el desglose completo de paquetes?",
@@ -658,6 +679,7 @@ export const dictionaries = {
     gallery: {
       title: "SIGUE EL SABOR",
       viewOnIg: "Ver {alt} en Instagram",
+      viewOnSocial: "Ver {alt} en {network}",
       swipe: "Desliza la galería →",
     },
     cta: {
@@ -667,7 +689,7 @@ export const dictionaries = {
     },
     footer: {
       blurb:
-        "Sabor intenso sobre ruedas. Encuéntranos en Jackson Heights, Queens y resérvanos para tu próximo evento.",
+        "Sabor intenso sobre ruedas. Encuéntranos en Elmhurst, Queens y resérvanos para tu próximo evento.",
     },
     newsletter: {
       title: "Únete al crew",
@@ -771,7 +793,7 @@ export const dictionaries = {
       faq1q: "¿Con cuánta anticipación debemos reservar?",
       faq1a:
         "De dos a cuatro semanas es ideal para paquetes estándar. Los bookings de truck completo se llenan más rápido los fines de semana.",
-      faq2q: "¿Viajan fuera de Jackson Heights?",
+      faq2q: "¿Viajan fuera de Elmhurst?",
       faq2a:
         "Sí — cubrimos Queens y el Gran NYC. Pueden aplicar tarifas de traslado fuera del borough.",
       faq3q: "¿Pueden acomodar necesidades dietéticas?",
@@ -832,11 +854,11 @@ export const dictionaries = {
       Sunday: "Domingo",
     },
     locations: {
-      jacksonHeights: "Jackson Heights",
+      elmhurstQueens: "Elmhurst, Queens",
       privateEvents: "Eventos privados",
       byAppointment: "Con cita",
       privateAddress:
-        "Contáctanos para disponibilidad en Jackson Heights y Queens",
+        "Contáctanos para disponibilidad en Elmhurst y Queens",
     },
     menu: {
       "street-tacos": {

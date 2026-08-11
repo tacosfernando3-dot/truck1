@@ -65,35 +65,45 @@ export function SiteFooter() {
             business={business}
             className="mt-3 max-w-xs"
           />
-          <div className="mt-5 flex gap-3">
-            <a
-              href={business.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
-              aria-label="Instagram"
-            >
-              <InstagramIcon className="h-4 w-4" />
-            </a>
-            <a
-              href={business.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
-              aria-label="Facebook"
-            >
-              <FacebookIcon className="h-5 w-5" />
-            </a>
-            <a
-              href={business.tiktok}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
-              aria-label="TikTok"
-            >
-              <TikTokIcon className="h-4 w-4" />
-            </a>
-          </div>
+          {(business.showInstagram ||
+            business.showFacebook ||
+            business.showTikTok) && (
+            <div className="mt-5 flex gap-3">
+              {business.showInstagram ? (
+                <a
+                  href={business.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
+                  aria-label="Instagram"
+                >
+                  <InstagramIcon className="h-4 w-4" />
+                </a>
+              ) : null}
+              {business.showFacebook ? (
+                <a
+                  href={business.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
+                  aria-label="Facebook"
+                >
+                  <FacebookIcon className="h-5 w-5" />
+                </a>
+              ) : null}
+              {business.showTikTok ? (
+                <a
+                  href={business.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md hover:text-yellow"
+                  aria-label="TikTok"
+                >
+                  <TikTokIcon className="h-4 w-4" />
+                </a>
+              ) : null}
+            </div>
+          )}
         </div>
 
         <FooterGroup title={t("common.pages")}>

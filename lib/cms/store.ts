@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { getDefaultCms } from "@/lib/cms/defaults";
 import type { CmsBusiness, CmsContent } from "@/lib/cms/types";
+import { normalizeGallerySocial } from "@/lib/cms/utils";
 import type { GalleryItem, MenuItem } from "@/lib/types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/server";
 
@@ -41,6 +42,10 @@ type BusinessRow = {
   instagram: string;
   facebook: string;
   tiktok: string;
+  show_instagram?: boolean | null;
+  show_facebook?: boolean | null;
+  show_tiktok?: boolean | null;
+  gallery_social?: string | null;
   street_address: string;
   city: string;
   state: string;
@@ -74,6 +79,12 @@ function normalizeBusiness(
     instagram: business.instagram?.trim() || defaults.instagram,
     facebook: business.facebook?.trim() || defaults.facebook,
     tiktok: business.tiktok?.trim() || defaults.tiktok,
+    showInstagram: business.showInstagram ?? defaults.showInstagram,
+    showFacebook: business.showFacebook ?? defaults.showFacebook,
+    showTikTok: business.showTikTok ?? defaults.showTikTok,
+    gallerySocial: normalizeGallerySocial(
+      business.gallerySocial ?? defaults.gallerySocial,
+    ),
     streetAddress:
       business.streetAddress?.trim() || legacyStreet || defaults.streetAddress,
     city: business.city?.trim() || defaults.city,
@@ -145,6 +156,10 @@ function mapBusiness(row: BusinessRow): CmsBusiness {
     instagram: row.instagram,
     facebook: row.facebook,
     tiktok: row.tiktok,
+    showInstagram: row.show_instagram ?? true,
+    showFacebook: row.show_facebook ?? true,
+    showTikTok: row.show_tiktok ?? true,
+    gallerySocial: normalizeGallerySocial(row.gallery_social),
     streetAddress: row.street_address,
     city: row.city,
     state: row.state,
@@ -319,6 +334,10 @@ async function writeCmsToSupabase(content: CmsContent) {
       instagram: b.instagram,
       facebook: b.facebook,
       tiktok: b.tiktok,
+      show_instagram: b.showInstagram,
+      show_facebook: b.showFacebook,
+      show_tiktok: b.showTikTok,
+      gallery_social: b.gallerySocial,
       street_address: b.streetAddress,
       city: b.city,
       state: b.state,
