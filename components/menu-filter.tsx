@@ -13,7 +13,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useContent } from "@/components/content-provider";
 import { categorySectionId } from "@/lib/cms/utils";
 import { useT } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
+import { cn, menuImageObjectPosition } from "@/lib/utils";
 
 function categoryLabel(category: string, t: (key: string) => string) {
   const translated = t(`categories.${category}`);
@@ -35,21 +35,29 @@ export function MenuFilter() {
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
-  const topics = useMemo(
-    () =>
-      content.categories.map((category) => {
+  const topics = useMemo(() => {
+    const hidden = new Set(content.hiddenCategories ?? []);
+    return content.categories
+      .filter((category) => !hidden.has(category))
+      .map((category) => {
+        const visible = content.menu.filter(
+          (entry) =>
+            entry.category === category && entry.available !== false,
+        );
+        if (visible.length === 0) return null;
         const item =
-          content.menu.find(
-            (entry) => entry.category === category && entry.featured,
-          ) ?? content.menu.find((entry) => entry.category === category);
+          visible.find((entry) => entry.featured) ?? visible[0];
         return {
           category,
           label: categoryLabel(category, t),
           image: item?.image || "/images/truck-gallery.jpg",
+          imageFocus: item?.imageFocus,
         };
-      }),
-    [content.categories, content.menu, t],
-  );
+      })
+      .filter(
+        (topic): topic is NonNullable<typeof topic> => topic !== null,
+      );
+  }, [content.categories, content.hiddenCategories, content.menu, t]);
 
   const updateScrollState = useCallback(() => {
     const node = scrollerRef.current;
@@ -240,6 +248,9 @@ export function MenuFilter() {
                 fill
                 draggable={false}
                 className="pointer-events-none object-cover transition duration-500 group-hover:scale-105"
+                style={{
+                  objectPosition: menuImageObjectPosition(topic.imageFocus),
+                }}
                 sizes="160px"
                 unoptimized={topic.image.startsWith("/uploads/")}
               />

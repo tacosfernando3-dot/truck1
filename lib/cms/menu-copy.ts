@@ -1,5 +1,9 @@
-/** Auto-generate short + long menu descriptions from name/category. */
-export function autoDescribeMenuItem(name: string, category: string) {
+/** Auto-generate short + long menu descriptions from name/category/essentials. */
+export function autoDescribeMenuItem(
+  name: string,
+  category: string,
+  essentials?: string,
+) {
   const tips: Record<string, string> = {
     Burgers: "Stacked on a toasted bun with our house fixings.",
     Tortas:
@@ -29,6 +33,20 @@ export function autoDescribeMenuItem(name: string, category: string) {
   const tip =
     tips[category] ??
     "Made to order on the truck — bold flavor, street-style.";
+
+  const notes = essentials
+    ?.split(/[\n,]+/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join(", ");
+
+  if (notes) {
+    const description = `${name} with ${notes}. ${tip}`;
+    return {
+      description,
+      longDescription: `${description} Fresh from Los Compadres Taquería in Elmhurst, Queens.`,
+    };
+  }
 
   return {
     description: `${name}. ${tip}`,

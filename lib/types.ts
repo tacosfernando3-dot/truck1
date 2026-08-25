@@ -9,6 +9,10 @@ export type MenuItem = {
   price: number;
   image: string;
   featured?: boolean;
+  /** When false, hidden from the public menu (still editable in admin). */
+  available?: boolean;
+  /** Focal point for object-fit cover crops (0–100). */
+  imageFocus?: { x: number; y: number };
   serves?: string;
   heat?: "mild" | "medium" | "hot";
   includes?: string[];

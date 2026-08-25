@@ -1,8 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { getDefaultCms } from "@/lib/cms/defaults";
+import { joinMenuImage, splitMenuImage } from "@/lib/cms/image-focus";
 import type { CmsBusiness, CmsContent } from "@/lib/cms/types";
-import { normalizeGallerySocial } from "@/lib/cms/utils";
+import { instagramHandleFromUrl } from "@/lib/cms/utils";
 import type { GalleryItem, MenuItem } from "@/lib/types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/server";
 
@@ -17,6 +18,7 @@ type MenuItemRow = {
   price: number | string;
   image: string;
   featured: boolean;
+  available?: boolean | null;
   serves: string | null;
   heat: MenuItem["heat"] | null;
   includes: string[] | null;
@@ -56,6 +58,7 @@ type BusinessRow = {
 type CategoryRow = {
   name: string;
   sort_order: number;
+  available?: boolean | null;
 };
 
 function normalizeBusiness(
@@ -67,24 +70,26 @@ function normalizeBusiness(
   const defaults = getDefaultCms().business;
   const legacyStreet =
     business.address?.trim() || business.area?.trim() || "";
+  const instagram = business.instagram?.trim() || defaults.instagram;
 
   return {
     name: business.name?.trim() || defaults.name,
     shortName: business.shortName?.trim() || defaults.shortName,
-    handle: business.handle?.trim() || defaults.handle,
+    handle: instagramHandleFromUrl(
+      instagram,
+      business.handle?.trim() || defaults.handle,
+    ),
     phone: business.phone?.trim() || defaults.phone,
     email: business.email?.trim() || defaults.email,
     cuisine: business.cuisine?.trim() || defaults.cuisine,
     priceRange: business.priceRange?.trim() || defaults.priceRange,
-    instagram: business.instagram?.trim() || defaults.instagram,
+    instagram,
     facebook: business.facebook?.trim() || defaults.facebook,
     tiktok: business.tiktok?.trim() || defaults.tiktok,
     showInstagram: business.showInstagram ?? defaults.showInstagram,
     showFacebook: business.showFacebook ?? defaults.showFacebook,
     showTikTok: business.showTikTok ?? defaults.showTikTok,
-    gallerySocial: normalizeGallerySocial(
-      business.gallerySocial ?? defaults.gallerySocial,
-    ),
+    gallerySocial: "instagram",
     streetAddress:
       business.streetAddress?.trim() || legacyStreet || defaults.streetAddress,
     city: business.city?.trim() || defaults.city,
@@ -109,6 +114,17 @@ function normalizeCms(content: CmsContent): CmsContent {
   return {
     ...content,
     categories,
+    hiddenCategories: (content.hiddenCategories ?? []).filter((name) =>
+      categories.includes(name),
+    ),
+    menu: content.menu.map((item) => {
+      const split = splitMenuImage(item.image ?? "");
+      return {
+        ...item,
+        image: split.src,
+        imageFocus: item.imageFocus ?? split.focus,
+      };
+    }),
     business: normalizeBusiness(content.business),
   };
 }
@@ -120,6 +136,7 @@ function isCmsContent(value: unknown): value is CmsContent {
 }
 
 function mapMenuItem(row: MenuItemRow): MenuItem {
+  const split = splitMenuImage(row.image ?? "");
   return {
     id: row.id,
     name: row.name,
@@ -127,8 +144,10 @@ function mapMenuItem(row: MenuItemRow): MenuItem {
     description: row.description ?? "",
     longDescription: row.long_description ?? "",
     price: typeof row.price === "number" ? row.price : Number(row.price),
-    image: row.image ?? "",
+    image: split.src,
     featured: Boolean(row.featured),
+    available: row.available !== false,
+    imageFocus: split.focus,
     serves: row.serves ?? undefined,
     heat: row.heat ?? undefined,
     includes: row.includes ?? undefined,
@@ -159,7 +178,7 @@ function mapBusiness(row: BusinessRow): CmsBusiness {
     showInstagram: row.show_instagram ?? true,
     showFacebook: row.show_facebook ?? true,
     showTikTok: row.show_tiktok ?? true,
-    gallerySocial: normalizeGallerySocial(row.gallery_social),
+    gallerySocial: "instagram",
     streetAddress: row.street_address,
     city: row.city,
     state: row.state,
@@ -174,7 +193,7 @@ async function readCmsFromSupabase(): Promise<CmsContent> {
   const [categoriesRes, menuRes, galleryRes, businessRes] = await Promise.all([
     supabase
       .from("menu_categories")
-      .select("name, sort_order")
+      .select("name, sort_order, available")
       .order("sort_order", { ascending: true }),
     supabase
       .from("menu_items")
@@ -193,13 +212,15 @@ async function readCmsFromSupabase(): Promise<CmsContent> {
   if (businessRes.error) throw new Error(businessRes.error.message);
 
   const menu = ((menuRes.data ?? []) as MenuItemRow[]).map(mapMenuItem);
-  const categoriesFromDb = ((categoriesRes.data ?? []) as CategoryRow[]).map(
-    (row) => row.name,
-  );
+  const categoryRowsFromDb = (categoriesRes.data ?? []) as CategoryRow[];
+  const categoriesFromDb = categoryRowsFromDb.map((row) => row.name);
   const categories =
     categoriesFromDb.length > 0
       ? categoriesFromDb
       : [...new Set(menu.map((item) => item.category))];
+  const hiddenCategories = categoryRowsFromDb
+    .filter((row) => row.available === false)
+    .map((row) => row.name);
 
   const defaults = getDefaultCms();
   const business = businessRes.data
@@ -208,6 +229,7 @@ async function readCmsFromSupabase(): Promise<CmsContent> {
 
   return normalizeCms({
     categories,
+    hiddenCategories,
     menu,
     gallery: ((galleryRes.data ?? []) as GalleryRow[]).map(mapGallery),
     business,
@@ -229,9 +251,11 @@ async function writeCmsToSupabase(content: CmsContent) {
     .filter((name) => !nextCategorySet.has(name));
 
   // Upsert categories first (FK target for menu items)
+  const hidden = new Set(normalized.hiddenCategories ?? []);
   const categoryRows = normalized.categories.map((name, index) => ({
     name,
     sort_order: index,
+    available: !hidden.has(name),
   }));
   const { error: catUpsertError } = await supabase
     .from("menu_categories")
@@ -245,14 +269,14 @@ async function writeCmsToSupabase(content: CmsContent) {
     description: item.description ?? "",
     long_description: item.longDescription ?? item.description ?? "",
     price: item.price,
-    image: item.image,
+    image: joinMenuImage(item.image, item.imageFocus),
     featured: Boolean(item.featured),
+    available: item.available !== false,
     serves: item.serves ?? null,
     heat: item.heat ?? null,
     includes: item.includes ?? [],
     allergens: item.allergens ?? [],
     sort_order: index,
-    available: true,
     updated_at: new Date().toISOString(),
   }));
 

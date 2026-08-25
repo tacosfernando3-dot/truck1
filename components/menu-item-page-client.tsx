@@ -8,7 +8,7 @@ import { MenuItemAddButton } from "@/components/menu-item-add-button";
 import { useI18n, useT } from "@/lib/i18n";
 import { localizeMenuItem } from "@/lib/localize-menu";
 import type { MenuItem } from "@/lib/types";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, menuImageObjectPosition } from "@/lib/utils";
 
 const heatKey = {
   mild: "common.mild",
@@ -35,11 +35,12 @@ export function MenuItemPageClient({
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-12">
           <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border-dark sm:aspect-[16/11]">
             <Image
-              src={item.image}
+              src={item.image || "/images/truck-gallery.jpg"}
               alt={localized.localizedName}
               fill
               priority
               className="object-cover"
+              style={{ objectPosition: menuImageObjectPosition(item.imageFocus) }}
               sizes="(max-width: 1024px) 100vw, 55vw"
             />
           </div>

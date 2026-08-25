@@ -8,7 +8,7 @@ import { CheckoutSimulator } from "@/components/checkout-simulator";
 import { useCart } from "@/components/cart-provider";
 import { useI18n, useT } from "@/lib/i18n";
 import { localizeMenuItem } from "@/lib/localize-menu";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, menuImageObjectPosition } from "@/lib/utils";
 
 export function CartDrawer() {
   const {
@@ -86,10 +86,15 @@ export function CartDrawer() {
                       >
                         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md">
                           <Image
-                            src={item.image}
+                            src={item.image || "/images/truck-gallery.jpg"}
                             alt={localized.localizedName}
                             fill
                             className="object-cover"
+                            style={{
+                              objectPosition: menuImageObjectPosition(
+                                item.imageFocus,
+                              ),
+                            }}
                             sizes="64px"
                           />
                         </div>

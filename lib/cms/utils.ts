@@ -21,29 +21,46 @@ export function normalizeGallerySocial(
     : "instagram";
 }
 
-/** Profile URL + visibility for the homepage gallery section. */
+/** Profile URL + visibility for the homepage gallery section (always Instagram). */
 export function getGallerySocial(business: CmsBusiness) {
-  const network = normalizeGallerySocial(business.gallerySocial);
-  const labels = {
-    instagram: "Instagram",
-    facebook: "Facebook",
-    tiktok: "TikTok",
-  } as const;
-
-  const url = business[network];
-  const visible =
-    network === "instagram"
-      ? business.showInstagram
-      : network === "facebook"
-        ? business.showFacebook
-        : business.showTikTok;
-
+  const url = business.instagram;
   return {
-    network,
-    label: labels[network],
+    network: "instagram" as const,
+    label: "Instagram",
     url,
-    enabled: visible && Boolean(url?.trim()),
+    handle: instagramHandleFromUrl(url, business.handle),
+    enabled: business.showInstagram && Boolean(url?.trim()),
   };
+}
+
+/** Derive @handle from an Instagram profile URL. */
+export function instagramHandleFromUrl(url: string, fallback = "") {
+  const trimmed = url.trim();
+  if (!trimmed) return fallback;
+  if (trimmed.startsWith("@")) return trimmed;
+
+  try {
+    const parsed = new URL(
+      trimmed.startsWith("http") ? trimmed : `https://${trimmed}`,
+    );
+    const parts = parsed.pathname.split("/").filter(Boolean);
+    const reserved = new Set([
+      "p",
+      "reel",
+      "reels",
+      "stories",
+      "explore",
+      "accounts",
+    ]);
+    const username = parts[0];
+    if (username && !reserved.has(username.toLowerCase())) {
+      return `@${username.replace(/^@/, "")}`;
+    }
+  } catch {
+    /* keep fallback */
+  }
+
+  return fallback;
 }
 
 /** Format as (XXX) XXX-XXXX while typing. */

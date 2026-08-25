@@ -30,11 +30,19 @@ export async function generateMetadata({
 export default async function MenuItemPage({ params }: PageProps) {
   const { id } = await params;
   const cms = await readCms();
-  const item = cms.menu.find((entry) => entry.id === id);
+  const item = cms.menu.find((entry) => {
+    if (entry.id !== id || entry.available === false) return false;
+    return !(cms.hiddenCategories ?? []).includes(entry.category);
+  });
   if (!item) notFound();
 
   const related = cms.menu
-    .filter((other) => other.category === item.category && other.id !== item.id)
+    .filter(
+      (other) =>
+        other.category === item.category &&
+        other.id !== item.id &&
+        other.available !== false,
+    )
     .slice(0, 3);
 
   return <MenuItemPageClient item={item} related={related} />;

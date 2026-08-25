@@ -27,6 +27,8 @@ export type CmsBusiness = {
 
 export type CmsContent = {
   categories: string[];
+  /** Categories turned off on the public menu (still editable in admin). */
+  hiddenCategories?: string[];
   menu: MenuItem[];
   gallery: GalleryItem[];
   business: CmsBusiness;

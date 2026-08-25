@@ -23,14 +23,19 @@ export function MenuPageClient() {
   const { content } = useContent();
   const [mobileView, setMobileView] = useState<MobileView>("grid");
 
-  const sections = useMemo(
-    () =>
-      content.categories.map((category) => ({
+  const sections = useMemo(() => {
+    const hidden = new Set(content.hiddenCategories ?? []);
+    return content.categories
+      .filter((category) => !hidden.has(category))
+      .map((category) => ({
         category,
-        items: content.menu.filter((item) => item.category === category),
-      })),
-    [content.categories, content.menu],
-  );
+        items: content.menu.filter(
+          (item) =>
+            item.category === category && item.available !== false,
+        ),
+      }))
+      .filter((section) => section.items.length > 0);
+  }, [content.categories, content.hiddenCategories, content.menu]);
 
   return (
     <>

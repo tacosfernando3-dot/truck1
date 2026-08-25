@@ -8,7 +8,7 @@ import { useCart } from "@/components/cart-provider";
 import { useI18n, useT } from "@/lib/i18n";
 import { localizeMenuItem } from "@/lib/localize-menu";
 import type { MenuItem } from "@/lib/types";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency, menuImageObjectPosition } from "@/lib/utils";
 
 export function MenuCard({
   item,
@@ -24,6 +24,10 @@ export function MenuCard({
   const { locale } = useI18n();
   const localized = localizeMenuItem(item, locale);
   const href = `/menu/${item.id}`;
+  const imageSrc = item.image || "/images/truck-gallery.jpg";
+  const imageStyle = {
+    objectPosition: menuImageObjectPosition(item.imageFocus),
+  };
 
   function handleAdd(event: MouseEvent) {
     event.preventDefault();
@@ -44,10 +48,11 @@ export function MenuCard({
         />
         <div className="relative z-[1] h-[5.5rem] w-[5.5rem] shrink-0 overflow-hidden rounded-full ring-2 ring-yellow/70 ring-offset-2 ring-offset-white pointer-events-none">
           <Image
-            src={item.image}
+            src={imageSrc}
             alt={localized.localizedName}
             fill
             className="object-cover"
+            style={imageStyle}
             sizes="88px"
           />
         </div>
@@ -97,10 +102,11 @@ export function MenuCard({
         />
         <div className="relative z-[1] aspect-square overflow-hidden pointer-events-none">
           <Image
-            src={item.image}
+            src={imageSrc}
             alt={localized.localizedName}
             fill
             className="object-cover"
+            style={imageStyle}
             sizes="45vw"
           />
         </div>
@@ -141,10 +147,11 @@ export function MenuCard({
       />
       <div className="relative z-[1] aspect-[4/3] overflow-hidden pointer-events-none">
         <Image
-          src={item.image}
+          src={imageSrc}
           alt={localized.localizedName}
           fill
           className="object-cover transition duration-500 group-hover:scale-105"
+          style={imageStyle}
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
         />
       </div>

@@ -2,6 +2,20 @@ export function cn(...inputs: Array<string | false | null | undefined>) {
   return inputs.filter(Boolean).join(" ");
 }
 
+/** CSS object-position from a menu item's saved focal point. */
+export function menuImageObjectPosition(
+  focus?: { x: number; y: number } | null,
+) {
+  const x = clampPercent(focus?.x ?? 50);
+  const y = clampPercent(focus?.y ?? 50);
+  return `${x}% ${y}%`;
+}
+
+function clampPercent(value: number) {
+  if (!Number.isFinite(value)) return 50;
+  return Math.min(100, Math.max(0, value));
+}
+
 export function formatCurrency(amount: number, locale: string = "en-US") {
   return new Intl.NumberFormat(locale === "es" ? "es-US" : "en-US", {
     style: "currency",
