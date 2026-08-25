@@ -42,10 +42,25 @@ To use local files:
 
 Persists in `localStorage` (`street-flavor-cart`). Checkout is a placeholder alert (no Stripe).
 
-## Deploy (Vercel)
+## Deploy targets
 
-1. Push to GitHub (e.g. `https://github.com/ODIOdev/foodtruck.git`).
-2. Import in Vercel with Next.js defaults (`npm run build`).
+| Service | Target |
+|---------|--------|
+| GitHub | [tacosfernando3-dot/truck1](https://github.com/tacosfernando3-dot/truck1.git) |
+| Vercel | Team **Los Compadres Taqueria** · project `truck1` · [vercel.com/tacosfernando3-9529](https://vercel.com/tacosfernando3-9529) |
+| Supabase | [pwptpxvhdlscyebbqgkt](https://pwptpxvhdlscyebbqgkt.supabase.co) |
+
+```bash
+# Push (remote is named truck1)
+git push truck1 main
+```
+
+Vercel auto-deploys from the GitHub `main` branch. Set these env vars on the Vercel project:
+
+- `ADMIN_PASSWORD`, `ADMIN_SECRET`
+- `NEXT_PUBLIC_SUPABASE_URL=https://pwptpxvhdlscyebbqgkt.supabase.co`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
 ## Project layout
 
