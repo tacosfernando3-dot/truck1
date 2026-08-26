@@ -63,7 +63,7 @@ Deployment URLs like `truck1-<hash>-los-compadres-taqueria.vercel.app` rotate on
 git push truck1 HEAD:main
 ```
 
-3. Vercel auto-deploys production from GitHub `main` on the Los Compadres `truck1` project. Confirm the new deployment is **READY** and serves `loscompadrestaqueriany.com`.
+3. Vercel auto-deploys production from GitHub `main` on the Los Compadres `truck1` project. Agents confirm deploys via Vercel MCP using team `team_B5lEl3kRAYWPFqvq1yeSCnvW` and project `prj_N8vdkZkOQ4JcJF3sT1UhmBfTZFt4` — never ask the user to re-verify Vercel in Cursor.
 4. Never use bare `git push` here — it may target the wrong remote.
 
 Set these env vars on that Vercel project:

@@ -1,22 +1,33 @@
 ---
-description: Locked deploy path — Cursor commits must always sync to live Los Compadres site
+description: Locked GitHub/Vercel/Supabase targets — never ask user to verify Vercel
 alwaysApply: true
 ---
 
-# Deploy lock (Los Compadres / truck1)
+# Deploy + Vercel lock (Los Compadres / truck1)
 
-**High priority.** The live website must stay in sync with the committed Cursor workspace.
+**High priority.** Cursor work must stay synced to the live site. Vercel access for this project is assumed and default — never ask the user to verify, connect, or authenticate Vercel with Cursor.
 
 ## Locked targets (never change without explicit user approval)
 
 | Service | Target |
 |---------|--------|
 | GitHub | remote **`truck1`** → `https://github.com/tacosfernando3-dot/truck1.git` · branch **`main`** |
-| Vercel | Team **Los Compadres Taqueria** (`team_B5lEl3kRAYWPFqvq1yeSCnvW`) · project **`truck1`** (`prj_N8vdkZkOQ4JcJF3sT1UhmBfTZFt4`) |
+| Vercel team | **Los Compadres Taqueria** · `team_B5lEl3kRAYWPFqvq1yeSCnvW` |
+| Vercel project | **`truck1`** · `prj_N8vdkZkOQ4JcJF3sT1UhmBfTZFt4` |
 | Live | https://loscompadrestaqueriany.com · https://truck1-los-compadres-taqueria.vercel.app |
 | Supabase | `https://pwptpxvhdlscyebbqgkt.supabase.co` |
 
 Do **not** push to `origin` or `odio-dev` (Over Drive). Do **not** deploy to other Vercel teams/projects.
+
+## Vercel MCP — default, silent, always
+
+- Treat Vercel MCP (`plugin-vercel-plugin-vercel`) as already approved for this repo.
+- **Never** ask the user to “verify Vercel”, “connect Vercel”, “authenticate with Cursor”, or approve Vercel access.
+- If tools return `needsAuth` / auth errors: call `mcp_auth` yourself immediately and continue. Do not wait for the user.
+- Always pass these IDs on Vercel calls:
+  - `teamId`: `team_B5lEl3kRAYWPFqvq1yeSCnvW`
+  - `projectId`: `prj_N8vdkZkOQ4JcJF3sT1UhmBfTZFt4`
+- After `git push truck1 HEAD:main`, check production deploys yourself (`list_deployments` / `get_deployment`) until **READY** on `loscompadrestaqueriany.com`. Do not ask the user to check the Vercel dashboard unless something is actually broken and blocked.
 
 ## Ship protocol (required)
 
@@ -24,8 +35,8 @@ After finishing user-facing work, or whenever the user asks to push / deploy / s
 
 1. `git status` + `git diff` — commit all intended project changes (never `los-compadres.env` or secrets).
 2. `git push truck1 HEAD:main` (not bare `git push`).
-3. Confirm via Vercel that a **production** deployment for commit SHA is **READY** and aliased to `loscompadrestaqueriany.com`.
-4. If the push already landed but live looks stale: empty-commit or re-push to force a new production deploy; tell the user to hard-refresh.
+3. Confirm via Vercel MCP that production for that commit SHA is **READY** and aliased to `loscompadrestaqueriany.com`.
+4. If live looks stale after READY: empty-commit / re-push to force redeploy; tell the user to hard-refresh only if needed.
 
 ## Do not leave Cursor ahead of live
 
