@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "pwptpxvhdlscyebbqgkt.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "https",
         hostname: "*.cdninstagram.com",
       },
       {
