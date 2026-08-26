@@ -69,6 +69,7 @@ export default function RootLayout({
       <body className="min-h-full font-sans antialiased">
         <LanguageProvider>
           <ContentProvider>
+            <ScrollToTop />
             <SitePreloader />
             <ContactProvider>
               <CartProvider>
