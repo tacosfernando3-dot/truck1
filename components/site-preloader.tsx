@@ -1,38 +1,49 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useT } from "@/lib/i18n";
 
 const SESSION_KEY = "street-crave-preloader-seen";
 const MIN_MS = 1400;
 
+function subscribe() {
+  return () => {};
+}
+
+function getPreloaderVisible(): boolean {
+  try {
+    return sessionStorage.getItem(SESSION_KEY) !== "1";
+  } catch {
+    return true;
+  }
+}
+
 export function SitePreloader() {
   const t = useT();
-  const [visible, setVisible] = useState(true);
+  const shouldShow = useSyncExternalStore(
+    subscribe,
+    getPreloaderVisible,
+    () => true,
+  );
   const [leaving, setLeaving] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const visible = shouldShow && !finished;
 
   useEffect(() => {
-    try {
-      if (sessionStorage.getItem(SESSION_KEY) === "1") {
-        setVisible(false);
-        return;
-      }
-    } catch {
-      // ignore
-    }
+    if (!shouldShow) return;
 
     const started = Date.now();
-    let finished = false;
+    let done = false;
 
     const finish = () => {
-      if (finished) return;
-      finished = true;
+      if (done) return;
+      done = true;
       const wait = Math.max(0, MIN_MS - (Date.now() - started));
       window.setTimeout(() => {
         setLeaving(true);
         window.setTimeout(() => {
-          setVisible(false);
+          setFinished(true);
           try {
             sessionStorage.setItem(SESSION_KEY, "1");
           } catch {
@@ -46,12 +57,11 @@ export function SitePreloader() {
       finish();
     } else {
       window.addEventListener("load", finish, { once: true });
-      // Fallback if load is delayed
       window.setTimeout(finish, 2800);
     }
 
     return () => window.removeEventListener("load", finish);
-  }, []);
+  }, [shouldShow]);
 
   if (!visible) return null;
 

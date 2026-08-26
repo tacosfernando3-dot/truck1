@@ -38,6 +38,11 @@ function formatExpiry(value: string) {
 }
 
 export function CheckoutSimulator({ open, onClose }: Props) {
+  if (!open) return null;
+  return <CheckoutSimulatorOpen onClose={onClose} />;
+}
+
+function CheckoutSimulatorOpen({ onClose }: { onClose: () => void }) {
   const { items, subtotal, clearCart, closeCart } = useCart();
   const t = useT();
   const { locale } = useI18n();
@@ -54,7 +59,6 @@ export function CheckoutSimulator({ open, onClose }: Props) {
   const [paidTotal, setPaidTotal] = useState(0);
 
   useEffect(() => {
-    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && status !== "processing") onClose();
     };
@@ -65,16 +69,7 @@ export function CheckoutSimulator({ open, onClose }: Props) {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [open, onClose, status]);
-
-  useEffect(() => {
-    if (!open) {
-      setStatus("form");
-      setErrors({});
-    }
-  }, [open]);
-
-  if (!open) return null;
+  }, [onClose, status]);
 
   const tax = Math.round(subtotal * 0.08875 * 100) / 100;
   const total = Math.round((subtotal + tax) * 100) / 100;

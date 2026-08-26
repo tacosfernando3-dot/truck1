@@ -49,13 +49,16 @@ export function GallerySection() {
     () => toTilesFromCms(gallery, social.url || "#"),
     [gallery, social.url],
   );
-  const [tiles, setTiles] = useState<GalleryTile[]>(cmsTiles);
-  const [fromInstagram, setFromInstagram] = useState(false);
+  const galleryKey = useMemo(
+    () => cmsTiles.map((t) => `${t.id}:${t.image}`).join("|"),
+    [cmsTiles],
+  );
+  const [instagram, setInstagram] = useState<{
+    key: string;
+    tiles: GalleryTile[];
+  } | null>(null);
 
   useEffect(() => {
-    setTiles(cmsTiles);
-    setFromInstagram(false);
-
     let cancelled = false;
     void (async () => {
       try {
@@ -66,8 +69,10 @@ export function GallerySection() {
         };
         if (cancelled) return;
         if (data.items && data.items.length > 0) {
-          setTiles(toTilesFromInstagram(data.items));
-          setFromInstagram(true);
+          setInstagram({
+            key: galleryKey,
+            tiles: toTilesFromInstagram(data.items),
+          });
         }
       } catch {
         /* keep CMS tiles */
@@ -77,7 +82,10 @@ export function GallerySection() {
     return () => {
       cancelled = true;
     };
-  }, [cmsTiles]);
+  }, [galleryKey]);
+
+  const fromInstagram = instagram?.key === galleryKey;
+  const tiles = fromInstagram && instagram ? instagram.tiles : cmsTiles;
 
   const profileHref = social.url || "#";
 

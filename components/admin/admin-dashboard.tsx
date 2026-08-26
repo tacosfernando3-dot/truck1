@@ -2060,12 +2060,10 @@ function MoneyInput({
   value: number;
   onChange: (next: number) => void;
 }) {
-  const [text, setText] = useState(() => formatMoneyInput(value));
+  const formatted = formatMoneyInput(value);
+  const [text, setText] = useState(formatted);
   const [focused, setFocused] = useState(false);
-
-  useEffect(() => {
-    if (!focused) setText(formatMoneyInput(value));
-  }, [value, focused]);
+  const display = focused ? text : formatted;
 
   return (
     <div className="relative">
@@ -2077,18 +2075,21 @@ function MoneyInput({
         inputMode="decimal"
         autoComplete="off"
         placeholder="0.00"
-        value={text}
-        onFocus={() => setFocused(true)}
+        value={display}
+        onFocus={() => {
+          setText(formatted);
+          setFocused(true);
+        }}
         onChange={(e) => {
           const next = sanitizeMoneyInput(e.target.value);
           setText(next);
           onChange(parseMoneyInput(next));
         }}
         onBlur={() => {
-          setFocused(false);
           const amount = parseMoneyInput(text);
           onChange(amount);
           setText(formatMoneyInput(amount));
+          setFocused(false);
         }}
         className={cn(fieldClass, "pl-7 text-base font-semibold tabular-nums")}
       />

@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import { dictionaries, type Dictionary, type Locale } from "@/data/dictionaries";
@@ -41,32 +42,40 @@ function interpolate(
   );
 }
 
+function subscribeLocale() {
+  return () => {};
+}
+
+function getStoredLocale(): Locale {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === "en" || saved === "es") return saved;
+  } catch {
+    // ignore
+  }
+  return "en";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
-  const [ready, setReady] = useState(false);
+  const storedLocale = useSyncExternalStore(
+    subscribeLocale,
+    getStoredLocale,
+    () => "en" as Locale,
+  );
+  const [override, setOverride] = useState<Locale | null>(null);
+  const locale = override ?? storedLocale;
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "en" || saved === "es") setLocaleState(saved);
-    } catch {
-      // ignore
-    }
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
     document.documentElement.lang = locale;
     try {
       localStorage.setItem(STORAGE_KEY, locale);
     } catch {
       // ignore
     }
-  }, [locale, ready]);
+  }, [locale]);
 
   const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
+    setOverride(next);
   }, []);
 
   const dictionary = dictionaries[locale] as Dictionary;

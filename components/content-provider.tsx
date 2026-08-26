@@ -40,8 +40,23 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    void refresh();
-  }, [refresh, pathname]);
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/content", { cache: "no-store" });
+        if (!res.ok || cancelled) return;
+        const data = (await res.json()) as CmsContent;
+        if (!cancelled) setContent(data);
+      } catch {
+        // keep defaults
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
 
   const value = useMemo(
     () => ({ content, loading, refresh }),
