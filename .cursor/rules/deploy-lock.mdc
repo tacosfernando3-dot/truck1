@@ -1,0 +1,42 @@
+---
+description: Locked deploy path — Cursor commits must always sync to live Los Compadres site
+alwaysApply: true
+---
+
+# Deploy lock (Los Compadres / truck1)
+
+**High priority.** The live website must stay in sync with the committed Cursor workspace.
+
+## Locked targets (never change without explicit user approval)
+
+| Service | Target |
+|---------|--------|
+| GitHub | remote **`truck1`** → `https://github.com/tacosfernando3-dot/truck1.git` · branch **`main`** |
+| Vercel | Team **Los Compadres Taqueria** (`team_B5lEl3kRAYWPFqvq1yeSCnvW`) · project **`truck1`** (`prj_N8vdkZkOQ4JcJF3sT1UhmBfTZFt4`) |
+| Live | https://loscompadrestaqueriany.com · https://truck1-los-compadres-taqueria.vercel.app |
+| Supabase | `https://pwptpxvhdlscyebbqgkt.supabase.co` |
+
+Do **not** push to `origin` or `odio-dev` (Over Drive). Do **not** deploy to other Vercel teams/projects.
+
+## Ship protocol (required)
+
+After finishing user-facing work, or whenever the user asks to push / deploy / sync / go live:
+
+1. `git status` + `git diff` — commit all intended project changes (never `los-compadres.env` or secrets).
+2. `git push truck1 HEAD:main` (not bare `git push`).
+3. Confirm via Vercel that a **production** deployment for commit SHA is **READY** and aliased to `loscompadrestaqueriany.com`.
+4. If the push already landed but live looks stale: empty-commit or re-push to force a new production deploy; tell the user to hard-refresh.
+
+## Do not leave Cursor ahead of live
+
+- Do not end a session with uncommitted site changes the user expects live, unless they asked to keep them local.
+- If local `main` is ahead of `truck1/main`, push before saying the site is updated.
+- Local `npm run dev` is not production — production only updates after `truck1` `main` deploys on Vercel.
+
+## Verify commands
+
+```bash
+git fetch truck1 && git status -sb
+git log -1 --oneline
+git push truck1 HEAD:main
+```
