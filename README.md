@@ -53,17 +53,26 @@ Persists in `localStorage` (`street-flavor-cart`). Checkout is a placeholder ale
 
 Deployment URLs like `truck1-<hash>-los-compadres-taqueria.vercel.app` rotate on every deploy. Use the stable aliases above for the live site. Do **not** push to Over Drive remotes (`origin` / `odio-dev`).
 
+### Keep live in sync with Cursor (required)
+
+1. Commit finished work in this repo.
+2. Push **only** to the locked remote/branch:
+
 ```bash
-# Push only to the locked GitHub remote
+# Push only to the locked GitHub remote (triggers Vercel production)
 git push truck1 HEAD:main
 ```
 
-Vercel auto-deploys production from GitHub `main` on the Los Compadres `truck1` project. Set these env vars there:
+3. Vercel auto-deploys production from GitHub `main` on the Los Compadres `truck1` project. Confirm the new deployment is **READY** and serves `loscompadrestaqueriany.com`.
+4. Never use bare `git push` here — it may target the wrong remote.
+
+Set these env vars on that Vercel project:
 
 - `ADMIN_PASSWORD`, `ADMIN_SECRET`
 - `NEXT_PUBLIC_SUPABASE_URL=https://pwptpxvhdlscyebbqgkt.supabase.co`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
+- Optional mail: `INQUIRY_NOTIFY_EMAIL`, `SMTP_USER`, `SMTP_PASS` (or `RESEND_API_KEY`)
 
 ## Project layout
 
