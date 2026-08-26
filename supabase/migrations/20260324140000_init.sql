@@ -128,4 +128,5 @@ create policy "Public read business"
   to anon, authenticated
   using (true);
 
--- Orders: no anon access. Server uses service role key.
+-- Orders: no anon/authenticated access (explicit deny policies in
+-- 20260826120000_orders_rls_policies.sql). Server uses service role key.
