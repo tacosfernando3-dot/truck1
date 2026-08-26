@@ -42,20 +42,23 @@ To use local files:
 
 Persists in `localStorage` (`street-flavor-cart`). Checkout is a placeholder alert (no Stripe).
 
-## Deploy targets
+## Deploy targets (locked)
 
-| Service | Target |
-|---------|--------|
-| GitHub | [tacosfernando3-dot/truck1](https://github.com/tacosfernando3-dot/truck1.git) |
-| Vercel | Team **Los Compadres Taqueria** · project `truck1` · [vercel.com/tacosfernando3-9529](https://vercel.com/tacosfernando3-9529) |
-| Supabase | [pwptpxvhdlscyebbqgkt](https://pwptpxvhdlscyebbqgkt.supabase.co) |
+| Service | Locked target |
+|---------|----------------|
+| GitHub | [tacosfernando3-dot/truck1](https://github.com/tacosfernando3-dot/truck1.git) — remote `truck1`, branch `main` |
+| Vercel | Team **Los Compadres Taqueria** (`team_B5lEl3kRAYWPFqvq1yeSCnvW`) · project `truck1` (`prj_N8vdkZkOQ4JcJF3sT1UhmBfTZFt4`) · [vercel.com/tacosfernando3-9529](https://vercel.com/tacosfernando3-9529) |
+| Supabase | [https://pwptpxvhdlscyebbqgkt.supabase.co](https://pwptpxvhdlscyebbqgkt.supabase.co) |
+| Live | [loscompadrestaqueriany.com](https://loscompadrestaqueriany.com) · [truck1-los-compadres-taqueria.vercel.app](https://truck1-los-compadres-taqueria.vercel.app) |
+
+Deployment URLs like `truck1-<hash>-los-compadres-taqueria.vercel.app` rotate on every deploy. Use the stable aliases above for the live site. Do **not** push to Over Drive remotes (`origin` / `odio-dev`).
 
 ```bash
-# Push (remote is named truck1)
-git push truck1 main
+# Push only to the locked GitHub remote
+git push truck1 HEAD:main
 ```
 
-Vercel auto-deploys from the GitHub `main` branch. Set these env vars on the Vercel project:
+Vercel auto-deploys production from GitHub `main` on the Los Compadres `truck1` project. Set these env vars there:
 
 - `ADMIN_PASSWORD`, `ADMIN_SECRET`
 - `NEXT_PUBLIC_SUPABASE_URL=https://pwptpxvhdlscyebbqgkt.supabase.co`

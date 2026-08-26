@@ -586,11 +586,11 @@ export const dictionaries = {
       returnHome: "Volver al inicio",
     },
     hero: {
-      eyebrow: "Comida gourmet de la calle",
-      titleLine1: "SABOR INTENSO.",
-      titleLine2: "DONDE SEA.",
+      eyebrow: "Elmhurst, Queens",
+      titleLine1: "LOS COMPADRES",
+      titleLine2: "TAQUERÍA",
       subtitle:
-        "Comida gourmet de la calle, hecha al momento y servida con pasión.",
+        "Comida mexicana de la calle, hecha al momento — tacos, tortas y más.",
       viewMenu: "Ver menú",
       findUs: "Encuéntranos",
       scroll: "Desliza para explorar",
