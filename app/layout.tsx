@@ -10,6 +10,7 @@ import { MobileCartBar } from "@/components/mobile-cart-bar";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SitePreloader } from "@/components/site-preloader";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { LanguageProvider } from "@/lib/i18n";
 import { business } from "@/data/locations";
 import "./globals.css";
