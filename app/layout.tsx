@@ -3,6 +3,8 @@ import { Bebas_Neue, Inter, Permanent_Marker } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/components/cart-provider";
 import { CartDrawer } from "@/components/cart-drawer";
+import { ContactModal } from "@/components/contact-modal";
+import { ContactProvider } from "@/components/contact-provider";
 import { ContentProvider } from "@/components/content-provider";
 import { MobileCartBar } from "@/components/mobile-cart-bar";
 import { SiteFooter } from "@/components/site-footer";
@@ -67,15 +69,18 @@ export default function RootLayout({
         <LanguageProvider>
           <ContentProvider>
             <SitePreloader />
-            <CartProvider>
-              <div className="site-frame">
-                <SiteHeader />
-                <main className="flex-1">{children}</main>
-                <SiteFooter />
-              </div>
-              <CartDrawer />
-              <MobileCartBar />
-            </CartProvider>
+            <ContactProvider>
+              <CartProvider>
+                <div className="site-frame">
+                  <SiteHeader />
+                  <main className="flex-1">{children}</main>
+                  <SiteFooter />
+                </div>
+                <CartDrawer />
+                <MobileCartBar />
+                <ContactModal />
+              </CartProvider>
+            </ContactProvider>
           </ContentProvider>
         </LanguageProvider>
         <Analytics />

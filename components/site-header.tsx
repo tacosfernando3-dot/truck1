@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Menu, ShoppingBag } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/button";
+import { useContact } from "@/components/contact-provider";
 import { LanguageToggle } from "@/components/language-toggle";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { useCart } from "@/components/cart-provider";
@@ -18,12 +19,13 @@ const navItems = [
   { href: "/locations", key: "nav.locations" },
   { href: "/catering", key: "nav.catering" },
   { href: "/#about", key: "nav.about" },
-  { href: "/#contact", key: "nav.contact" },
+  { href: "/#contact", key: "nav.contact", action: "contact" as const },
 ] as const;
 
 export function SiteHeader() {
   const pathname = usePathname();
   const { cartCount, openCart } = useCart();
+  const { openContact } = useContact();
   const t = useT();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -60,15 +62,26 @@ export function SiteHeader() {
                     ? false
                     : pathname === link.href ||
                       pathname.startsWith(`${link.href}/`);
+              const className = cn(
+                "px-3 py-2 text-sm font-semibold tracking-wide uppercase transition",
+                active ? "text-gold" : "text-muted hover:text-white",
+              );
+
+              if ("action" in link && link.action === "contact") {
+                return (
+                  <button
+                    key={link.href}
+                    type="button"
+                    onClick={openContact}
+                    className={className}
+                  >
+                    {t(link.key)}
+                  </button>
+                );
+              }
+
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "px-3 py-2 text-sm font-semibold tracking-wide uppercase transition",
-                    active ? "text-gold" : "text-muted hover:text-white",
-                  )}
-                >
+                <Link key={link.href} href={link.href} className={className}>
                   {t(link.key)}
                 </Link>
               );

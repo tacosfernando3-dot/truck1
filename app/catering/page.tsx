@@ -4,7 +4,7 @@ import { CateringPageClient } from "@/components/catering-page-client";
 export const metadata: Metadata = {
   title: "Catering",
   description:
-    "Bring Los Compadres to your event — packages from $18 per guest with on-site truck options.",
+    "Bring Los Compadres to your event — custom catering for parties, offices, and productions.",
 };
 
 export default function CateringPage() {

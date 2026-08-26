@@ -1,66 +1,82 @@
 "use client";
 
 import Image from "next/image";
-import { Check } from "lucide-react";
+import { useId, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { BackButton } from "@/components/back-button";
+import { Button } from "@/components/button";
 import { CateringInquiryForm } from "@/components/catering-inquiry-form";
+import { SectionHeading } from "@/components/section-heading";
 import { images } from "@/data/images";
 import { useT } from "@/lib/i18n";
-
-const packages = [
-  {
-    id: "essentials",
-    nameKey: "catering.pkgEssentials",
-    priceKey: "catering.pkgEssentialsPrice",
-    featureKeys: [
-      "catering.pkgEssentials1",
-      "catering.pkgEssentials2",
-      "catering.pkgEssentials3",
-      "catering.pkgEssentials4",
-    ],
-    highlighted: false,
-  },
-  {
-    id: "crowd",
-    nameKey: "catering.pkgCrowd",
-    priceKey: "catering.pkgCrowdPrice",
-    featureKeys: [
-      "catering.pkgCrowd1",
-      "catering.pkgCrowd2",
-      "catering.pkgCrowd3",
-      "catering.pkgCrowd4",
-      "catering.pkgCrowd5",
-    ],
-    highlighted: true,
-  },
-  {
-    id: "full-truck",
-    nameKey: "catering.pkgFull",
-    priceKey: "catering.pkgFullPrice",
-    featureKeys: [
-      "catering.pkgFull1",
-      "catering.pkgFull2",
-      "catering.pkgFull3",
-      "catering.pkgFull4",
-      "catering.pkgFull5",
-    ],
-    highlighted: false,
-  },
-] as const;
-
-const eventTypeKeys = [
-  "catering.eventType1",
-  "catering.eventType2",
-  "catering.eventType3",
-  "catering.eventType4",
-] as const;
+import { cn } from "@/lib/utils";
 
 const faqKeys = [
   { q: "catering.faq1q", a: "catering.faq1a" },
   { q: "catering.faq2q", a: "catering.faq2a" },
   { q: "catering.faq3q", a: "catering.faq3a" },
   { q: "catering.faq4q", a: "catering.faq4a" },
+  { q: "catering.faq5q", a: "catering.faq5a" },
+  { q: "catering.faq6q", a: "catering.faq6a" },
+  { q: "catering.faq7q", a: "catering.faq7a" },
 ] as const;
+
+function CateringFaqList() {
+  const t = useT();
+  const baseId = useId();
+  const [openIndex, setOpenIndex] = useState(0);
+
+  return (
+    <div className="mt-10 border-t border-background/12">
+      {faqKeys.map((item, index) => {
+        const open = openIndex === index;
+        const panelId = `${baseId}-panel-${index}`;
+        const buttonId = `${baseId}-button-${index}`;
+        return (
+          <div key={item.q} className="border-b border-background/12">
+            <h3>
+              <button
+                type="button"
+                id={buttonId}
+                aria-expanded={open}
+                aria-controls={panelId}
+                onClick={() => setOpenIndex(open ? -1 : index)}
+                className="flex w-full items-start justify-between gap-4 py-5 text-left transition hover:text-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red"
+              >
+                <span className="flex min-w-0 items-start gap-4">
+                  <span className="mt-0.5 font-display text-lg tracking-wide text-red/70 tabular-nums">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-display text-[1.35rem] leading-tight tracking-wide uppercase sm:text-2xl">
+                    {t(item.q)}
+                  </span>
+                </span>
+                <ChevronDown
+                  className={cn(
+                    "mt-1 h-5 w-5 shrink-0 text-background/45 transition duration-300",
+                    open && "rotate-180 text-red",
+                  )}
+                  aria-hidden
+                />
+              </button>
+            </h3>
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              hidden={!open}
+              className={cn(open ? "block" : "hidden")}
+            >
+              <p className="max-w-3xl pb-6 pl-12 text-base leading-relaxed text-background/70 sm:pl-14 sm:text-[1.05rem]">
+                {t(item.a)}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function CateringPageClient() {
   const t = useT();
@@ -91,81 +107,42 @@ export function CateringPageClient() {
         </div>
       </section>
 
-      <section id="packages" className="container-site py-16">
-        <h2 className="font-brush text-fluid-section text-white">
-          {t("catering.packages")}
-        </h2>
-        <p className="mt-3 max-w-2xl text-muted">{t("catering.packagesIntro")}</p>
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {packages.map((pkg) => (
-            <article
-              key={pkg.id}
-              className={`rounded-xl border p-6 ${
-                pkg.highlighted
-                  ? "border-yellow bg-surface-dark"
-                  : "border-border-dark bg-surface-dark-2"
-              }`}
-            >
-              <h3 className="font-display text-2xl tracking-wide uppercase">
-                {t(pkg.nameKey)}
-              </h3>
-              <p className="mt-2 text-sm font-semibold text-yellow">
-                {t(pkg.priceKey)}
-              </p>
-              <ul className="mt-5 space-y-2">
-                {pkg.featureKeys.map((featureKey) => (
-                  <li key={featureKey} className="flex gap-2 text-sm text-muted">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-yellow" aria-hidden />
-                    {t(featureKey)}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="border-y border-border-dark bg-background-soft py-14">
-        <div className="container-site">
-          <h2 className="font-display text-3xl tracking-wide uppercase text-white">
-            {t("catering.eventTypes")}
-          </h2>
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-            {eventTypeKeys.map((key) => (
-              <li
-                key={key}
-                className="rounded-lg border border-border-dark bg-surface-dark px-4 py-3 text-sm text-muted"
-              >
-                {t(key)}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="container-site grid gap-10 py-16 lg:grid-cols-2">
-        <div>
+      <section id="inquiry" className="container-site py-16">
+        <div className="max-w-2xl">
           <h2 className="font-brush text-4xl text-white">{t("catering.formTitle")}</h2>
           <p className="mt-3 text-muted">{t("catering.formIntro")}</p>
         </div>
-        <div className="rounded-xl border border-border-dark bg-surface-dark p-6 sm:p-8">
+        <div className="mt-8 rounded-xl border border-border-dark bg-surface-dark p-5 sm:p-6 lg:p-8">
           <CateringInquiryForm />
         </div>
       </section>
 
-      <section id="faq" className="border-t border-border-dark bg-cream py-16 text-background">
+      <section
+        id="faq"
+        className="border-t border-border-dark bg-cream py-16 text-background sm:py-20"
+      >
         <div className="container-site">
-          <h2 className="font-brush text-fluid-section">{t("catering.faqs")}</h2>
-          <dl className="mt-8 grid gap-6 md:grid-cols-2">
-            {faqKeys.map((item) => (
-              <div key={item.q} className="rounded-xl border border-border-light bg-white p-5">
-                <dt className="font-display text-xl tracking-wide uppercase">
-                  {t(item.q)}
-                </dt>
-                <dd className="mt-2 text-sm text-background/70">{t(item.a)}</dd>
-              </div>
-            ))}
-          </dl>
+          <SectionHeading
+            eyebrow={t("catering.faqsEyebrow")}
+            title={t("catering.faqs")}
+            description={t("catering.faqsIntro")}
+          />
+
+          <CateringFaqList />
+
+          <div className="mt-12 flex flex-col gap-4 border-t border-background/12 pt-10 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-xl">
+              <p className="font-display text-2xl tracking-wide uppercase">
+                {t("catering.faqsCta")}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-background/65 sm:text-base">
+                {t("catering.faqsCtaBody")}
+              </p>
+            </div>
+            <Button href="#inquiry" className="shrink-0 self-start sm:self-auto">
+              {t("catering.faqsCtaLink")}
+            </Button>
+          </div>
         </div>
       </section>
     </div>

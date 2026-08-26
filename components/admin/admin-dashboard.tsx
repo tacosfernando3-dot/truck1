@@ -42,10 +42,15 @@ import {
   instagramHandleFromUrl,
 } from "@/lib/cms/utils";
 import type { OrderRecord } from "@/lib/orders/types";
+import {
+  MESSAGE_DEPARTMENTS,
+  type MessageDepartment,
+  type SiteMessageRecord,
+} from "@/lib/messages/types";
 import type { GalleryItem, MenuItem } from "@/lib/types";
 import { cn, formatCurrency, menuImageObjectPosition } from "@/lib/utils";
 
-type Tab = "menu" | "pictures" | "settings" | "orders";
+type Tab = "menu" | "pictures" | "settings" | "orders" | "messages";
 
 function blankMenuItem(category: string): MenuItem {
   const name = "New item";
@@ -99,6 +104,13 @@ export function AdminDashboard() {
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [ordersError, setOrdersError] = useState("");
   const [ordersRefresh, setOrdersRefresh] = useState(0);
+  const [messages, setMessages] = useState<SiteMessageRecord[]>([]);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+  const [messagesError, setMessagesError] = useState("");
+  const [messagesRefresh, setMessagesRefresh] = useState(0);
+  const [messageDepartment, setMessageDepartment] = useState<
+    MessageDepartment | "all"
+  >("all");
   const [addingCategory, setAddingCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [describeOpen, setDescribeOpen] = useState(false);
@@ -151,6 +163,31 @@ export function AdminDashboard() {
     })();
   }, [authed, tab, ordersRefresh]);
 
+  useEffect(() => {
+    if (!authed || tab !== "messages") return;
+    void (async () => {
+      setMessagesLoading(true);
+      setMessagesError("");
+      try {
+        const res = await fetch("/api/admin/messages", { cache: "no-store" });
+        const data = (await res.json().catch(() => null)) as {
+          messages?: SiteMessageRecord[];
+          error?: string;
+        } | null;
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load messages");
+        }
+        setMessages(data?.messages ?? []);
+      } catch (error) {
+        setMessagesError(
+          error instanceof Error ? error.message : "Failed to load messages",
+        );
+      } finally {
+        setMessagesLoading(false);
+      }
+    })();
+  }, [authed, tab, messagesRefresh]);
+
   const categoryItems = useMemo(() => {
     if (!content || !selectedCategory) return [];
     return content.menu.filter((item) => item.category === selectedCategory);
@@ -175,6 +212,51 @@ export function AdminDashboard() {
       }))
       .filter((section) => section.items.length > 0);
   }, [content]);
+
+  const filteredMessages = useMemo(() => {
+    if (messageDepartment === "all") return messages;
+    return messages.filter((m) => m.department === messageDepartment);
+  }, [messages, messageDepartment]);
+
+  const messageCounts = useMemo(() => {
+    const counts: Record<MessageDepartment | "all", number> = {
+      all: messages.length,
+      contact: 0,
+      catering: 0,
+      newsletter: 0,
+    };
+    for (const message of messages) {
+      counts[message.department] += 1;
+    }
+    return counts;
+  }, [messages]);
+
+  async function setMessageStatus(
+    id: string,
+    status: SiteMessageRecord["status"],
+  ) {
+    try {
+      const res = await fetch("/api/admin/messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      });
+      const data = (await res.json().catch(() => null)) as {
+        message?: SiteMessageRecord;
+        error?: string;
+      } | null;
+      if (!res.ok || !data?.message) {
+        throw new Error(data?.error || "Failed to update message");
+      }
+      setMessages((prev) =>
+        prev.map((m) => (m.id === id ? data.message! : m)),
+      );
+    } catch (error) {
+      setMessagesError(
+        error instanceof Error ? error.message : "Failed to update message",
+      );
+    }
+  }
 
   async function login(e: React.FormEvent) {
     e.preventDefault();
@@ -560,6 +642,7 @@ export function AdminDashboard() {
               ["pictures", "Photos", ImagePlus],
               ["settings", "Settings", Settings],
               ["orders", "Orders", ClipboardList],
+              ["messages", "Messages", Mail],
             ] as const
           ).map(([id, label, Icon]) => {
             const active = tab === id;
@@ -609,7 +692,9 @@ export function AdminDashboard() {
                   ? "Photo gallery"
                   : tab === "orders"
                     ? "Orders & payments"
-                    : "Settings"}
+                    : tab === "messages"
+                      ? "Messages"
+                      : "Settings"}
             </h1>
             <p className="truncate text-xs text-muted">
               {tab === "menu"
@@ -618,7 +703,9 @@ export function AdminDashboard() {
                   ? "Fallback images if Instagram feed is not connected"
                   : tab === "orders"
                     ? "Recent checkouts saved to Supabase"
-                    : "Footer contact, socials, and business details"}
+                    : tab === "messages"
+                      ? "Contact, catering, and newsletter inquiries"
+                      : "Footer contact, socials, and business details"}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
@@ -627,7 +714,7 @@ export function AdminDashboard() {
                 {status}
               </span>
             )}
-            {tab !== "orders" ? (
+            {tab !== "orders" && tab !== "messages" ? (
               <>
                 <Button
                   type="button"
@@ -1729,6 +1816,178 @@ export function AdminDashboard() {
                     </ul>
                   </li>
                 ))}
+              </ul>
+            </div>
+          )}
+
+          {tab === "messages" && (
+            <div className="space-y-4 rounded-lg border border-white/10 bg-surface-dark/80 p-4 sm:p-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
+                  Inbox
+                </h2>
+                <Button
+                  type="button"
+                  variant="outline-light"
+                  className="min-h-9 px-3 text-xs"
+                  loading={messagesLoading}
+                  onClick={() => setMessagesRefresh((n) => n + 1)}
+                >
+                  Refresh
+                </Button>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {(
+                  [
+                    ["all", "All"],
+                    ...MESSAGE_DEPARTMENTS.map(
+                      (d) => [d.id, d.label] as const,
+                    ),
+                  ] as const
+                ).map(([id, label]) => {
+                  const active = messageDepartment === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setMessageDepartment(id)}
+                      className={cn(
+                        "rounded-lg border px-3 py-1.5 text-xs font-semibold tracking-wide uppercase transition",
+                        active
+                          ? "border-yellow bg-yellow text-white"
+                          : "border-white/10 text-muted hover:border-white/25 hover:text-white",
+                      )}
+                    >
+                      {label} ({messageCounts[id]})
+                    </button>
+                  );
+                })}
+              </div>
+
+              {messagesError ? (
+                <p className="text-sm text-red-400" role="alert">
+                  {messagesError}
+                </p>
+              ) : null}
+              {messagesLoading && !messages.length ? (
+                <p className="text-sm text-muted">Loading messages…</p>
+              ) : null}
+              {!messagesLoading && !messagesError && filteredMessages.length === 0 ? (
+                <p className="text-sm text-muted">
+                  No messages in this department yet.
+                </p>
+              ) : null}
+
+              <ul className="space-y-3">
+                {filteredMessages.map((message) => {
+                  const deptLabel =
+                    MESSAGE_DEPARTMENTS.find((d) => d.id === message.department)
+                      ?.label ?? message.department;
+                  const payloadEntries = Object.entries(message.payload).filter(
+                    ([, value]) =>
+                      value !== undefined && value !== null && value !== "",
+                  );
+                  return (
+                    <li
+                      key={message.id}
+                      className="rounded-xl border border-white/10 bg-black/20 p-4"
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="rounded-md border border-yellow/30 bg-yellow/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-yellow uppercase">
+                              {deptLabel}
+                            </span>
+                            <span
+                              className={cn(
+                                "rounded-md border px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase",
+                                message.status === "new"
+                                  ? "border-green/40 bg-green/15 text-green"
+                                  : message.status === "read"
+                                    ? "border-white/15 text-muted"
+                                    : "border-white/10 text-muted/70",
+                              )}
+                            >
+                              {message.status}
+                            </span>
+                            {message.emailSent ? (
+                              <span className="text-[10px] text-muted">
+                                emailed
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-orange">
+                                email pending
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-2 font-semibold text-white">
+                            {message.fullName || "Newsletter signup"}
+                          </p>
+                          <p className="mt-1 text-xs text-muted">
+                            {message.email}
+                            {message.phone ? ` · ${message.phone}` : ""}
+                          </p>
+                          <p className="mt-1 text-xs text-muted">
+                            {new Date(message.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {message.status !== "read" ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                void setMessageStatus(message.id, "read")
+                              }
+                              className="rounded-lg border border-white/15 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-muted uppercase hover:text-white"
+                            >
+                              Mark read
+                            </button>
+                          ) : null}
+                          {message.status !== "new" ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                void setMessageStatus(message.id, "new")
+                              }
+                              className="rounded-lg border border-white/15 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-muted uppercase hover:text-white"
+                            >
+                              Mark new
+                            </button>
+                          ) : null}
+                          {message.status !== "archived" ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                void setMessageStatus(message.id, "archived")
+                              }
+                              className="rounded-lg border border-white/15 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-muted uppercase hover:text-white"
+                            >
+                              Archive
+                            </button>
+                          ) : null}
+                        </div>
+                      </div>
+                      {message.message ? (
+                        <p className="mt-3 whitespace-pre-wrap border-t border-white/10 pt-3 text-sm text-cream">
+                          {message.message}
+                        </p>
+                      ) : null}
+                      {payloadEntries.length > 0 ? (
+                        <ul className="mt-3 space-y-1 border-t border-white/10 pt-3 text-xs text-muted">
+                          {payloadEntries.map(([key, value]) => (
+                            <li key={key} className="flex justify-between gap-3">
+                              <span className="capitalize">
+                                {key.replace(/([A-Z])/g, " $1")}
+                              </span>
+                              <span className="text-white">{String(value)}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}

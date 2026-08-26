@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/button";
+import { useContact } from "@/components/contact-provider";
 import { primaryNav } from "@/data/navigation";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,7 @@ type Props = {
 
 export function MobileNavigation({ open, onClose, pathname }: Props) {
   const t = useT();
+  const { openContact } = useContact();
 
   useEffect(() => {
     if (!open) return;
@@ -76,15 +78,33 @@ export function MobileNavigation({ open, onClose, pathname }: Props) {
               link.href === "/"
                 ? pathname === "/"
                 : pathname === link.href || pathname.startsWith(`${link.href}/`);
+            const className = cn(
+              "rounded-md px-4 py-3 text-left text-base font-semibold tracking-wide uppercase",
+              active ? "bg-surface-dark text-yellow" : "text-white hover:bg-surface-dark",
+            );
+
+            if (link.href === "/#contact") {
+              return (
+                <button
+                  key={link.href}
+                  type="button"
+                  className={className}
+                  onClick={() => {
+                    onClose();
+                    openContact();
+                  }}
+                >
+                  {t(link.key)}
+                </button>
+              );
+            }
+
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={onClose}
-                className={cn(
-                  "rounded-md px-4 py-3 text-base font-semibold tracking-wide uppercase",
-                  active ? "bg-surface-dark text-yellow" : "text-white hover:bg-surface-dark",
-                )}
+                className={className}
               >
                 {t(link.key)}
               </Link>

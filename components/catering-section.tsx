@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/button";
+import { useContact } from "@/components/contact-provider";
 import { images } from "@/data/images";
 import { useT } from "@/lib/i18n";
 
 export function CateringSection() {
   const t = useT();
+  const { openContact } = useContact();
 
   return (
     <section id="about" className="bg-background-soft py-14 sm:py-16">
@@ -27,13 +29,17 @@ export function CateringSection() {
             >
               {t("about.cateringEvents")}
             </Button>
-            <Button href="/#contact" variant="outline-light">
+            <Button
+              type="button"
+              variant="outline-light"
+              onClick={openContact}
+            >
               {t("about.contactCrew")}
             </Button>
           </div>
           <p className="mt-4 text-sm text-muted">
             {t("about.preferPackages")}{" "}
-            <Link href="/catering#packages" className="text-yellow hover:underline">
+            <Link href="/catering#inquiry" className="text-yellow hover:underline">
               {t("about.seePackages")}
             </Link>
             .

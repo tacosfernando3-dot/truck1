@@ -7,16 +7,43 @@ import { useT } from "@/lib/i18n";
 export function NewsletterSection({ compact = false }: { compact?: boolean }) {
   const t = useT();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setStatus("error");
+      setErrorMessage(t("newsletter.invalid"));
       return;
     }
-    setStatus("success");
-    setEmail("");
+    setStatus("loading");
+    setErrorMessage("");
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          department: "newsletter",
+          email: email.trim(),
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      if (!res.ok) {
+        throw new Error(data?.error || t("newsletter.submitFailed"));
+      }
+      setStatus("success");
+      setEmail("");
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error ? error.message : t("newsletter.submitFailed"),
+      );
+    }
   }
 
   return (
@@ -55,6 +82,7 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
           onChange={(e) => {
             setEmail(e.target.value);
             setStatus("idle");
+            setErrorMessage("");
           }}
           placeholder={t("newsletter.placeholder")}
           className="min-h-11 w-full min-w-0 flex-1 rounded-md border border-border-dark bg-surface-dark px-4 text-white outline-none placeholder:text-muted focus:border-yellow"
@@ -62,6 +90,7 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
         />
         <Button
           type="submit"
+          loading={status === "loading"}
           className={
             compact
               ? "w-full shrink-0 hover:!bg-white hover:!text-background"
@@ -78,7 +107,7 @@ export function NewsletterSection({ compact = false }: { compact?: boolean }) {
       )}
       {status === "error" && (
         <p className="mt-2 text-sm text-red-400" role="alert">
-          {t("newsletter.invalid")}
+          {errorMessage || t("newsletter.invalid")}
         </p>
       )}
     </div>

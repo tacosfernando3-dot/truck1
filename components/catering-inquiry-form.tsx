@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/button";
+import { formatPhoneInput } from "@/lib/cms/utils";
 import { useT } from "@/lib/i18n";
 
 type FormState = {
@@ -50,6 +51,7 @@ export function CateringInquiryForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -86,10 +88,41 @@ export function CateringInquiryForm() {
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
-    setLoading(false);
-    setSuccess(true);
-    setForm(initial);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          department: "catering",
+          fullName: form.fullName.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          message: form.message.trim(),
+          payload: {
+            eventType: form.eventType,
+            eventDate: form.eventDate,
+            guestCount: form.guestCount,
+            eventLocation: form.eventLocation,
+            packageId: form.packageId,
+          },
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      if (!res.ok) {
+        throw new Error(data?.error || t("cateringForm.submitFailed"));
+      }
+      setSuccess(true);
+      setForm(initial);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : t("cateringForm.submitFailed"),
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (success) {
@@ -114,7 +147,12 @@ export function CateringInquiryForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      <div className="grid gap-4 sm:grid-cols-2">
+      {submitError ? (
+        <p className="text-sm text-red-400" role="alert">
+          {submitError}
+        </p>
+      ) : null}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <label htmlFor="fullName" className="text-sm text-muted">
             {t("cateringForm.fullName")}
@@ -152,9 +190,6 @@ export function CateringInquiryForm() {
             </p>
           )}
         </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="phone" className="text-sm text-muted">
             {t("cateringForm.phone")}
@@ -162,9 +197,12 @@ export function CateringInquiryForm() {
           <input
             id="phone"
             type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="(555) 555-5555"
             className={fieldClass}
             value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
+            onChange={(e) => update("phone", formatPhoneInput(e.target.value))}
             aria-invalid={!!errors.phone}
             aria-describedby={errors.phone ? "phone-error" : undefined}
           />
@@ -199,9 +237,6 @@ export function CateringInquiryForm() {
             </p>
           )}
         </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="eventDate" className="text-sm text-muted">
             {t("cateringForm.eventDate")}
@@ -209,7 +244,7 @@ export function CateringInquiryForm() {
           <input
             id="eventDate"
             type="date"
-            className={fieldClass}
+            className={`${fieldClass} date-input-dark`}
             value={form.eventDate}
             onChange={(e) => update("eventDate", e.target.value)}
             aria-invalid={!!errors.eventDate}
@@ -241,73 +276,70 @@ export function CateringInquiryForm() {
             </p>
           )}
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="eventLocation" className="text-sm text-muted">
-          {t("cateringForm.eventLocation")}
-        </label>
-        <input
-          id="eventLocation"
-          className={fieldClass}
-          value={form.eventLocation}
-          onChange={(e) => update("eventLocation", e.target.value)}
-          aria-invalid={!!errors.eventLocation}
-          aria-describedby={
-            errors.eventLocation ? "eventLocation-error" : undefined
-          }
-        />
-        {errors.eventLocation && (
-          <p id="eventLocation-error" className="mt-1 text-sm text-red-400" role="alert">
-            {errors.eventLocation}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="packageId" className="text-sm text-muted">
-          {t("cateringForm.package")}
-        </label>
-        <select
-          id="packageId"
-          className={fieldClass}
-          value={form.packageId}
-          onChange={(e) => update("packageId", e.target.value)}
-          aria-invalid={!!errors.packageId}
-          aria-describedby={errors.packageId ? "packageId-error" : undefined}
-        >
-          <option value="">{t("cateringForm.selectPackage")}</option>
-          {packageOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {t(option.key)}
-            </option>
-          ))}
-        </select>
-        {errors.packageId && (
-          <p id="packageId-error" className="mt-1 text-sm text-red-400" role="alert">
-            {errors.packageId}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="message" className="text-sm text-muted">
-          {t("cateringForm.message")}
-        </label>
-        <textarea
-          id="message"
-          rows={5}
-          className={`${fieldClass} py-3`}
-          value={form.message}
-          onChange={(e) => update("message", e.target.value)}
-          aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? "message-error" : undefined}
-        />
-        {errors.message && (
-          <p id="message-error" className="mt-1 text-sm text-red-400" role="alert">
-            {errors.message}
-          </p>
-        )}
+        <div className="sm:col-span-2 lg:col-span-2">
+          <label htmlFor="eventLocation" className="text-sm text-muted">
+            {t("cateringForm.eventLocation")}
+          </label>
+          <input
+            id="eventLocation"
+            className={fieldClass}
+            value={form.eventLocation}
+            onChange={(e) => update("eventLocation", e.target.value)}
+            aria-invalid={!!errors.eventLocation}
+            aria-describedby={
+              errors.eventLocation ? "eventLocation-error" : undefined
+            }
+          />
+          {errors.eventLocation && (
+            <p id="eventLocation-error" className="mt-1 text-sm text-red-400" role="alert">
+              {errors.eventLocation}
+            </p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="packageId" className="text-sm text-muted">
+            {t("cateringForm.package")}
+          </label>
+          <select
+            id="packageId"
+            className={fieldClass}
+            value={form.packageId}
+            onChange={(e) => update("packageId", e.target.value)}
+            aria-invalid={!!errors.packageId}
+            aria-describedby={errors.packageId ? "packageId-error" : undefined}
+          >
+            <option value="">{t("cateringForm.selectPackage")}</option>
+            {packageOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {t(option.key)}
+              </option>
+            ))}
+          </select>
+          {errors.packageId && (
+            <p id="packageId-error" className="mt-1 text-sm text-red-400" role="alert">
+              {errors.packageId}
+            </p>
+          )}
+        </div>
+        <div className="sm:col-span-2 lg:col-span-3">
+          <label htmlFor="message" className="text-sm text-muted">
+            {t("cateringForm.message")}
+          </label>
+          <textarea
+            id="message"
+            rows={3}
+            className={`${fieldClass} py-3`}
+            value={form.message}
+            onChange={(e) => update("message", e.target.value)}
+            aria-invalid={!!errors.message}
+            aria-describedby={errors.message ? "message-error" : undefined}
+          />
+          {errors.message && (
+            <p id="message-error" className="mt-1 text-sm text-red-400" role="alert">
+              {errors.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <Button type="submit" loading={loading}>

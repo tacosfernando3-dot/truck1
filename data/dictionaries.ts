@@ -69,9 +69,10 @@ export const dictionaries = {
       altLogo: "Los Compadres Taquería",
     },
     menuPreview: {
-      eyebrow: "The Menu",
+      eyebrow: "Featured Items",
       title: "MADE TO CRAVE",
       viewFull: "View Full Menu",
+      empty: "Featured items will appear here when marked in Admin.",
     },
     menuPage: {
       orderAhead: "Order ahead",
@@ -141,8 +142,8 @@ export const dictionaries = {
       body: "Los Compadres is an Elmhurst truck cooking bold Mexican street plates from scratch — tacos, tortas, burgers, and sides made fresh every service. Catch us around Queens, or book catering for parties, offices, and film sets.",
       cateringEvents: "Catering & Events",
       contactCrew: "Contact the Crew",
-      preferPackages: "Prefer a full package breakdown?",
-      seePackages: "See catering packages",
+      preferPackages: "Ready to plan your event?",
+      seePackages: "Send a catering inquiry",
       alt: "Fresh grilled street food ready for catering",
     },
     gallery: {
@@ -170,6 +171,7 @@ export const dictionaries = {
       subscribe: "Subscribe",
       success: "You're on the list. See you at the truck.",
       invalid: "Enter a valid email address.",
+      submitFailed: "Couldn’t subscribe right now. Please try again.",
     },
     cart: {
       yourOrder: "Your Order ({count})",
@@ -234,8 +236,15 @@ export const dictionaries = {
       eventType4: "Film / production craft services",
       formTitle: "Tell us about your event",
       formIntro:
-        "Share the date, headcount, and vibe. We'll follow up with availability — no backend required for this demo form.",
-      faqs: "FAQs",
+        "Share the date, headcount, and vibe. We'll follow up with availability and a custom quote.",
+      faqs: "Common questions",
+      faqsEyebrow: "FAQs",
+      faqsIntro:
+        "What planners usually ask before booking Los Compadres for a party, office lunch, or production day.",
+      faqsCta: "Still deciding?",
+      faqsCtaBody:
+        "Send an inquiry with your date and headcount — we’ll confirm availability and walk you through the best package.",
+      faqsCtaLink: "Start an inquiry",
       altHero: "Catering food trays with grilled meats and vegetables",
       pkgEssentials: "Street Essentials",
       pkgEssentialsPrice: "Starting at $18 per guest",
@@ -259,16 +268,25 @@ export const dictionaries = {
       pkgFull5: "Setup and cleanup",
       faq1q: "How far in advance should we book?",
       faq1a:
-        "Two to four weeks is ideal for standard packages. Full truck bookings fill faster on weekends.",
-      faq2q: "Do you travel outside Elmhurst?",
+        "Two to four weeks works for most Street Essentials and Crowd Favorite bookings. Full Truck Experience dates — especially Friday–Sunday — often book four to six weeks out. Last-minute requests are possible when the calendar is open; tell us your date and we’ll be honest about what we can deliver.",
+      faq2q: "Where do you travel from Elmhurst?",
       faq2a:
-        "Yes — we cover Queens and Greater NYC. Travel fees may apply outside the borough.",
-      faq3q: "Can you accommodate dietary needs?",
+        "We’re based in Elmhurst, Queens and regularly serve Queens, Brooklyn, Manhattan, the Bronx, and nearby Long Island / Westchester spots. Travel time and parking access affect the quote. Sites more than about 45 minutes from our home base may include a travel fee.",
+      faq3q: "Can you handle dietary needs and allergies?",
       faq3a:
-        "We regularly prep vegetarian bowls and can discuss gluten-conscious options when you inquire.",
-      faq4q: "Is a deposit required?",
+        "Yes. Vegetarian options are standard, and we can plan gluten-conscious builds, dairy-light plates, and spice levels when you flag them on the inquiry. For severe allergies we’ll review cross-contact with you before the event so your guests stay safe.",
+      faq4q: "How do deposits and final payment work?",
       faq4a:
-        "A deposit holds your date once we confirm availability. Details come with your quote.",
+        "A deposit locks your date after we confirm the menu and logistics. The remaining balance is due before service (card or invoice, depending on the booking). Cancellations and weather reschedules are spelled out on your quote so there are no surprises.",
+      faq5q: "What’s the guest minimum, and how is pricing set?",
+      faq5a:
+        "Most packages start around 40 guests. Per-guest pricing scales with headcount, entrée count, drinks, staff, and whether you want the full truck on site. We’ll send a clear line-item quote — not a vague range — once we know your date and location.",
+      faq6q: "What do you need on-site to set up?",
+      faq6a:
+        "For drop-off or buffet-style service we need a level serving area and vehicle access for unload. For the Full Truck Experience we need legal street or lot parking for the truck, roughly a 10×20 ft footprint, and clearance for the service window. We’ll confirm power, permits, and load-in time on the walkthrough.",
+      faq7q: "What if it rains or the venue changes?",
+      faq7a:
+        "Outdoor events should have a covered backup when possible. Light rain usually doesn’t stop service; severe weather may shift to your indoor plan or a new date. Venue changes are fine if we still have access and timing — just give us as much notice as you can so we can re-check logistics.",
     },
     cateringForm: {
       nameRequired: "Full name is required.",
@@ -301,6 +319,28 @@ export const dictionaries = {
       selectPackage: "Select package",
       message: "Message",
       submit: "Submit Inquiry",
+      submitFailed: "Couldn’t send your inquiry. Please try again.",
+    },
+    contactForm: {
+      title: "Get in touch",
+      subtitle: "Questions, shout-outs, or booking help — drop us a note.",
+      closeOverlay: "Close contact form",
+      close: "Close",
+      fullName: "Full name",
+      email: "Email",
+      phone: "Phone",
+      message: "Message",
+      submit: "Send message",
+      nameRequired: "Full name is required.",
+      emailInvalid: "Enter a valid email.",
+      phoneRequired: "Phone is required.",
+      messageRequired: "Message is required.",
+      successTitle: "Message sent",
+      successBody:
+        "Thanks for writing in. We’ll get back to you within one business day.",
+      sendAnother: "Send another message",
+      dialogAria: "Contact form",
+      submitFailed: "Couldn’t send your message. Please try again.",
     },
     preloader: {
       loading: "Loading Los Compadres",
@@ -599,9 +639,10 @@ export const dictionaries = {
       altLogo: "Los Compadres Taquería",
     },
     menuPreview: {
-      eyebrow: "El menú",
+      eyebrow: "Destacados",
       title: "HECHO PARA ANTOJARTE",
       viewFull: "Ver menú completo",
+      empty: "Los destacados aparecerán aquí cuando los marques en Admin.",
     },
     menuPage: {
       orderAhead: "Ordena antes",
@@ -672,8 +713,8 @@ export const dictionaries = {
       body: "Los Compadres es un truck en Elmhurst que cocina platos mexicanos de la calle desde cero — tacos, tortas, burgers y guarniciones frescas en cada servicio. Encuéntranos por Queens, o reserva catering para fiestas, oficinas y sets de filmación.",
       cateringEvents: "Catering y eventos",
       contactCrew: "Contacta al equipo",
-      preferPackages: "¿Prefieres el desglose completo de paquetes?",
-      seePackages: "Ver paquetes de catering",
+      preferPackages: "¿Listo para planear tu evento?",
+      seePackages: "Enviar una consulta de catering",
       alt: "Comida de la calle a la parrilla lista para catering",
     },
     gallery: {
@@ -701,6 +742,7 @@ export const dictionaries = {
       subscribe: "Suscribirse",
       success: "Ya estás en la lista. Nos vemos en el truck.",
       invalid: "Ingresa un correo válido.",
+      submitFailed: "No se pudo suscribir ahora. Inténtalo de nuevo.",
     },
     cart: {
       yourOrder: "Tu pedido ({count})",
@@ -767,8 +809,15 @@ export const dictionaries = {
       eventType4: "Filmación / craft services de producción",
       formTitle: "Cuéntanos de tu evento",
       formIntro:
-        "Comparte la fecha, el número de invitados y el vibe. Te respondemos con disponibilidad — este formulario demo no requiere backend.",
+        "Comparte la fecha, el número de invitados y el vibe. Te respondemos con disponibilidad y una cotización a tu medida.",
       faqs: "Preguntas frecuentes",
+      faqsEyebrow: "FAQs",
+      faqsIntro:
+        "Lo que suelen preguntar antes de reservar Los Compadres para una fiesta, almuerzo de oficina o día de producción.",
+      faqsCta: "¿Todavía lo estás pensando?",
+      faqsCtaBody:
+        "Envía una consulta con tu fecha y número de invitados — confirmamos disponibilidad y te guiamos al mejor paquete.",
+      faqsCtaLink: "Empezar consulta",
       altHero: "Bandejas de catering con carnes y vegetales a la parrilla",
       pkgEssentials: "Street Essentials",
       pkgEssentialsPrice: "Desde $18 por persona",
@@ -792,16 +841,25 @@ export const dictionaries = {
       pkgFull5: "Montaje y limpieza",
       faq1q: "¿Con cuánta anticipación debemos reservar?",
       faq1a:
-        "De dos a cuatro semanas es ideal para paquetes estándar. Los bookings de truck completo se llenan más rápido los fines de semana.",
-      faq2q: "¿Viajan fuera de Elmhurst?",
+        "De dos a cuatro semanas funciona para la mayoría de Street Essentials y Crowd Favorite. Las fechas de Full Truck Experience — sobre todo viernes a domingo — suelen llenarse con cuatro a seis semanas de anticipación. Pedidos de último momento son posibles si hay calendario libre; dinos la fecha y seremos claros con lo que podemos entregar.",
+      faq2q: "¿Hasta dónde viajan desde Elmhurst?",
       faq2a:
-        "Sí — cubrimos Queens y el Gran NYC. Pueden aplicar tarifas de traslado fuera del borough.",
-      faq3q: "¿Pueden acomodar necesidades dietéticas?",
+        "Estamos en Elmhurst, Queens, y servimos con frecuencia Queens, Brooklyn, Manhattan, el Bronx y zonas cercanas de Long Island / Westchester. El tiempo de viaje y el acceso a estacionamiento afectan la cotización. Sitios a más de ~45 minutos de nuestra base pueden incluir tarifa de traslado.",
+      faq3q: "¿Pueden manejar necesidades dietéticas y alergias?",
       faq3a:
-        "Preparamos bowls vegetarianos con frecuencia y podemos hablar opciones conscientes del gluten cuando preguntes.",
-      faq4q: "¿Se requiere depósito?",
+        "Sí. Las opciones vegetarianas son estándar, y podemos planear platos conscientes del gluten, con poca lácteos y distintos niveles de picante si lo marcas en la consulta. Para alergias severas revisamos el contacto cruzado contigo antes del evento para que tus invitados estén seguros.",
+      faq4q: "¿Cómo funcionan el depósito y el pago final?",
       faq4a:
-        "Un depósito asegura tu fecha una vez confirmamos disponibilidad. Los detalles van con tu cotización.",
+        "Un depósito asegura tu fecha cuando confirmamos menú y logística. El saldo restante se paga antes del servicio (tarjeta o factura, según la reserva). Cancelaciones y cambios por clima quedan claros en tu cotización para que no haya sorpresas.",
+      faq5q: "¿Cuál es el mínimo de invitados y cómo se fija el precio?",
+      faq5a:
+        "La mayoría de paquetes empiezan cerca de 40 invitados. El precio por persona escala con el número de invitados, cantidad de platos, bebidas, personal y si quieres el truck completo en el lugar. Te enviamos una cotización con líneas claras — no un rango vago — cuando sepamos fecha y ubicación.",
+      faq6q: "¿Qué necesitan en el sitio para montar?",
+      faq6a:
+        "Para drop-off o buffet necesitamos un área de servicio nivelada y acceso vehicular para descargar. Para Full Truck Experience hace falta estacionamiento legal en calle o lote, aproximadamente 10×20 pies de espacio y despeje para la ventana de servicio. Confirmamos energía, permisos y horario de carga en el walkthrough.",
+      faq7q: "¿Qué pasa si llueve o cambia el venue?",
+      faq7a:
+        "Los eventos al aire libre deberían tener un plan cubierto de respaldo. La lluvia ligera casi nunca detiene el servicio; clima severo puede pasar a tu plan indoor o a otra fecha. Cambios de venue están bien si aún hay acceso y tiempo — avísanos cuanto antes para rechequear la logística.",
     },
     cateringForm: {
       nameRequired: "El nombre completo es obligatorio.",
@@ -834,6 +892,28 @@ export const dictionaries = {
       selectPackage: "Seleccionar paquete",
       message: "Mensaje",
       submit: "Enviar consulta",
+      submitFailed: "No se pudo enviar la consulta. Inténtalo de nuevo.",
+    },
+    contactForm: {
+      title: "Contáctanos",
+      subtitle: "Preguntas, saludos o ayuda con reservas — escríbenos.",
+      closeOverlay: "Cerrar formulario de contacto",
+      close: "Cerrar",
+      fullName: "Nombre completo",
+      email: "Correo",
+      phone: "Teléfono",
+      message: "Mensaje",
+      submit: "Enviar mensaje",
+      nameRequired: "El nombre completo es obligatorio.",
+      emailInvalid: "Ingresa un correo válido.",
+      phoneRequired: "El teléfono es obligatorio.",
+      messageRequired: "El mensaje es obligatorio.",
+      successTitle: "Mensaje enviado",
+      successBody:
+        "Gracias por escribirnos. Te responderemos en un día hábil.",
+      sendAnother: "Enviar otro mensaje",
+      dialogAria: "Formulario de contacto",
+      submitFailed: "No se pudo enviar el mensaje. Inténtalo de nuevo.",
     },
     preloader: {
       loading: "Cargando Los Compadres",

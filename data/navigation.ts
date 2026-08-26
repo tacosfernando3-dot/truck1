@@ -20,7 +20,7 @@ export const footerPages: NavLink[] = [
 
 export const footerInfo: NavLink[] = [
   { href: "/catering", key: "nav.cateringEvents" },
-  { href: "/catering#packages", key: "nav.privateParties" },
+  { href: "/catering#inquiry", key: "nav.privateParties" },
   { href: "/#gallery", key: "nav.gallery" },
   { href: "/orders", key: "nav.orders" },
   { href: "/catering#faq", key: "nav.faqs" },
