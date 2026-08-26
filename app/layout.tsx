@@ -29,26 +29,26 @@ const marker = Permanent_Marker({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://streetflavortruck.com"),
+  metadataBase: new URL("https://loscompadrestaqueriany.com"),
   title: {
-    default: "Street Flavor | Bold Flavor Anywhere",
-    template: "%s | Street Flavor",
+    default: "Los Compadres Taquería | Bold Flavor Anywhere",
+    template: "%s | Los Compadres",
   },
   description:
-    "Gourmet street food made fresh and served wherever the city takes us.",
+    "Mexican street food made fresh in Elmhurst, Queens — tacos, tortas, and more.",
   openGraph: {
-    title: "Street Flavor | Bold Flavor Anywhere",
+    title: "Los Compadres Taquería | Bold Flavor Anywhere",
     description:
-      "Gourmet street food made fresh and served wherever the city takes us.",
+      "Mexican street food made fresh in Elmhurst, Queens — tacos, tortas, and more.",
     type: "website",
     locale: "en_US",
     siteName: business.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Street Flavor | Bold Flavor Anywhere",
+    title: "Los Compadres Taquería | Bold Flavor Anywhere",
     description:
-      "Gourmet street food made fresh and served wherever the city takes us.",
+      "Mexican street food made fresh in Elmhurst, Queens — tacos, tortas, and more.",
   },
 };
 

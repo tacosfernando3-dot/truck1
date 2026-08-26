@@ -4,7 +4,7 @@ import { images } from "@/data/images";
 export const galleryItems: GalleryItem[] = [
   {
     id: "g1",
-    alt: "Street Flavor food truck parked at night",
+    alt: "Los Compadres food truck parked at night",
     image: images.truckGallery,
   },
   {

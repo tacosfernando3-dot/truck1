@@ -4,7 +4,7 @@ import { MenuPageClient } from "@/components/menu-page-client";
 export const metadata: Metadata = {
   title: "Menu",
   description:
-    "Street tacos, smash burgers, bowls, sides, and drinks from Street Flavor Food Truck.",
+    "Street tacos, tortas, burgers, sides, and drinks from Los Compadres Taquería.",
 };
 
 export default function MenuPage() {

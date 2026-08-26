@@ -15,12 +15,12 @@ async function LocalBusinessJsonLd() {
     "@type": "FoodEstablishment",
     name: business.name,
     description:
-      "Gourmet street food made fresh and served wherever the city takes us.",
+      "Mexican street food made fresh in Elmhurst, Queens — tacos, tortas, and more.",
     servesCuisine: business.cuisine,
     priceRange: business.priceRange,
     telephone: business.phone,
     email: business.email,
-    url: "https://streetflavortruck.com",
+    url: "https://loscompadrestaqueriany.com",
     address: {
       "@type": "PostalAddress",
       streetAddress: business.streetAddress,

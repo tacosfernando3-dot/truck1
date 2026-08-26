@@ -1,6 +1,6 @@
-# Street Flavor Food Truck
+# Los Compadres Taquería
 
-Premium, mobile-responsive site for **Street Flavor Food Truck**.
+Premium, mobile-responsive site for **Los Compadres Taquería**.
 
 Stack: Next.js (App Router) · TypeScript · Tailwind CSS · Lucide React · `next/font` · `next/image`
 

@@ -986,7 +986,7 @@
   "gallery": [
     {
       "id": "g1",
-      "alt": "Street Flavor food truck parked at night",
+      "alt": "Los Compadres food truck parked at night",
       "image": "/images/truck-gallery.jpg"
     },
     {
@@ -1011,12 +1011,12 @@
     }
   ],
   "business": {
-    "name": "Street Flavor Food Truck",
-    "shortName": "Street Flavor",
-    "handle": "@STREETFLAVORTRUCK",
+    "name": "Los Compadres Taquería",
+    "shortName": "Los Compadres",
+    "handle": "@loscompadrestaqueria",
     "phone": "(929) 283-0153",
-    "email": "hello@streetflavortruck.com",
-    "cuisine": "American street food, tacos, burgers, and bowls",
+    "email": "hello@loscompadrestaqueriany.com",
+    "cuisine": "Mexican street food, tacos, tortas, and more",
     "priceRange": "$$",
     "instagram": "https://instagram.com",
     "facebook": "https://facebook.com",

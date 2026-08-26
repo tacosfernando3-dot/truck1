@@ -9,12 +9,12 @@ const EQ = {
 } as const;
 
 export const business = {
-  name: "Street Flavor Food Truck",
-  shortName: "Street Flavor",
-  handle: "@STREETFLAVORTRUCK",
-  phone: "(718) 555-0142",
-  email: "hello@streetflavortruck.com",
-  cuisine: "American street food, tacos, burgers, and bowls",
+  name: "Los Compadres Taquería",
+  shortName: "Los Compadres",
+  handle: "@loscompadrestaqueria",
+  phone: "(929) 283-0153",
+  email: "hello@loscompadrestaqueriany.com",
+  cuisine: "Mexican street food, tacos, tortas, and more",
   priceRange: "$$",
   instagram: "https://instagram.com",
   facebook: "https://facebook.com",
