@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Inter, Permanent_Marker } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/components/cart-provider";
 import { CartDrawer } from "@/components/cart-drawer";
 import { ContentProvider } from "@/components/content-provider";
@@ -77,6 +78,7 @@ export default function RootLayout({
             </CartProvider>
           </ContentProvider>
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
