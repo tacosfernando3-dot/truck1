@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 import type { CreateSiteMessageInput, SiteMessageRecord } from "@/lib/messages/types";
 import { MESSAGE_DEPARTMENTS } from "@/lib/messages/types";
 
@@ -81,56 +82,70 @@ async function sendWithResend(
   return true;
 }
 
-/** Zero-config fallback so inquiries still reach the inbox without Resend. */
-async function sendWithFormSubmit(
+async function sendWithSmtp(
   to: string,
   subject: string,
-  input: CreateSiteMessageInput,
-  saved: SiteMessageRecord,
+  text: string,
+  replyTo: string,
 ) {
-  const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      _subject: subject,
-      _template: "table",
-      _replyto: input.email.trim(),
-      department: departmentLabel(input.department),
-      full_name: input.fullName?.trim() || "",
-      email: input.email.trim(),
-      phone: input.phone?.trim() || "",
-      message: input.message?.trim() || "",
-      message_id: saved.id,
-      ...(input.payload ?? {}),
-    }),
+  const user = process.env.SMTP_USER?.trim();
+  const pass = process.env.SMTP_PASS?.trim();
+  if (!user || !pass) return false;
+
+  const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT?.trim() || "465");
+  const secure =
+    process.env.SMTP_SECURE?.trim() === "false" ? false : port === 465;
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    auth: { user, pass },
   });
 
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    throw new Error(`FormSubmit failed (${res.status}): ${detail}`);
-  }
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM?.trim() || `Los Compadres <${user}>`,
+    to,
+    replyTo,
+    subject,
+    text,
+  });
 
   return true;
+}
+
+export function isMailConfigured() {
+  return Boolean(
+    process.env.RESEND_API_KEY?.trim() ||
+      (process.env.SMTP_USER?.trim() && process.env.SMTP_PASS?.trim()),
+  );
 }
 
 export async function notifyInquiryEmail(
   input: CreateSiteMessageInput,
   saved: SiteMessageRecord,
-): Promise<boolean> {
+): Promise<{ sent: boolean; error?: string }> {
   const to = getInquiryNotifyEmail();
   const subject = `[Los Compadres · ${departmentLabel(input.department)}] New inquiry`;
   const text = buildBody(input, saved);
+  const replyTo = input.email.trim();
 
   try {
-    if (await sendWithResend(to, subject, text, input.email.trim())) {
-      return true;
+    if (await sendWithResend(to, subject, text, replyTo)) {
+      return { sent: true };
     }
-    return await sendWithFormSubmit(to, subject, input, saved);
+    if (await sendWithSmtp(to, subject, text, replyTo)) {
+      return { sent: true };
+    }
+    return {
+      sent: false,
+      error:
+        "No email provider configured. Set SMTP_USER + SMTP_PASS (Gmail App Password) or RESEND_API_KEY.",
+    };
   } catch (error) {
-    console.error("[inquiry-email]", error);
-    return false;
+    const message = error instanceof Error ? error.message : "Email send failed";
+    console.error("[inquiry-email]", message);
+    return { sent: false, error: message };
   }
 }

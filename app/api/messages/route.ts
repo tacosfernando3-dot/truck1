@@ -96,13 +96,19 @@ export async function POST(request: Request) {
 
   try {
     const message = await createSiteMessage(body);
-    const emailSent = await notifyInquiryEmail(body, message);
-    if (emailSent) {
+    const emailResult = await notifyInquiryEmail(body, message);
+    if (emailResult.sent) {
       await markMessageEmailSent(message.id);
+    } else if (emailResult.error) {
+      console.error("[messages] email not sent:", emailResult.error);
     }
 
     return NextResponse.json(
-      { message: { ...message, emailSent }, emailSent },
+      {
+        message: { ...message, emailSent: emailResult.sent },
+        emailSent: emailResult.sent,
+        emailError: emailResult.error ?? null,
+      },
       { status: 201 },
     );
   } catch (error) {
