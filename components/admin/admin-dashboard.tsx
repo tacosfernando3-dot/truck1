@@ -47,10 +47,10 @@ import {
   type MessageDepartment,
   type SiteMessageRecord,
 } from "@/lib/messages/types";
-import type { GalleryItem, MenuItem } from "@/lib/types";
+import type { MenuItem } from "@/lib/types";
 import { cn, formatCurrency, menuImageObjectPosition } from "@/lib/utils";
 
-type Tab = "menu" | "pictures" | "settings" | "orders" | "messages";
+type Tab = "menu" | "settings" | "orders" | "messages";
 
 function blankMenuItem(category: string): MenuItem {
   const name = "New item";
@@ -66,14 +66,6 @@ function blankMenuItem(category: string): MenuItem {
     featured: false,
     available: true,
     imageFocus: { x: 50, y: 50 },
-  };
-}
-
-function blankGalleryItem(): GalleryItem {
-  return {
-    id: `g-${Date.now()}`,
-    alt: "Gallery image",
-    image: "/images/truck-gallery.jpg",
   };
 }
 
@@ -119,6 +111,19 @@ export function AdminDashboard() {
   const [renameValue, setRenameValue] = useState("");
   const [deletingCategory, setDeletingCategory] = useState<string | null>(null);
   const [previewMenu, setPreviewMenu] = useState(false);
+  const [seenOrderIds, setSeenOrderIds] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const raw = localStorage.getItem("lc_admin_seen_orders");
+      if (!raw) return new Set();
+      const parsed = JSON.parse(raw) as unknown;
+      if (!Array.isArray(parsed)) return new Set();
+      return new Set(parsed.filter((id): id is string => typeof id === "string"));
+    } catch {
+      return new Set();
+    }
+  });
+  const prevTabRef = useRef<Tab>("menu");
 
   useEffect(() => {
     void (async () => {
@@ -139,9 +144,9 @@ export function AdminDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!authed || tab !== "orders") return;
+    if (!authed) return;
     void (async () => {
-      setOrdersLoading(true);
+      if (tab === "orders") setOrdersLoading(true);
       setOrdersError("");
       try {
         const res = await fetch("/api/admin/orders", { cache: "no-store" });
@@ -161,12 +166,12 @@ export function AdminDashboard() {
         setOrdersLoading(false);
       }
     })();
-  }, [authed, tab, ordersRefresh]);
+  }, [authed, ordersRefresh]);
 
   useEffect(() => {
-    if (!authed || tab !== "messages") return;
+    if (!authed) return;
     void (async () => {
-      setMessagesLoading(true);
+      if (tab === "messages") setMessagesLoading(true);
       setMessagesError("");
       try {
         const res = await fetch("/api/admin/messages", { cache: "no-store" });
@@ -186,7 +191,53 @@ export function AdminDashboard() {
         setMessagesLoading(false);
       }
     })();
-  }, [authed, tab, messagesRefresh]);
+  }, [authed, messagesRefresh]);
+
+  useEffect(() => {
+    if (!authed) return;
+    const prev = prevTabRef.current;
+    if (tab === "orders" && prev !== "orders") {
+      setOrdersRefresh((n) => n + 1);
+    }
+    if (tab === "messages" && prev !== "messages") {
+      setMessagesRefresh((n) => n + 1);
+    }
+    prevTabRef.current = tab;
+  }, [authed, tab]);
+
+  useEffect(() => {
+    if (tab !== "orders" || orders.length === 0) return;
+    setSeenOrderIds((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      for (const order of orders) {
+        if (!next.has(order.id)) {
+          next.add(order.id);
+          changed = true;
+        }
+      }
+      if (!changed) return prev;
+      try {
+        localStorage.setItem(
+          "lc_admin_seen_orders",
+          JSON.stringify([...next]),
+        );
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  }, [tab, orders]);
+
+  const newOrdersCount = useMemo(
+    () => orders.filter((order) => !seenOrderIds.has(order.id)).length,
+    [orders, seenOrderIds],
+  );
+
+  const newMessagesCount = useMemo(
+    () => messages.filter((message) => message.status === "new").length,
+    [messages],
+  );
 
   const categoryItems = useMemo(() => {
     if (!content || !selectedCategory) return [];
@@ -329,18 +380,6 @@ export function AdminDashboard() {
       return {
         ...prev,
         menu: prev.menu.map((item) =>
-          item.id === id ? { ...item, ...patch } : item,
-        ),
-      };
-    });
-  }
-
-  function updateGalleryItem(id: string, patch: Partial<GalleryItem>) {
-    setContent((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        gallery: prev.gallery.map((item) =>
           item.id === id ? { ...item, ...patch } : item,
         ),
       };
@@ -639,13 +678,18 @@ export function AdminDashboard() {
           {(
             [
               ["menu", "Menu", Utensils],
-              ["pictures", "Photos", ImagePlus],
               ["settings", "Settings", Settings],
               ["orders", "Orders", ClipboardList],
               ["messages", "Messages", Mail],
             ] as const
           ).map(([id, label, Icon]) => {
             const active = tab === id;
+            const badgeCount =
+              id === "orders"
+                ? newOrdersCount
+                : id === "messages"
+                  ? newMessagesCount
+                  : 0;
             return (
               <button
                 key={id}
@@ -659,7 +703,20 @@ export function AdminDashboard() {
                 )}
               >
                 <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                {label}
+                <span className="min-w-0 flex-1 text-left">{label}</span>
+                {badgeCount > 0 ? (
+                  <span
+                    className={cn(
+                      "flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1.5 text-[10px] font-bold tabular-nums",
+                      active
+                        ? "bg-white text-yellow"
+                        : "bg-yellow text-white",
+                    )}
+                    aria-label={`${badgeCount} new`}
+                  >
+                    {badgeCount > 99 ? "99+" : badgeCount}
+                  </span>
+                ) : null}
               </button>
             );
           })}
@@ -688,24 +745,20 @@ export function AdminDashboard() {
             <h1 className="truncate text-sm font-semibold tracking-wide text-white uppercase">
               {tab === "menu"
                 ? "Menu manager"
-                : tab === "pictures"
-                  ? "Photo gallery"
-                  : tab === "orders"
-                    ? "Orders & payments"
-                    : tab === "messages"
-                      ? "Messages"
-                      : "Settings"}
+                : tab === "orders"
+                  ? "Orders & payments"
+                  : tab === "messages"
+                    ? "Messages"
+                    : "Settings"}
             </h1>
             <p className="truncate text-xs text-muted">
               {tab === "menu"
                 ? "Categories → items → edit → save"
-                : tab === "pictures"
-                  ? "Fallback images if Instagram feed is not connected"
-                  : tab === "orders"
-                    ? "Recent checkouts saved to Supabase"
-                    : tab === "messages"
-                      ? "Contact, catering, and newsletter inquiries"
-                      : "Footer contact, socials, and business details"}
+                : tab === "orders"
+                  ? "Recent checkouts saved to Supabase"
+                  : tab === "messages"
+                    ? "Contact, catering, and newsletter inquiries"
+                    : "Footer contact, socials, and business details"}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
@@ -1276,112 +1329,11 @@ export function AdminDashboard() {
             </div>
           )}
 
-          {tab === "pictures" && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
-                  Gallery
-                </h2>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setContent((prev) =>
-                      prev
-                        ? {
-                            ...prev,
-                            gallery: [blankGalleryItem(), ...prev.gallery],
-                          }
-                        : prev,
-                    )
-                  }
-                  className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-green/90 px-3 text-xs font-semibold text-white uppercase hover:bg-green"
-                >
-                  <Plus className="h-4 w-4" aria-hidden />
-                  Add photo
-                </button>
-              </div>
-
-              <div className="grid gap-3 md:grid-cols-2">
-                {content.gallery.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-lg border border-white/10 bg-surface-dark/80 p-3"
-                  >
-                    <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-lg border border-border-dark">
-                      <Image
-                        src={item.image}
-                        alt={item.alt}
-                        fill
-                        className="object-cover"
-                        sizes="320px"
-                        unoptimized={item.image.startsWith("/uploads/")}
-                      />
-                    </div>
-                    <Field label="Alt text">
-                      <input
-                        value={item.alt}
-                        onChange={(e) =>
-                          updateGalleryItem(item.id, { alt: e.target.value })
-                        }
-                        className={fieldClass}
-                      />
-                    </Field>
-                    <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto_auto]">
-                      <input
-                        value={item.image}
-                        onChange={(e) =>
-                          updateGalleryItem(item.id, { image: e.target.value })
-                        }
-                        className={fieldClass}
-                      />
-                      <label className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-border-dark bg-background px-3 text-sm font-semibold uppercase tracking-wide text-muted hover:text-white">
-                        Upload
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="sr-only"
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            const url = await uploadImage(file);
-                            if (url) {
-                              updateGalleryItem(item.id, { image: url });
-                              setStatus("Image uploaded.");
-                            }
-                            e.target.value = "";
-                          }}
-                        />
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setContent((prev) =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  gallery: prev.gallery.filter(
-                                    (g) => g.id !== item.id,
-                                  ),
-                                }
-                              : prev,
-                          )
-                        }
-                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-red/40 px-3 text-red hover:bg-red hover:text-white"
-                        aria-label="Delete gallery image"
-                      >
-                        <Trash2 className="h-4 w-4" aria-hidden />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {tab === "settings" && (
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start">
               <div className="space-y-4">
-                <section className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
+                <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
+                <section className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
                   <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
                     <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
                       <MapPin className="h-4 w-4 text-yellow" aria-hidden />
@@ -1395,7 +1347,7 @@ export function AdminDashboard() {
                       </p>
                     </div>
                   </div>
-                  <div className="space-y-4 p-5">
+                  <div className="flex flex-1 flex-col justify-between gap-4 p-5">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <Field label="Phone">
                         <div className="relative">
@@ -1490,7 +1442,7 @@ export function AdminDashboard() {
                   </div>
                 </section>
 
-                <section className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
+                <section className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
                   <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
                     <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
                       <InstagramIcon className="h-4 w-4 text-yellow" />
@@ -1505,7 +1457,7 @@ export function AdminDashboard() {
                       </p>
                     </div>
                   </div>
-                  <div className="divide-y divide-white/10">
+                  <div className="flex flex-1 flex-col divide-y divide-white/10">
                     {(
                       [
                         [
@@ -1522,7 +1474,7 @@ export function AdminDashboard() {
                       return (
                         <div
                           key={key}
-                          className="flex items-center gap-3 px-5 py-4"
+                          className="flex flex-1 items-center gap-3 px-5 py-4"
                         >
                           <span
                             className={cn(
@@ -1579,6 +1531,7 @@ export function AdminDashboard() {
                     })}
                   </div>
                 </section>
+                </div>
 
                 <section className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
                   <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
@@ -1645,30 +1598,6 @@ export function AdminDashboard() {
                   </div>
                 </section>
 
-                <button
-                  type="button"
-                  onClick={() => setTab("pictures")}
-                  className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-gradient-to-r from-[#1a1212] to-[#120d0d] px-5 py-4 text-left transition hover:border-yellow/30"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-                      <ImagePlus className="h-4 w-4 text-yellow" aria-hidden />
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold tracking-wide text-white uppercase">
-                        Homepage gallery
-                      </p>
-                      <p className="text-[11px] text-muted">
-                        Live Instagram feed when connected ·{" "}
-                        {content.gallery.length} fallback photo
-                        {content.gallery.length === 1 ? "" : "s"}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-[11px] font-semibold tracking-wide text-gold uppercase">
-                    Open →
-                  </span>
-                </button>
               </div>
 
               <aside className="xl:sticky xl:top-0">
