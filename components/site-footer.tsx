@@ -138,10 +138,10 @@ export function SiteFooter() {
             © {year} {business.name}. {t("common.allRights")}
           </p>
           <div className="flex gap-4">
-            <Link href="/#contact" className="hover:text-white">
+            <Link href="/privacy" className="hover:text-white">
               {t("common.privacy")}
             </Link>
-            <Link href="/#contact" className="hover:text-white">
+            <Link href="/terms" className="hover:text-white">
               {t("common.terms")}
             </Link>
           </div>

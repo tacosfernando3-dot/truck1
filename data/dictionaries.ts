@@ -342,6 +342,112 @@ export const dictionaries = {
       dialogAria: "Contact form",
       submitFailed: "Couldn’t send your message. Please try again.",
     },
+    privacy: {
+      eyebrow: "Legal",
+      title: "Privacy Policy",
+      updated: "Last updated: August 26, 2026",
+      intro:
+        "Los Compadres Taquería (“we,” “us,” or “our”) operates this website and food-truck business from Elmhurst, Queens, New York. This Privacy Policy explains what information we collect, how we use it, and the choices you have.",
+      contactNote:
+        "Questions about privacy? Email us at hello@loscompadrestaqueriany.com or call (929) 283-0153.",
+      sections: [
+        {
+          title: "Who we are",
+          body: "Los Compadres Taquería is a Mexican street-food truck serving Elmhurst, Queens and catering events across the New York City area. Our website lets you browse the menu, find our schedule, request catering, subscribe to updates, and place demo online orders.",
+        },
+        {
+          title: "Information we collect",
+          body: "We may collect information you provide directly: name, email address, phone number, event details, guest counts, messages, and newsletter signups. If you use order lookup or checkout, we also collect the email and order details you submit. We do not ask for Social Security numbers or other sensitive government IDs on this site.",
+        },
+        {
+          title: "Automatically collected data",
+          body: "Like most sites, we may receive basic technical data such as browser type, device type, approximate location derived from IP, pages viewed, and referring URLs. We use cookies or similar storage for preferences (for example language) and shopping-cart contents on your device. Analytics tools (such as Vercel Analytics) may collect aggregated usage metrics to help us improve the site.",
+        },
+        {
+          title: "How we use your information",
+          body: "We use your information to respond to contact and catering inquiries, send newsletter updates you requested, fulfill or look up orders, improve our menu and service, prevent abuse, and comply with law. Inquiry messages may be emailed to our business inbox and stored in our admin tools so our team can follow up.",
+        },
+        {
+          title: "Payments",
+          body: "Online checkout on this site may use a payment simulator for demonstration. When real card payments are enabled, card data is processed by our payment provider — we do not store full card numbers on our servers. Any real charges will be disclosed clearly at checkout.",
+        },
+        {
+          title: "Sharing",
+          body: "We do not sell your personal information. We may share data with service providers who help us run the site (hosting, email delivery, databases, analytics, and payment processing) under agreements that limit their use to providing those services. We may also disclose information if required by law or to protect our rights, customers, or safety.",
+        },
+        {
+          title: "Retention",
+          body: "We keep inquiry, newsletter, and order records as long as needed for business follow-up, accounting, and legal obligations, then delete or anonymize them when no longer needed.",
+        },
+        {
+          title: "Your choices",
+          body: "You can unsubscribe from marketing emails using the link in those messages or by contacting us. You may request access to or deletion of personal information we hold about you by emailing hello@loscompadrestaqueriany.com. You can clear cart and language data by clearing your browser’s site data.",
+        },
+        {
+          title: "Children",
+          body: "This site is not directed to children under 13. We do not knowingly collect personal information from children under 13. If you believe a child provided information to us, contact us and we will delete it.",
+        },
+        {
+          title: "Changes",
+          body: "We may update this Privacy Policy from time to time. The “Last updated” date at the top will change when we do. Continued use of the site after updates means you accept the revised policy.",
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "Legal",
+      title: "Terms of Service",
+      updated: "Last updated: August 26, 2026",
+      intro:
+        "These Terms of Service (“Terms”) govern your use of the Los Compadres Taquería website and related online features. By using the site, you agree to these Terms.",
+      contactNote:
+        "Questions about these Terms? Email hello@loscompadrestaqueriany.com or call (929) 283-0153.",
+      sections: [
+        {
+          title: "The business",
+          body: "Los Compadres Taquería is a food truck based in Elmhurst, Queens, New York, offering Mexican street food for walk-up service and catering. Hours, locations, and menu items may change without notice based on weather, permits, supply, and events.",
+        },
+        {
+          title: "Website use",
+          body: "You may use this site for lawful personal purposes: viewing our menu and schedule, contacting us, requesting catering quotes, subscribing to updates, and placing orders where available. You agree not to misuse the site, attempt unauthorized access, scrape content at scale, or interfere with its operation.",
+        },
+        {
+          title: "Menu, pricing, and availability",
+          body: "Menu descriptions, photos, prices, and availability are for information and may change. We may correct errors and refuse or modify orders when an item is unavailable or a price is listed incorrectly.",
+        },
+        {
+          title: "Online orders",
+          body: "Online ordering features may include a checkout simulator that does not process real card charges. When live payments are offered, you agree to provide accurate information and pay all amounts due. Order confirmation does not guarantee a specific pickup time until we confirm it. For food safety, follow any pickup instructions we provide.",
+        },
+        {
+          title: "Catering and events",
+          body: "Catering inquiry forms request information so we can check availability and prepare a quote. Submitting an inquiry is not a binding booking. A catering engagement is confirmed only when both parties agree in writing (including email) on date, location, menu, guest count, price, and deposit terms. Deposits and cancellations will be stated in that confirmation.",
+        },
+        {
+          title: "Allergies and dietary needs",
+          body: "Our kitchen and truck handle common allergens (including wheat, dairy, eggs, soy, peanuts, tree nuts, fish, and shellfish) and cross-contact can occur. Tell us about severe allergies when you order or book catering. We are not responsible for allergic reactions when risks were not disclosed or when cross-contact cannot be fully avoided in a shared cooking environment.",
+        },
+        {
+          title: "Intellectual property",
+          body: "Site content — including branding, logos, text, photos, and design — belongs to Los Compadres Taquería or our licensors. You may not copy, sell, or commercially reuse it without our written permission.",
+        },
+        {
+          title: "Disclaimer",
+          body: "The site and services are provided “as is.” To the fullest extent allowed by law, we disclaim warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant uninterrupted or error-free access.",
+        },
+        {
+          title: "Limitation of liability",
+          body: "To the fullest extent allowed by New York law, Los Compadres Taquería and its owners, employees, and agents are not liable for indirect, incidental, special, consequential, or punitive damages arising from your use of the site or our services. Our total liability for any claim related to the site is limited to the greater of (a) the amount you paid us through the site for the transaction at issue or (b) $100.",
+        },
+        {
+          title: "Governing law",
+          body: "These Terms are governed by the laws of the State of New York, without regard to conflict-of-law rules. Disputes will be resolved in state or federal courts located in Queens County or New York County, New York, unless applicable law requires otherwise.",
+        },
+        {
+          title: "Changes",
+          body: "We may update these Terms periodically. The “Last updated” date will reflect changes. Continued use of the site after updates constitutes acceptance of the revised Terms.",
+        },
+      ],
+    },
     preloader: {
       loading: "Loading Los Compadres",
       flavor: "Loading flavor",
@@ -914,6 +1020,112 @@ export const dictionaries = {
       sendAnother: "Enviar otro mensaje",
       dialogAria: "Formulario de contacto",
       submitFailed: "No se pudo enviar el mensaje. Inténtalo de nuevo.",
+    },
+    privacy: {
+      eyebrow: "Legal",
+      title: "Política de privacidad",
+      updated: "Última actualización: 26 de agosto de 2026",
+      intro:
+        "Los Compadres Taquería (“nosotros”) opera este sitio web y food truck desde Elmhurst, Queens, Nueva York. Esta Política de privacidad explica qué información recopilamos, cómo la usamos y qué opciones tienes.",
+      contactNote:
+        "¿Preguntas sobre privacidad? Escríbenos a hello@loscompadrestaqueriany.com o llama al (929) 283-0153.",
+      sections: [
+        {
+          title: "Quiénes somos",
+          body: "Los Compadres Taquería es un food truck de comida mexicana de la calle en Elmhurst, Queens, y también ofrece catering en el área de Nueva York. En el sitio puedes ver el menú, horarios, solicitar catering, suscribirte y hacer pedidos en línea de demostración.",
+        },
+        {
+          title: "Información que recopilamos",
+          body: "Podemos recopilar lo que nos envías: nombre, correo, teléfono, datos del evento, número de invitados, mensajes y suscripciones. Si usas pedidos o búsqueda de órdenes, también guardamos el correo y detalles que envíes. No pedimos números de Seguro Social ni identificaciones gubernamentales sensibles en este sitio.",
+        },
+        {
+          title: "Datos automáticos",
+          body: "Como la mayoría de los sitios, podemos recibir datos técnicos básicos: navegador, dispositivo, ubicación aproximada por IP, páginas vistas y URL de referencia. Usamos cookies o almacenamiento similar para preferencias (por ejemplo idioma) y el carrito. Herramientas de analítica (como Vercel Analytics) pueden medir el uso de forma agregada para mejorar el sitio.",
+        },
+        {
+          title: "Cómo usamos tu información",
+          body: "La usamos para responder contactos y catering, enviar boletines que pediste, cumplir o buscar pedidos, mejorar el servicio, prevenir abusos y cumplir la ley. Las consultas pueden enviarse a nuestro correo comercial y guardarse en herramientas de administración para dar seguimiento.",
+        },
+        {
+          title: "Pagos",
+          body: "El checkout en línea puede usar un simulador de pago para demostración. Cuando haya cargos reales, los datos de tarjeta los procesa nuestro proveedor de pagos; no guardamos el número completo de tarjeta en nuestros servidores. Cualquier cargo real se indicará claramente al pagar.",
+        },
+        {
+          title: "Compartir información",
+          body: "No vendemos tu información personal. Podemos compartirla con proveedores que nos ayudan a operar el sitio (hosting, correo, bases de datos, analítica y pagos) bajo límites de uso. También podemos divulgarla si la ley lo exige o para proteger nuestros derechos, clientes o seguridad.",
+        },
+        {
+          title: "Conservación",
+          body: "Conservamos registros de consultas, boletines y pedidos el tiempo necesario para el negocio, contabilidad y obligaciones legales; luego los eliminamos o anonimizamos.",
+        },
+        {
+          title: "Tus opciones",
+          body: "Puedes darte de baja de correos de marketing con el enlace del mensaje o contactándonos. Puedes pedir acceso o eliminación de tus datos a hello@loscompadrestaqueriany.com. Puedes borrar carrito e idioma limpiando los datos del sitio en tu navegador.",
+        },
+        {
+          title: "Menores",
+          body: "Este sitio no está dirigido a menores de 13 años. No recopilamos a sabiendas información de menores de 13. Si crees que un menor nos dio datos, contáctanos y los eliminaremos.",
+        },
+        {
+          title: "Cambios",
+          body: "Podemos actualizar esta Política. La fecha de “Última actualización” cambiará cuando lo hagamos. Seguir usando el sitio después de los cambios significa que aceptas la política revisada.",
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "Legal",
+      title: "Términos de servicio",
+      updated: "Última actualización: 26 de agosto de 2026",
+      intro:
+        "Estos Términos de servicio (“Términos”) rigen el uso del sitio web de Los Compadres Taquería y funciones relacionadas. Al usar el sitio, aceptas estos Términos.",
+      contactNote:
+        "¿Preguntas sobre estos Términos? Escríbenos a hello@loscompadrestaqueriany.com o llama al (929) 283-0153.",
+      sections: [
+        {
+          title: "El negocio",
+          body: "Los Compadres Taquería es un food truck en Elmhurst, Queens, Nueva York, con comida mexicana de la calle y catering. Horarios, ubicaciones y menú pueden cambiar sin aviso por clima, permisos, suministro o eventos.",
+        },
+        {
+          title: "Uso del sitio",
+          body: "Puedes usar el sitio de forma lícita y personal: ver menú y horarios, contactarnos, solicitar catering, suscribirte y pedir donde esté disponible. Te comprometes a no abusar del sitio, acceder sin autorización, hacer scraping masivo ni interferir con su operación.",
+        },
+        {
+          title: "Menú, precios y disponibilidad",
+          body: "Descripciones, fotos, precios y disponibilidad son informativos y pueden cambiar. Podemos corregir errores y rechazar o modificar pedidos si un artículo no está disponible o el precio está mal listado.",
+        },
+        {
+          title: "Pedidos en línea",
+          body: "El pedido en línea puede incluir un simulador de checkout sin cargos reales con tarjeta. Cuando haya pagos reales, aceptas dar información correcta y pagar lo debido. La confirmación no garantiza una hora exacta de recogida hasta que la confirmemos. Sigue las instrucciones de recogida por seguridad alimentaria.",
+        },
+        {
+          title: "Catering y eventos",
+          body: "Los formularios de catering sirven para revisar disponibilidad y preparar una cotización. Enviar una consulta no es una reserva vinculante. El catering se confirma solo cuando ambas partes acuerdan por escrito (incluido correo) fecha, lugar, menú, invitados, precio y depósito. Cancelaciones y depósitos se indicarán en esa confirmación.",
+        },
+        {
+          title: "Alergias y dietas",
+          body: "En la cocina y el truck manejamos alérgenos comunes (trigo, lácteos, huevo, soya, cacahuate, frutos secos, pescado y mariscos) y puede haber contacto cruzado. Indica alergias graves al pedir o reservar. No somos responsables de reacciones cuando no se nos avisó el riesgo o cuando el contacto cruzado no puede evitarse por completo en un entorno compartido.",
+        },
+        {
+          title: "Propiedad intelectual",
+          body: "El contenido del sitio — marca, logos, texto, fotos y diseño — pertenece a Los Compadres Taquería o a sus licenciantes. No puedes copiarlo ni usarlo comercialmente sin permiso escrito.",
+        },
+        {
+          title: "Descargo",
+          body: "El sitio y los servicios se ofrecen “tal cual”. En la máxima medida permitida por la ley, renunciamos a garantías de comerciabilidad, idoneidad para un fin particular y no infracción. No garantizamos acceso ininterrumpido ni libre de errores.",
+        },
+        {
+          title: "Límite de responsabilidad",
+          body: "En la máxima medida permitida por la ley de Nueva York, Los Compadres Taquería y sus dueños, empleados y agentes no responden por daños indirectos, incidentales, especiales, consecuentes o punitivos derivados del uso del sitio o nuestros servicios. Nuestra responsabilidad total por cualquier reclamo relacionado con el sitio se limita al mayor de (a) lo que nos pagaste por la transacción en cuestión o (b) $100.",
+        },
+        {
+          title: "Ley aplicable",
+          body: "Estos Términos se rigen por las leyes del Estado de Nueva York, sin normas de conflicto de leyes. Las disputas se resolverán en tribunales estatales o federales del Condado de Queens o de Nueva York, salvo que la ley aplicable exija otra cosa.",
+        },
+        {
+          title: "Cambios",
+          body: "Podemos actualizar estos Términos. La fecha de “Última actualización” reflejará los cambios. Seguir usando el sitio después implica aceptar los Términos revisados.",
+        },
+      ],
     },
     preloader: {
       loading: "Cargando Los Compadres",
