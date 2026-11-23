@@ -347,6 +347,52 @@ body::-webkit-scrollbar {
   }
 }
 
+/* Homepage Google reviews — auto carousel under Find Us map */
+@keyframes reviews-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.reviews-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 4%,
+    #000 96%,
+    transparent
+  );
+}
+
+.reviews-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 1.25rem;
+  padding-inline: 1.25rem;
+  animation: reviews-marquee 36s linear infinite;
+  will-change: transform;
+}
+
+.reviews-marquee-track:hover,
+.reviews-marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+.reviews-marquee-item {
+  width: min(82vw, 300px);
+  flex: 0 0 auto;
+}
+
+@media (min-width: 640px) {
+  .reviews-marquee-item {
+    width: 320px;
+  }
+}
+
 /* Native date picker icon — brand red on dark fields */
 input[type="date"].date-input-dark::-webkit-calendar-picker-indicator {
   cursor: pointer;
@@ -400,6 +446,23 @@ select::-ms-expand {
   }
 
   .menu-marquee-item {
+    scroll-snap-align: start;
+  }
+
+  .reviews-marquee {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    mask-image: none;
+  }
+
+  .reviews-marquee-track {
+    animation: none !important;
+    transform: none !important;
+    padding-bottom: 0.5rem;
+  }
+
+  .reviews-marquee-item {
     scroll-snap-align: start;
   }
 }

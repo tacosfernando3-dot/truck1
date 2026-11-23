@@ -3,6 +3,7 @@
 import { BusinessContactDetails } from "@/components/business-contact-details";
 import { Button } from "@/components/button";
 import { useContent } from "@/components/content-provider";
+import { GoogleReviewsCarousel } from "@/components/google-reviews-carousel";
 import { getTodaysLocation } from "@/data/locations";
 import { useT } from "@/lib/i18n";
 import { formatBusinessAddress } from "@/lib/cms/utils";
@@ -70,6 +71,8 @@ export function LocationSection() {
           </aside>
         </div>
       </div>
+
+      <GoogleReviewsCarousel />
     </section>
   );
 }

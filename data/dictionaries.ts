@@ -119,6 +119,14 @@ export const dictionaries = {
       todaysLocation: "Today's Location",
       mapTitle: "Map of today's Street Crave stop — {neighborhood}",
     },
+    googleReviews: {
+      eyebrow: "Google Reviews",
+      title: "WHAT THE BLOCK SAYS",
+      basedOn: "{count} on Google",
+      seeAll: "See on Google",
+      writeTitle: "Leave a review",
+      writeSubtitle: "Tap to rate us on Google — it keeps the truck rolling.",
+    },
     locationsPage: {
       eyebrow: "Locations",
       title: "FIND THE TRUCK",
@@ -795,6 +803,14 @@ export const dictionaries = {
       viewSchedule: "Ver horario",
       todaysLocation: "Ubicación de hoy",
       mapTitle: "Mapa de la parada de hoy de Street Crave — {neighborhood}",
+    },
+    googleReviews: {
+      eyebrow: "Reseñas de Google",
+      title: "LO QUE DICE EL BLOQUE",
+      basedOn: "{count} en Google",
+      seeAll: "Ver en Google",
+      writeTitle: "Deja una reseña",
+      writeSubtitle: "Califícanos en Google — así sigue rodando el truck.",
     },
     locationsPage: {
       eyebrow: "Ubicaciones",
