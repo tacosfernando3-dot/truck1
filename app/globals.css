@@ -54,7 +54,8 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  /* clip (not hidden) so overflow-y stays visible and position:sticky works */
+  overflow-x: clip;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -71,7 +72,7 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
   font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -83,7 +84,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--background);
-  overflow-x: clip;
+  /* Do not set overflow here — it breaks position:sticky for the menu category bar. */
 }
 
 @media (min-width: 1024px) {

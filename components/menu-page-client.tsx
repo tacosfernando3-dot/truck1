@@ -72,7 +72,7 @@ export function MenuPageClient() {
               <section
                 key={category}
                 id={categorySectionId(category)}
-                className="scroll-mt-28"
+                className="scroll-mt-[calc(68px+11rem)] lg:scroll-mt-[calc(78px+11rem)]"
                 aria-labelledby={headingId}
               >
                 <div className="mb-5 flex items-end justify-between gap-3 border-b border-border-dark pb-3">

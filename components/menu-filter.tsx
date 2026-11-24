@@ -23,6 +23,7 @@ function categoryLabel(category: string, t: (key: string) => string) {
 export function MenuFilter() {
   const t = useT();
   const { content } = useContent();
+  const stickyRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{
     pointerId: number;
@@ -34,6 +35,7 @@ export function MenuFilter() {
   const pausedRef = useRef(false);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const topics = useMemo(() => {
     const hidden = new Set(content.hiddenCategories ?? []);
@@ -122,8 +124,60 @@ export function MenuFilter() {
 
   function scrollToCategory(category: string) {
     const el = document.getElementById(categorySectionId(category));
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!el) return;
+
+    setActiveCategory(category);
+
+    const header = document.querySelector<HTMLElement>("header");
+    const headerH = header?.getBoundingClientRect().height ?? 72;
+    const stickyH = stickyRef.current?.offsetHeight ?? 0;
+    const gap = 12;
+    const top =
+      el.getBoundingClientRect().top +
+      window.scrollY -
+      headerH -
+      stickyH -
+      gap;
+
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+
+    try {
+      history.replaceState(null, "", `#${categorySectionId(category)}`);
+    } catch {
+      /* ignore */
+    }
   }
+
+  useEffect(() => {
+    const ids = topics.map((topic) => categorySectionId(topic.category));
+    if (ids.length === 0) return;
+
+    const header = document.querySelector<HTMLElement>("header");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        const top = visible[0];
+        if (!top?.target.id) return;
+        const match = topics.find(
+          (topic) => categorySectionId(topic.category) === top.target.id,
+        );
+        if (match) setActiveCategory(match.category);
+      },
+      {
+        rootMargin: `-${(header?.offsetHeight ?? 72) + (stickyRef.current?.offsetHeight ?? 144) + 8}px 0px -45% 0px`,
+        threshold: [0.08, 0.2, 0.4],
+      },
+    );
+
+    for (const id of ids) {
+      const node = document.getElementById(id);
+      if (node) observer.observe(node);
+    }
+
+    return () => observer.disconnect();
+  }, [topics]);
 
   function scrollCarousel(direction: -1 | 1) {
     const node = scrollerRef.current;
@@ -151,7 +205,7 @@ export function MenuFilter() {
     const node = scrollerRef.current;
     if (!drag || !node || drag.pointerId !== event.pointerId) return;
     const delta = event.clientX - drag.startX;
-    if (Math.abs(delta) > 6) drag.moved = true;
+    if (Math.abs(delta) > 14) drag.moved = true;
     if (drag.moved) {
       node.scrollLeft = drag.startScroll - delta;
     }
@@ -170,6 +224,7 @@ export function MenuFilter() {
 
   return (
     <div
+      ref={stickyRef}
       className="sticky top-[68px] z-20 mb-10 w-full min-w-0 bg-background/95 py-3 backdrop-blur-md lg:top-[78px]"
       onMouseEnter={() => {
         pausedRef.current = true;
@@ -233,6 +288,9 @@ export function MenuFilter() {
               key={topic.category}
               type="button"
               data-topic-card
+              aria-current={
+                activeCategory === topic.category ? "true" : undefined
+              }
               onClick={() => {
                 if (suppressClickRef.current) {
                   suppressClickRef.current = false;
@@ -240,7 +298,12 @@ export function MenuFilter() {
                 }
                 scrollToCategory(topic.category);
               }}
-              className="group relative aspect-[4/3] w-[38vw] max-w-[10.5rem] min-w-[7.75rem] shrink-0 overflow-hidden rounded-lg border border-border-dark bg-surface-dark text-left transition hover:border-yellow sm:w-40 sm:max-w-none"
+              className={cn(
+                "group relative aspect-[4/3] w-[38vw] max-w-[10.5rem] min-w-[7.75rem] shrink-0 overflow-hidden rounded-lg border bg-surface-dark text-left transition sm:w-40 sm:max-w-none",
+                activeCategory === topic.category
+                  ? "border-yellow ring-1 ring-yellow/50"
+                  : "border-border-dark hover:border-yellow",
+              )}
             >
               <Image
                 src={topic.image}
