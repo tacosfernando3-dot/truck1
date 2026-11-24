@@ -7,7 +7,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useContent } from "@/components/content-provider";
@@ -20,18 +19,18 @@ function categoryLabel(category: string, t: (key: string) => string) {
   return translated === `categories.${category}` ? category : translated;
 }
 
+function stickyOffset(stickyEl: HTMLElement | null) {
+  const header = document.querySelector<HTMLElement>("header");
+  const headerH = header?.getBoundingClientRect().height ?? 72;
+  const stickyH = stickyEl?.offsetHeight ?? 0;
+  return headerH + stickyH + 12;
+}
+
 export function MenuFilter() {
   const t = useT();
   const { content } = useContent();
   const stickyRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef<{
-    pointerId: number;
-    startX: number;
-    startScroll: number;
-    moved: boolean;
-  } | null>(null);
-  const suppressClickRef = useRef(false);
   const pausedRef = useRef(false);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -104,7 +103,7 @@ export function MenuFilter() {
     if (reduceMotion) return;
 
     const timer = window.setInterval(() => {
-      if (pausedRef.current || dragRef.current) return;
+      if (pausedRef.current) return;
       if (node.scrollWidth <= node.clientWidth + 4) return;
 
       const card = node.querySelector<HTMLElement>("[data-topic-card]");
@@ -122,37 +121,46 @@ export function MenuFilter() {
     return () => window.clearInterval(timer);
   }, [topics.length]);
 
-  function scrollToCategory(category: string) {
-    const el = document.getElementById(categorySectionId(category));
-    if (!el) return;
+  const scrollToCategory = useCallback((category: string) => {
+    const id = categorySectionId(category);
+    const el = document.getElementById(id);
+    if (!el) {
+      console.warn("[menu-filter] missing section", id);
+      return;
+    }
 
+    pausedRef.current = true;
     setActiveCategory(category);
 
-    const header = document.querySelector<HTMLElement>("header");
-    const headerH = header?.getBoundingClientRect().height ?? 72;
-    const stickyH = stickyRef.current?.offsetHeight ?? 0;
-    const gap = 12;
-    const top =
+    const top = Math.max(
+      0,
       el.getBoundingClientRect().top +
-      window.scrollY -
-      headerH -
-      stickyH -
-      gap;
+        window.scrollY -
+        stickyOffset(stickyRef.current),
+    );
 
-    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    // Prefer the real scrolling element; fall back to window.
+    const scroller = document.scrollingElement ?? document.documentElement;
+    scroller.scrollTo({ top, behavior: "smooth" });
+    window.scrollTo({ top, behavior: "smooth" });
 
     try {
-      history.replaceState(null, "", `#${categorySectionId(category)}`);
+      const url = `${window.location.pathname}${window.location.search}#${id}`;
+      history.replaceState(null, "", url);
     } catch {
       /* ignore */
     }
-  }
+
+    // Keep auto-marquee paused briefly after a deliberate pick.
+    window.setTimeout(() => {
+      pausedRef.current = false;
+    }, 5000);
+  }, []);
 
   useEffect(() => {
     const ids = topics.map((topic) => categorySectionId(topic.category));
     if (ids.length === 0) return;
 
-    const header = document.querySelector<HTMLElement>("header");
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -166,7 +174,7 @@ export function MenuFilter() {
         if (match) setActiveCategory(match.category);
       },
       {
-        rootMargin: `-${(header?.offsetHeight ?? 72) + (stickyRef.current?.offsetHeight ?? 144) + 8}px 0px -45% 0px`,
+        rootMargin: `-${stickyOffset(stickyRef.current)}px 0px -45% 0px`,
         threshold: [0.08, 0.2, 0.4],
       },
     );
@@ -179,47 +187,31 @@ export function MenuFilter() {
     return () => observer.disconnect();
   }, [topics]);
 
+  // Honor deep links like /menu#menu-drinks once sections are mounted.
+  useEffect(() => {
+    if (topics.length === 0) return;
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash) return;
+    const match = topics.find(
+      (topic) => categorySectionId(topic.category) === hash,
+    );
+    if (!match) return;
+    const frame = window.requestAnimationFrame(() => {
+      scrollToCategory(match.category);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [topics, scrollToCategory]);
+
   function scrollCarousel(direction: -1 | 1) {
     const node = scrollerRef.current;
     if (!node) return;
+    pausedRef.current = true;
     const card = node.querySelector<HTMLElement>("[data-topic-card]");
     const step = (card?.offsetWidth ?? 160) + 12;
     node.scrollBy({ left: direction * step * 2, behavior: "smooth" });
-  }
-
-  function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType === "mouse" && event.button !== 0) return;
-    const node = scrollerRef.current;
-    if (!node) return;
-    dragRef.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startScroll: node.scrollLeft,
-      moved: false,
-    };
-    node.setPointerCapture(event.pointerId);
-  }
-
-  function onPointerMove(event: ReactPointerEvent<HTMLDivElement>) {
-    const drag = dragRef.current;
-    const node = scrollerRef.current;
-    if (!drag || !node || drag.pointerId !== event.pointerId) return;
-    const delta = event.clientX - drag.startX;
-    if (Math.abs(delta) > 14) drag.moved = true;
-    if (drag.moved) {
-      node.scrollLeft = drag.startScroll - delta;
-    }
-  }
-
-  function endDrag(event: ReactPointerEvent<HTMLDivElement>) {
-    const drag = dragRef.current;
-    const node = scrollerRef.current;
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    if (drag.moved) suppressClickRef.current = true;
-    if (node?.hasPointerCapture(event.pointerId)) {
-      node.releasePointerCapture(event.pointerId);
-    }
-    dragRef.current = null;
+    window.setTimeout(() => {
+      pausedRef.current = false;
+    }, 4000);
   }
 
   return (
@@ -271,13 +263,8 @@ export function MenuFilter() {
 
         <div
           ref={scrollerRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
           className={cn(
             "scrollbar-none flex touch-pan-x gap-3 overflow-x-auto overscroll-x-contain px-10 sm:px-12",
-            "cursor-grab select-none active:cursor-grabbing",
             "[-webkit-overflow-scrolling:touch]",
           )}
           role="navigation"
@@ -288,14 +275,13 @@ export function MenuFilter() {
               key={topic.category}
               type="button"
               data-topic-card
+              data-category={topic.category}
               aria-current={
                 activeCategory === topic.category ? "true" : undefined
               }
-              onClick={() => {
-                if (suppressClickRef.current) {
-                  suppressClickRef.current = false;
-                  return;
-                }
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
                 scrollToCategory(topic.category);
               }}
               className={cn(
@@ -317,8 +303,8 @@ export function MenuFilter() {
                 sizes="160px"
                 unoptimized={topic.image.startsWith("/uploads/")}
               />
-              <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
-              <span className="absolute inset-x-0 bottom-0 p-2.5">
+              <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+              <span className="pointer-events-none absolute inset-x-0 bottom-0 p-2.5">
                 <span className="block text-[11px] font-semibold tracking-[0.14em] text-white uppercase transition group-hover:text-yellow sm:text-xs">
                   {topic.label}
                 </span>

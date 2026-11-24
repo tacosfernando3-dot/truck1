@@ -12,9 +12,11 @@ export function ScrollToTop() {
 
     const hash = window.location.hash.replace(/^#/, "");
     if (hash) {
+      // Menu category deep-links are handled by MenuFilter with sticky offset.
+      if (hash.startsWith("menu-")) return;
+
       const target = document.getElementById(hash);
       if (target) {
-        // Defer so layout/header offset settles after navigation.
         requestAnimationFrame(() => {
           target.scrollIntoView({ block: "start" });
         });
