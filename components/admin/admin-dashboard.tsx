@@ -1645,19 +1645,37 @@ export function AdminDashboard() {
                       content.business.showTikTok) && (
                       <div className="flex gap-2 border-t border-white/10 pt-4">
                         {content.business.showInstagram ? (
-                          <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white">
+                          <a
+                            href={content.business.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white transition hover:border-yellow/40 hover:text-yellow"
+                            aria-label="Instagram"
+                          >
                             <InstagramIcon className="h-4 w-4" />
-                          </span>
+                          </a>
                         ) : null}
                         {content.business.showFacebook ? (
-                          <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white">
+                          <a
+                            href={content.business.facebook}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white transition hover:border-yellow/40 hover:text-yellow"
+                            aria-label="Facebook"
+                          >
                             <FacebookIcon className="h-4 w-4" />
-                          </span>
+                          </a>
                         ) : null}
                         {content.business.showTikTok ? (
-                          <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white">
+                          <a
+                            href={content.business.tiktok}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white transition hover:border-yellow/40 hover:text-yellow"
+                            aria-label="TikTok"
+                          >
                             <TikTokIcon className="h-4 w-4" />
-                          </span>
+                          </a>
                         ) : null}
                       </div>
                     )}
