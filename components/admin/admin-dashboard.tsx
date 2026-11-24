@@ -642,14 +642,7 @@ export function AdminDashboard() {
                   <h2 className="mb-5 border-b border-border-dark pb-3 font-display text-3xl tracking-wide text-yellow uppercase">
                     {category}
                   </h2>
-                  <div className="grid grid-cols-2 gap-3 md:hidden">
-                    {items.map((item) => (
-                      <div key={item.id} className="min-w-0">
-                        <MenuCard item={item} compact />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-3 gap-6">
                     {items.map((item) => (
                       <MenuCard key={item.id} item={item} />
                     ))}
@@ -664,14 +657,14 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="flex h-full min-h-0">
+    <div className="flex h-full min-h-0 w-full min-w-[1360px]">
       <aside className="flex h-full w-[200px] shrink-0 flex-col border-r border-white/10 bg-[#0a0707]">
-        <div className="flex h-14 items-center px-4 border-b border-white/10">
+        <div className="flex h-14 shrink-0 items-center px-4 border-b border-white/10">
           <span className="text-xs font-bold tracking-[0.16em] text-yellow uppercase">
             Admin
           </span>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 p-2.5" aria-label="Admin">
+        <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2.5" aria-label="Admin">
           {(
             [
               ["menu", "Menu", Utensils],
@@ -737,7 +730,7 @@ export function AdminDashboard() {
       </aside>
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <header className="z-10 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-[#100b0b]/95 px-4 backdrop-blur-md sm:px-6">
+        <header className="z-10 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-[#100b0b]/95 px-6 backdrop-blur-md">
           <div className="min-w-0">
             <h1 className="truncate text-sm font-semibold tracking-wide text-white uppercase">
               {tab === "menu"
@@ -760,7 +753,7 @@ export function AdminDashboard() {
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
             {status && (
-              <span className="hidden rounded-full border border-gold/30 bg-gold/10 px-2 py-0.5 text-[10px] text-gold sm:inline">
+              <span className="inline rounded-full border border-gold/30 bg-gold/10 px-2 py-0.5 text-[10px] text-gold">
                 {status}
               </span>
             )}
@@ -789,11 +782,11 @@ export function AdminDashboard() {
           </div>
         </header>
 
-        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="min-h-0 min-w-0 flex-1 overflow-hidden p-6">
           {tab === "menu" && (
-            <div className="flex min-h-[calc(100dvh-7rem)] flex-col gap-4 md:flex-row md:items-stretch">
+            <div className="flex h-full min-h-0 items-stretch gap-4">
               {/* Categories */}
-              <section className="flex min-h-[280px] w-full shrink-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d] md:min-h-0 md:w-[300px] lg:w-[320px]">
+              <section className="flex h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
                 <div className="flex items-center justify-between border-b border-white/10 px-4 py-3.5">
                   <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
                     Categories
@@ -943,7 +936,7 @@ export function AdminDashboard() {
               </section>
 
               {/* Items */}
-              <section className="flex min-h-[280px] w-full shrink-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d] md:min-h-0 md:w-[320px] lg:w-[340px]">
+              <section className="flex h-full w-[320px] shrink-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
                 <div className="flex items-center justify-between border-b border-white/10 px-4 py-3.5">
                   <h2 className="truncate text-sm font-semibold tracking-wide text-white uppercase">
                     {selectedCategory ? selectedCategory : "Items"}
@@ -1076,8 +1069,8 @@ export function AdminDashboard() {
 
               {/* Editor */}
               {selectedCategory && !selectedItem ? (
-                <section className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
-                  <div className="border-b border-white/10 px-5 py-4 sm:px-6">
+                <section className="flex h-full min-w-[420px] flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
+                  <div className="shrink-0 border-b border-white/10 px-6 py-4">
                     <p className="text-[10px] font-semibold tracking-[0.18em] text-muted uppercase">
                       Category
                     </p>
@@ -1091,7 +1084,7 @@ export function AdminDashboard() {
                       items · pick one in the list, or add a new item
                     </p>
                   </div>
-                  <div className="flex flex-1 flex-col justify-start gap-4 p-5 sm:p-6">
+                  <div className="flex flex-1 flex-col justify-start gap-4 overflow-y-auto p-6">
                     <div className="rounded-xl border border-white/10 bg-black/25 p-4">
                       <Field label="Rename category">
                         <input
@@ -1142,13 +1135,13 @@ export function AdminDashboard() {
                   </div>
                 </section>
               ) : selectedItem ? (
-                <section className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4 sm:px-6">
+                <section className="flex h-full min-w-[420px] flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
+                  <div className="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 px-6 py-4">
                     <div className="min-w-0">
                       <p className="text-[10px] font-semibold tracking-[0.18em] text-gold uppercase">
                         {selectedItem.category}
                       </p>
-                      <h2 className="mt-0.5 truncate font-display text-2xl tracking-wide text-white uppercase sm:text-3xl">
+                      <h2 className="mt-0.5 truncate font-display text-3xl tracking-wide text-white uppercase">
                         {selectedItem.name || "Untitled item"}
                       </h2>
                     </div>
@@ -1167,16 +1160,16 @@ export function AdminDashboard() {
                           return { ...prev, menu };
                         });
                       }}
-                      className="inline-flex min-h-9 items-center gap-1.5 rounded-xl border border-red/30 px-3 text-xs font-semibold text-red uppercase hover:bg-red hover:text-white"
+                      className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-xl border border-red/30 px-3 text-xs font-semibold text-red uppercase hover:bg-red hover:text-white"
                     >
                       <Trash2 className="h-3.5 w-3.5" aria-hidden />
                       Delete
                     </button>
                   </div>
 
-                  <div className="min-h-0 flex-1 overflow-y-auto p-5 sm:p-6">
+                  <div className="min-h-0 flex-1 overflow-y-auto p-6">
                     <div className="space-y-5">
-                      <div className="grid gap-4 sm:grid-cols-[minmax(0,200px)_minmax(0,1fr)] sm:items-stretch">
+                      <div className="grid grid-cols-[200px_minmax(0,1fr)] items-stretch gap-4">
                         <div className="space-y-3">
                           <ImageFocusEditor
                             src={selectedItem.image}
@@ -1213,8 +1206,8 @@ export function AdminDashboard() {
                           </label>
                         </div>
 
-                        <div className="flex flex-col justify-center gap-2 rounded-xl border border-white/10 bg-black/20 p-3 sm:p-4">
-                          <div className="grid gap-2 sm:grid-cols-2">
+                        <div className="flex flex-col justify-center gap-2 rounded-xl border border-white/10 bg-black/20 p-4">
+                          <div className="grid grid-cols-2 gap-2">
                             <div className="flex items-center justify-between gap-3 rounded-lg border border-white/8 bg-black/20 px-3 py-2.5">
                               <div className="min-w-0">
                                 <p className="text-sm font-medium text-white">
@@ -1257,7 +1250,7 @@ export function AdminDashboard() {
                         </div>
                       </div>
 
-                      <div className="grid gap-4 sm:grid-cols-[1fr_7.5rem]">
+                      <div className="grid grid-cols-[1fr_7.5rem] gap-4">
                         <Field label="Name">
                           <input
                             value={selectedItem.name}
@@ -1311,7 +1304,7 @@ export function AdminDashboard() {
                   </div>
                 </section>
               ) : (
-                <section className="flex min-w-0 flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-8 text-center">
+                <section className="flex h-full min-w-[420px] flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-8 text-center">
                   <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
                     <Utensils className="h-6 w-6 text-muted" aria-hidden />
                   </div>
@@ -1327,9 +1320,10 @@ export function AdminDashboard() {
           )}
 
           {tab === "settings" && (
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start">
+            <div className="h-full min-h-0 overflow-y-auto">
+            <div className="grid grid-cols-[minmax(0,1fr)_300px] items-start gap-4">
               <div className="space-y-4">
-                <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
+                <div className="grid grid-cols-2 items-stretch gap-4">
                 <section className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
                   <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
                     <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
@@ -1345,7 +1339,7 @@ export function AdminDashboard() {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col justify-between gap-4 p-5">
-                    <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="grid grid-cols-2 gap-3">
                       <Field label="Phone">
                         <div className="relative">
                           <Phone
@@ -1397,7 +1391,7 @@ export function AdminDashboard() {
                         autoComplete="street-address"
                       />
                     </Field>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1fr_5rem_7rem]">
+                    <div className="grid grid-cols-[1fr_5rem_7rem] gap-3">
                       <Field label="City">
                         <input
                           value={content.business.city}
@@ -1544,7 +1538,7 @@ export function AdminDashboard() {
                       </p>
                     </div>
                   </div>
-                  <div className="grid gap-3 p-5 sm:grid-cols-2">
+                  <div className="grid grid-cols-2 gap-3 p-5">
                     <Field label="Business name">
                       <input
                         value={content.business.name}
@@ -1597,7 +1591,7 @@ export function AdminDashboard() {
 
               </div>
 
-              <aside className="xl:sticky xl:top-0">
+              <aside className="sticky top-0">
                 <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0707]">
                   <div className="border-b border-white/10 px-4 py-3">
                     <p className="text-[11px] font-semibold tracking-[0.16em] text-muted uppercase">
@@ -1675,10 +1669,12 @@ export function AdminDashboard() {
                 </div>
               </aside>
             </div>
+            </div>
           )}
 
           {tab === "orders" && (
-            <div className="space-y-4 rounded-lg border border-white/10 bg-surface-dark/80 p-4 sm:p-6">
+            <div className="h-full min-h-0 overflow-y-auto">
+            <div className="space-y-4 rounded-lg border border-white/10 bg-surface-dark/80 p-6">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
                   Recent orders
@@ -1712,8 +1708,8 @@ export function AdminDashboard() {
                     key={order.id}
                     className="rounded-xl border border-white/10 bg-black/20 p-4"
                   >
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
                         <p className="font-semibold text-white">{order.id}</p>
                         <p className="mt-1 text-xs text-muted">
                           {order.customerName} · {order.email}
@@ -1724,7 +1720,7 @@ export function AdminDashboard() {
                           {order.cardLast4 ? ` · •••• ${order.cardLast4}` : ""}
                         </p>
                       </div>
-                      <p className="text-sm font-semibold text-yellow">
+                      <p className="shrink-0 text-sm font-semibold text-yellow">
                         {formatCurrency(order.total)}
                       </p>
                     </div>
@@ -1744,11 +1740,13 @@ export function AdminDashboard() {
                 ))}
               </ul>
             </div>
+            </div>
           )}
 
           {tab === "messages" && (
-            <div className="space-y-4 rounded-lg border border-white/10 bg-surface-dark/80 p-4 sm:p-6">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="h-full min-h-0 overflow-y-auto">
+            <div className="space-y-4 rounded-lg border border-white/10 bg-surface-dark/80 p-6">
+              <div className="flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
                   Inbox
                 </h2>
@@ -1819,9 +1817,9 @@ export function AdminDashboard() {
                       key={message.id}
                       className="rounded-xl border border-white/10 bg-black/20 p-4"
                     >
-                      <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex items-center gap-2">
                             <span className="rounded-md border border-yellow/30 bg-yellow/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-yellow uppercase">
                               {deptLabel}
                             </span>
@@ -1858,7 +1856,7 @@ export function AdminDashboard() {
                             {new Date(message.createdAt).toLocaleString()}
                           </p>
                         </div>
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="flex shrink-0 gap-1.5">
                           {message.status !== "read" ? (
                             <button
                               type="button"
@@ -1915,6 +1913,7 @@ export function AdminDashboard() {
                   );
                 })}
               </ul>
+            </div>
             </div>
           )}
         </div>

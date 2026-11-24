@@ -11,8 +11,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 z-[200] overflow-hidden bg-[#100b0b] text-white">
-      {children}
+    <div className="fixed inset-0 z-[200] overflow-auto bg-[#100b0b] text-white">
+      {/* Locked desktop canvas — never reflows/stacks on viewport resize */}
+      <div className="admin-shell flex h-full min-h-[720px] w-full min-w-[1360px] flex-col">
+        {children}
+      </div>
     </div>
   );
 }
