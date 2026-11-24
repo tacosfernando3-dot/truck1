@@ -584,8 +584,8 @@ export function AdminDashboard() {
 
   if (previewMenu) {
     return (
-      <div className="flex h-full min-h-0 flex-col bg-background text-white">
-        <header className="z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border-dark bg-[#100b0b] px-4 sm:px-6">
+      <div className="flex h-full min-h-0 w-full min-w-[1360px] flex-col bg-background text-white">
+        <header className="z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border-dark bg-[#100b0b] px-6">
           <button
             type="button"
             onClick={() => setPreviewMenu(false)}
