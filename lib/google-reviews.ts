@@ -117,14 +117,14 @@ export async function fetchGoogleReviewsFromPlaces(): Promise<GoogleReviewsPaylo
 
   const placeId = placeIdFromEnv();
   const res = await fetch(
-    `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`,
+    `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=en`,
     {
       headers: {
         "X-Goog-Api-Key": apiKey,
         "X-Goog-FieldMask":
           "id,displayName,rating,userRatingCount,reviews",
       },
-      next: { revalidate: 3600 },
+      cache: "no-store",
     },
   );
 

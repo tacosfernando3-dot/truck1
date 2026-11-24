@@ -113,17 +113,21 @@ export function GoogleReviewsCarousel() {
 
   useEffect(() => {
     let cancelled = false;
-    void (async () => {
+    const load = async () => {
       try {
-        const res = await fetch("/api/google-reviews", { cache: "no-store" });
+        const res = await fetch(`/api/google-reviews?t=${Date.now()}`, {
+          cache: "no-store",
+          headers: { Pragma: "no-cache" },
+        });
         if (!res.ok) return;
         const data = (await res.json()) as GoogleReviewsPayload;
         if (cancelled || !data?.reviews) return;
         setPayload(data);
       } catch {
-        /* keep cache */
+        /* keep last known payload */
       }
-    })();
+    };
+    void load();
     return () => {
       cancelled = true;
     };
