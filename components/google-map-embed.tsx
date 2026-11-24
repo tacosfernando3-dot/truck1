@@ -1,4 +1,4 @@
-import { mapsEmbedUrl } from "@/lib/utils";
+import { cn, mapsEmbedUrl } from "@/lib/utils";
 
 type Props = {
   query?: string;
@@ -15,13 +15,16 @@ export function GoogleMapEmbed({
   lng,
   zoom = 15,
   title = "Map",
-  className = "",
+  className,
 }: Props) {
   const src = mapsEmbedUrl({ query, lat, lng, zoom });
 
   return (
     <div
-      className={`relative min-h-[260px] overflow-hidden rounded-xl border border-border-dark bg-surface-dark ${className}`}
+      className={cn(
+        "relative min-h-[260px] overflow-hidden rounded-xl border border-border-dark bg-surface-dark",
+        className,
+      )}
     >
       <iframe
         title={title}

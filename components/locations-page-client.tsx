@@ -130,59 +130,61 @@ export function LocationsPageClient() {
         </div>
       </section>
 
-      <section className="container-site grid gap-8 py-14 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="overflow-hidden rounded-xl border border-border-dark">
-          <div className="border-b border-border-dark bg-surface-dark px-4 py-2.5 text-xs font-semibold tracking-wide text-yellow uppercase">
-            {t("locationsPage.weeklySchedule")}
+      <section className="container-site space-y-6 py-14">
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+          <div className="overflow-hidden rounded-xl border border-border-dark">
+            <div className="border-b border-border-dark bg-surface-dark px-4 py-2.5 text-xs font-semibold tracking-wide text-yellow uppercase">
+              {t("locationsPage.weeklySchedule")}
+            </div>
+            <ul className="divide-y divide-border-dark bg-surface-dark-2">
+              {weeklyLocations.map((stop) => (
+                <li
+                  key={stop.id}
+                  className="grid grid-cols-[7.5rem_minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:grid-cols-[8.5rem_minmax(0,1fr)_9.5rem]"
+                >
+                  <p className="text-sm font-semibold tracking-wide text-white uppercase">
+                    {t(`days.${stop.day}`)}
+                    {stop.isToday ? (
+                      <span className="mt-0.5 block text-[10px] font-semibold tracking-[0.14em] text-yellow normal-case">
+                        {t("common.today")}
+                      </span>
+                    ) : null}
+                  </p>
+                  <p className="min-w-0 truncate text-sm text-muted">
+                    {stop.isPrivate
+                      ? localizedNeighborhood(stop.neighborhood)
+                      : stop.address}
+                  </p>
+                  <div className="text-right text-sm text-white">
+                    {stop.isPrivate ? (
+                      <a
+                        href="/catering"
+                        className="font-semibold text-yellow hover:text-yellow-hover"
+                      >
+                        {hoursForDay(stop.day, stop.hours)}
+                      </a>
+                    ) : (
+                      hoursForDay(stop.day, stop.hours)
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="divide-y divide-border-dark bg-surface-dark-2">
-            {weeklyLocations.map((stop) => (
-              <li
-                key={stop.id}
-                className="grid grid-cols-[7.5rem_minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:grid-cols-[8.5rem_minmax(0,1fr)_9.5rem]"
-              >
-                <p className="text-sm font-semibold tracking-wide text-white uppercase">
-                  {t(`days.${stop.day}`)}
-                  {stop.isToday ? (
-                    <span className="mt-0.5 block text-[10px] font-semibold tracking-[0.14em] text-yellow normal-case">
-                      {t("common.today")}
-                    </span>
-                  ) : null}
-                </p>
-                <p className="min-w-0 truncate text-sm text-muted">
-                  {stop.isPrivate
-                    ? localizedNeighborhood(stop.neighborhood)
-                    : stop.address}
-                </p>
-                <div className="text-right text-sm text-white">
-                  {stop.isPrivate ? (
-                    <a
-                      href="/catering"
-                      className="font-semibold text-yellow hover:text-yellow-hover"
-                    >
-                      {hoursForDay(stop.day, stop.hours)}
-                    </a>
-                  ) : (
-                    hoursForDay(stop.day, stop.hours)
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        <aside className="space-y-6">
-          <div className="rounded-xl border border-yellow/40 bg-surface-dark p-6">
-            <p className="text-xs font-semibold tracking-[0.2em] text-yellow uppercase">
-              {t("locationsPage.todaysLocation")}
-            </p>
-            <h2 className="mt-2 font-display text-3xl tracking-wide uppercase">
-              {localizedNeighborhood(today.neighborhood)}
-            </h2>
-            <BusinessContactDetails business={business} className="mt-3" />
-            <p className="mt-1 text-sm text-white">
-              {localizedHours(todayHours)}
-            </p>
+          <div className="flex flex-col justify-between rounded-xl border border-yellow/40 bg-surface-dark p-6">
+            <div>
+              <p className="text-xs font-semibold tracking-[0.2em] text-yellow uppercase">
+                {t("locationsPage.todaysLocation")}
+              </p>
+              <h2 className="mt-2 font-display text-3xl tracking-wide uppercase">
+                {localizedNeighborhood(today.neighborhood)}
+              </h2>
+              <BusinessContactDetails business={business} className="mt-3" />
+              <p className="mt-1 text-sm text-white">
+                {localizedHours(todayHours)}
+              </p>
+            </div>
             <Button
               href={directionsUrl(address)}
               className="mt-6 w-full sm:w-auto"
@@ -190,15 +192,15 @@ export function LocationsPageClient() {
               {t("common.getDirections")}
             </Button>
           </div>
+        </div>
 
-          <GoogleMapEmbed
-            query={address}
-            title={t("locationsPage.mapTitle", {
-              neighborhood: localizedNeighborhood(today.neighborhood),
-            })}
-            className="min-h-[280px] sm:min-h-[320px]"
-          />
-        </aside>
+        <GoogleMapEmbed
+          query={address}
+          title={t("locationsPage.mapTitle", {
+            neighborhood: localizedNeighborhood(today.neighborhood),
+          })}
+          className="min-h-0 aspect-[21/9] w-full sm:aspect-[2.4/1]"
+        />
       </section>
     </div>
   );
