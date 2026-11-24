@@ -1,7 +1,23 @@
 import { galleryItems } from "@/data/gallery";
 import { business } from "@/data/locations";
 import { menuCategories, menuItems } from "@/data/menu";
-import type { CmsContent } from "@/lib/cms/types";
+import type { BusinessDayHours, CmsContent } from "@/lib/cms/types";
+
+export const DEFAULT_BUSINESS_HOURS: BusinessDayHours[] = [
+  { day: "Monday", open: true, opens: "11:00", closes: "20:00" },
+  { day: "Tuesday", open: true, opens: "11:00", closes: "20:00" },
+  { day: "Wednesday", open: true, opens: "11:30", closes: "20:30" },
+  { day: "Thursday", open: true, opens: "11:00", closes: "21:00" },
+  { day: "Friday", open: true, opens: "12:00", closes: "21:00" },
+  { day: "Saturday", open: true, opens: "10:00", closes: "19:00" },
+  {
+    day: "Sunday",
+    open: false,
+    opens: "11:00",
+    closes: "20:00",
+    note: "By appointment",
+  },
+];
 
 export function getDefaultCms(): CmsContent {
   return {
@@ -29,6 +45,7 @@ export function getDefaultCms(): CmsContent {
       zip: "11373",
       footerBlurb:
         "Bold flavor on wheels. Catch us in Elmhurst, Queens and book us for your next event.",
+      hours: structuredClone(DEFAULT_BUSINESS_HOURS),
     },
   };
 }

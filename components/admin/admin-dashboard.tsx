@@ -12,6 +12,7 @@ import {
 import {
   ArrowLeft,
   ClipboardList,
+  Clock,
   Eye,
   ImagePlus,
   LogOut,
@@ -33,13 +34,19 @@ import {
   InstagramIcon,
   TikTokIcon,
 } from "@/components/social-icons";
-import type { CmsBusiness, CmsContent } from "@/lib/cms/types";
+import type {
+  BusinessDayHours,
+  CmsBusiness,
+  CmsContent,
+  Weekday,
+} from "@/lib/cms/types";
 import { autoDescribeMenuItem } from "@/lib/cms/menu-copy";
 import {
   categorySectionId,
   formatBusinessAddress,
   formatPhoneInput,
   instagramHandleFromUrl,
+  normalizeBusinessHours,
 } from "@/lib/cms/utils";
 import type { OrderRecord } from "@/lib/orders/types";
 import {
@@ -390,6 +397,19 @@ export function AdminDashboard() {
     setContent((prev) => {
       if (!prev) return prev;
       return { ...prev, business: { ...prev.business, ...patch } };
+    });
+  }
+
+  function updateHoursDay(day: Weekday, patch: Partial<BusinessDayHours>) {
+    setContent((prev) => {
+      if (!prev) return prev;
+      const hours = normalizeBusinessHours(prev.business.hours).map((entry) =>
+        entry.day === day ? { ...entry, ...patch, day } : entry,
+      );
+      return {
+        ...prev,
+        business: { ...prev.business, hours },
+      };
     });
   }
 
@@ -1586,6 +1606,97 @@ export function AdminDashboard() {
                         <option value="$$$$">$$$$ · fine dining</option>
                       </select>
                     </Field>
+                  </div>
+                </section>
+
+                <section className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
+                  <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                      <Clock className="h-4 w-4 text-yellow" aria-hidden />
+                    </span>
+                    <div>
+                      <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
+                        Hours
+                      </h2>
+                      <p className="text-[11px] text-muted">
+                        Open and closed days for the week
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 p-5">
+                    {normalizeBusinessHours(content.business.hours).map(
+                      (entry) => (
+                        <div
+                          key={entry.day}
+                          className="grid grid-cols-[110px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-white/10 bg-black/20 px-3 py-2.5"
+                        >
+                          <p className="text-sm font-medium text-white">
+                            {entry.day}
+                          </p>
+                          {entry.open ? (
+                            <div className="flex min-w-0 items-center gap-2">
+                              <input
+                                type="time"
+                                value={entry.opens}
+                                onChange={(e) =>
+                                  updateHoursDay(entry.day, {
+                                    opens: e.target.value,
+                                  })
+                                }
+                                className={cn(
+                                  fieldClass,
+                                  "mt-0 min-h-9 py-1.5 text-sm",
+                                )}
+                                aria-label={`${entry.day} opens`}
+                              />
+                              <span className="text-xs text-muted">to</span>
+                              <input
+                                type="time"
+                                value={entry.closes}
+                                onChange={(e) =>
+                                  updateHoursDay(entry.day, {
+                                    closes: e.target.value,
+                                  })
+                                }
+                                className={cn(
+                                  fieldClass,
+                                  "mt-0 min-h-9 py-1.5 text-sm",
+                                )}
+                                aria-label={`${entry.day} closes`}
+                              />
+                            </div>
+                          ) : (
+                            <input
+                              type="text"
+                              value={entry.note ?? ""}
+                              onChange={(e) =>
+                                updateHoursDay(entry.day, {
+                                  note: e.target.value,
+                                })
+                              }
+                              placeholder="Closed"
+                              className={cn(
+                                fieldClass,
+                                "mt-0 min-h-9 py-1.5 text-sm",
+                              )}
+                              aria-label={`${entry.day} closed note`}
+                            />
+                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="hidden text-[10px] font-semibold tracking-wide text-muted uppercase sm:inline">
+                              {entry.open ? "Open" : "Closed"}
+                            </span>
+                            <AdminToggle
+                              checked={entry.open}
+                              onChange={(on) =>
+                                updateHoursDay(entry.day, { open: on })
+                              }
+                              label={`${entry.open ? "Close" : "Open"} ${entry.day}`}
+                            />
+                          </div>
+                        </div>
+                      ),
+                    )}
                   </div>
                 </section>
 

@@ -478,6 +478,7 @@ export const dictionaries = {
       elmhurstQueens: "Elmhurst, Queens",
       privateEvents: "Private Events",
       byAppointment: "By appointment",
+      closed: "Closed",
       privateAddress: "Contact us for availability in Elmhurst & Queens",
     },
     menu: {
@@ -1165,6 +1166,7 @@ export const dictionaries = {
       elmhurstQueens: "Elmhurst, Queens",
       privateEvents: "Eventos privados",
       byAppointment: "Con cita",
+      closed: "Cerrado",
       privateAddress:
         "Contáctanos para disponibilidad en Elmhurst y Queens",
     },

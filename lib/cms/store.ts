@@ -2,10 +2,46 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { getDefaultCms } from "@/lib/cms/defaults";
 import { joinMenuImage, splitMenuImage } from "@/lib/cms/image-focus";
-import type { CmsBusiness, CmsContent } from "@/lib/cms/types";
-import { instagramHandleFromUrl } from "@/lib/cms/utils";
+import type {
+  BusinessDayHours,
+  CmsBusiness,
+  CmsContent,
+} from "@/lib/cms/types";
+import {
+  instagramHandleFromUrl,
+  normalizeBusinessHours,
+} from "@/lib/cms/utils";
 import type { GalleryItem, MenuItem } from "@/lib/types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/server";
+
+/** Packed into footer_blurb when the `hours` column is not yet migrated. */
+const HOURS_PACK_START = "\n<!--lc-hours:";
+const HOURS_PACK_END = "-->";
+
+function packFooterWithHours(footerBlurb: string, hours: BusinessDayHours[]) {
+  const clean = unpackFooterWithHours(footerBlurb).footerBlurb;
+  return `${clean}${HOURS_PACK_START}${JSON.stringify(hours)}${HOURS_PACK_END}`;
+}
+
+function unpackFooterWithHours(footerBlurb: string): {
+  footerBlurb: string;
+  hours?: BusinessDayHours[];
+} {
+  const start = footerBlurb.lastIndexOf(HOURS_PACK_START);
+  if (start < 0) return { footerBlurb };
+  const jsonStart = start + HOURS_PACK_START.length;
+  const end = footerBlurb.indexOf(HOURS_PACK_END, jsonStart);
+  if (end < 0) return { footerBlurb };
+  const raw = footerBlurb.slice(jsonStart, end);
+  try {
+    return {
+      footerBlurb: footerBlurb.slice(0, start).trimEnd(),
+      hours: normalizeBusinessHours(JSON.parse(raw)),
+    };
+  } catch {
+    return { footerBlurb: footerBlurb.slice(0, start).trimEnd() };
+  }
+}
 
 const CMS_PATH = path.join(process.cwd(), "data", "cms.json");
 
@@ -53,6 +89,7 @@ type BusinessRow = {
   state: string;
   zip: string;
   footer_blurb: string;
+  hours?: BusinessDayHours[] | null;
 };
 
 type CategoryRow = {
@@ -71,6 +108,7 @@ function normalizeBusiness(
   const legacyStreet =
     business.address?.trim() || business.area?.trim() || "";
   const instagram = business.instagram?.trim() || defaults.instagram;
+  const packed = unpackFooterWithHours(business.footerBlurb ?? "");
 
   return {
     name: business.name?.trim() || defaults.name,
@@ -95,7 +133,8 @@ function normalizeBusiness(
     city: business.city?.trim() || defaults.city,
     state: business.state?.trim() || defaults.state,
     zip: business.zip?.trim() || defaults.zip,
-    footerBlurb: business.footerBlurb?.trim() || defaults.footerBlurb,
+    footerBlurb: packed.footerBlurb.trim() || defaults.footerBlurb,
+    hours: normalizeBusinessHours(business.hours ?? packed.hours),
   };
 }
 
@@ -164,6 +203,7 @@ function mapGallery(row: GalleryRow): GalleryItem {
 }
 
 function mapBusiness(row: BusinessRow): CmsBusiness {
+  const packed = unpackFooterWithHours(row.footer_blurb ?? "");
   return normalizeBusiness({
     name: row.name,
     shortName: row.short_name,
@@ -183,7 +223,8 @@ function mapBusiness(row: BusinessRow): CmsBusiness {
     city: row.city,
     state: row.state,
     zip: row.zip,
-    footerBlurb: row.footer_blurb,
+    footerBlurb: packed.footerBlurb,
+    hours: row.hours ?? packed.hours ?? [],
   });
 }
 
@@ -345,33 +386,54 @@ async function writeCmsToSupabase(content: CmsContent) {
   }
 
   const b = normalized.business;
-  const { error: businessError } = await supabase.from("business_profile").upsert(
+  const baseRow = {
+    id: 1,
+    name: b.name,
+    short_name: b.shortName,
+    handle: b.handle,
+    phone: b.phone,
+    email: b.email,
+    cuisine: b.cuisine,
+    price_range: b.priceRange,
+    instagram: b.instagram,
+    facebook: b.facebook,
+    tiktok: b.tiktok,
+    show_instagram: b.showInstagram,
+    show_facebook: b.showFacebook,
+    show_tiktok: b.showTikTok,
+    gallery_social: b.gallerySocial,
+    street_address: b.streetAddress,
+    city: b.city,
+    state: b.state,
+    zip: b.zip,
+    updated_at: new Date().toISOString(),
+  };
+
+  const withColumn = await supabase.from("business_profile").upsert(
     {
-      id: 1,
-      name: b.name,
-      short_name: b.shortName,
-      handle: b.handle,
-      phone: b.phone,
-      email: b.email,
-      cuisine: b.cuisine,
-      price_range: b.priceRange,
-      instagram: b.instagram,
-      facebook: b.facebook,
-      tiktok: b.tiktok,
-      show_instagram: b.showInstagram,
-      show_facebook: b.showFacebook,
-      show_tiktok: b.showTikTok,
-      gallery_social: b.gallerySocial,
-      street_address: b.streetAddress,
-      city: b.city,
-      state: b.state,
-      zip: b.zip,
+      ...baseRow,
       footer_blurb: b.footerBlurb,
-      updated_at: new Date().toISOString(),
+      hours: b.hours,
     },
     { onConflict: "id" },
   );
-  if (businessError) throw new Error(businessError.message);
+
+  if (withColumn.error) {
+    const missingHoursColumn =
+      withColumn.error.code === "PGRST204" ||
+      /hours/i.test(withColumn.error.message);
+    if (!missingHoursColumn) throw new Error(withColumn.error.message);
+
+    // Fallback until `hours` jsonb column is migrated: pack into footer_blurb.
+    const packed = await supabase.from("business_profile").upsert(
+      {
+        ...baseRow,
+        footer_blurb: packFooterWithHours(b.footerBlurb, b.hours),
+      },
+      { onConflict: "id" },
+    );
+    if (packed.error) throw new Error(packed.error.message);
+  }
 
   return normalized;
 }

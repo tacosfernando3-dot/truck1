@@ -11,7 +11,10 @@ import { GoogleMapEmbed } from "@/components/google-map-embed";
 import { images } from "@/data/images";
 import { getTodaysLocation, weeklyLocations } from "@/data/locations";
 import { useT } from "@/lib/i18n";
-import { formatBusinessAddress } from "@/lib/cms/utils";
+import {
+  formatBusinessAddress,
+  formatBusinessDayHours,
+} from "@/lib/cms/utils";
 import { directionsUrl, haversineMiles } from "@/lib/utils";
 
 export function LocationsPageClient() {
@@ -20,6 +23,8 @@ export function LocationsPageClient() {
   const { business } = content;
   const address = formatBusinessAddress(business);
   const today = getTodaysLocation();
+  const todayHours =
+    formatBusinessDayHours(business.hours, today.day) || today.hours;
   const [distance, setDistance] = useState<number | null>(null);
   const [geoStatus, setGeoStatus] = useState<
     "idle" | "loading" | "granted" | "denied" | "unsupported"
@@ -58,7 +63,14 @@ export function LocationsPageClient() {
 
   function localizedHours(hours: string) {
     if (hours === "By appointment") return t("locations.byAppointment");
+    if (hours === "Closed") return t("locations.closed");
     return hours;
+  }
+
+  function hoursForDay(day: string, fallback: string) {
+    return localizedHours(
+      formatBusinessDayHours(business.hours, day) || fallback,
+    );
   }
 
   return (
@@ -152,7 +164,7 @@ export function LocationsPageClient() {
                     />
                   )}
                   <p className="mt-1 text-sm text-muted">
-                    {localizedHours(stop.hours)}
+                    {hoursForDay(stop.day, stop.hours)}
                   </p>
                 </div>
                 {!stop.isPrivate ? (
@@ -183,7 +195,9 @@ export function LocationsPageClient() {
               {localizedNeighborhood(today.neighborhood)}
             </h2>
             <BusinessContactDetails business={business} className="mt-3" />
-            <p className="mt-1 text-sm text-white">{localizedHours(today.hours)}</p>
+            <p className="mt-1 text-sm text-white">
+              {localizedHours(todayHours)}
+            </p>
             <Button
               href={directionsUrl(address)}
               className="mt-6 w-full sm:w-auto"

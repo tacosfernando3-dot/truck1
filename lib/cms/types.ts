@@ -2,6 +2,26 @@ import type { GalleryItem, MenuItem } from "@/lib/types";
 
 export type GallerySocial = "instagram" | "facebook" | "tiktok";
 
+export type Weekday =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+
+export type BusinessDayHours = {
+  day: Weekday;
+  open: boolean;
+  /** 24h "HH:MM" when open */
+  opens: string;
+  /** 24h "HH:MM" when open */
+  closes: string;
+  /** Shown instead of "Closed" when the day is off (e.g. By appointment) */
+  note?: string;
+};
+
 export type CmsBusiness = {
   name: string;
   shortName: string;
@@ -23,6 +43,8 @@ export type CmsBusiness = {
   state: string;
   zip: string;
   footerBlurb: string;
+  /** Weekly open/closed schedule */
+  hours: BusinessDayHours[];
 };
 
 export type CmsContent = {

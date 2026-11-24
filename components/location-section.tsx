@@ -6,7 +6,10 @@ import { useContent } from "@/components/content-provider";
 import { GoogleReviewsCarousel } from "@/components/google-reviews-carousel";
 import { getTodaysLocation } from "@/data/locations";
 import { useT } from "@/lib/i18n";
-import { formatBusinessAddress } from "@/lib/cms/utils";
+import {
+  formatBusinessAddress,
+  formatBusinessDayHours,
+} from "@/lib/cms/utils";
 import { directionsUrl, mapsEmbedUrl } from "@/lib/utils";
 
 export function LocationSection() {
@@ -14,6 +17,8 @@ export function LocationSection() {
   const { content } = useContent();
   const today = getTodaysLocation();
   const { business } = content;
+  const hoursLabel =
+    formatBusinessDayHours(business.hours, today.day) || today.hours;
   const address = formatBusinessAddress(business);
   const mapSrc = mapsEmbedUrl({
     query: address,
@@ -59,7 +64,7 @@ export function LocationSection() {
               {today.neighborhood}
             </h3>
             <BusinessContactDetails business={business} className="mt-2" />
-            <p className="mt-2 text-sm text-white">{today.hours}</p>
+            <p className="mt-2 text-sm text-white">{hoursLabel}</p>
             <a
               href={directionsUrl(address)}
               target="_blank"
