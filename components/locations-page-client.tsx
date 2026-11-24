@@ -132,55 +132,40 @@ export function LocationsPageClient() {
 
       <section className="container-site grid gap-8 py-14 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="overflow-hidden rounded-xl border border-border-dark">
-          <div className="border-b border-border-dark bg-surface-dark px-4 py-3 text-sm font-semibold tracking-wide text-yellow uppercase">
+          <div className="border-b border-border-dark bg-surface-dark px-4 py-2.5 text-xs font-semibold tracking-wide text-yellow uppercase">
             {t("locationsPage.weeklySchedule")}
           </div>
           <ul className="divide-y divide-border-dark bg-surface-dark-2">
             {weeklyLocations.map((stop) => (
               <li
                 key={stop.id}
-                className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                className="grid grid-cols-[7.5rem_minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:grid-cols-[8.5rem_minmax(0,1fr)_9.5rem]"
               >
-                <div>
-                  <p className="font-display text-xl tracking-wide uppercase">
-                    {t(`days.${stop.day}`)}
-                    {stop.isToday && (
-                      <span className="ml-2 align-middle text-xs font-sans font-semibold tracking-wide text-yellow">
-                        {t("common.today")}
-                      </span>
-                    )}
-                  </p>
-                  <p className="text-sm text-white">
-                    {localizedNeighborhood(stop.neighborhood)}
-                  </p>
+                <p className="text-sm font-semibold tracking-wide text-white uppercase">
+                  {t(`days.${stop.day}`)}
+                  {stop.isToday ? (
+                    <span className="mt-0.5 block text-[10px] font-semibold tracking-[0.14em] text-yellow normal-case">
+                      {t("common.today")}
+                    </span>
+                  ) : null}
+                </p>
+                <p className="min-w-0 truncate text-sm text-muted">
+                  {stop.isPrivate
+                    ? localizedNeighborhood(stop.neighborhood)
+                    : stop.address}
+                </p>
+                <div className="text-right text-sm text-white">
                   {stop.isPrivate ? (
-                    <p className="text-sm text-muted">
-                      {t("locations.privateAddress")}
-                    </p>
+                    <a
+                      href="/catering"
+                      className="font-semibold text-yellow hover:text-yellow-hover"
+                    >
+                      {hoursForDay(stop.day, stop.hours)}
+                    </a>
                   ) : (
-                    <BusinessContactDetails
-                      business={business}
-                      className="mt-0"
-                    />
+                    hoursForDay(stop.day, stop.hours)
                   )}
-                  <p className="mt-1 text-sm text-muted">
-                    {hoursForDay(stop.day, stop.hours)}
-                  </p>
                 </div>
-                {!stop.isPrivate ? (
-                  <a
-                    href={directionsUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-yellow px-4 text-sm font-semibold text-yellow hover:bg-yellow hover:text-white"
-                  >
-                    {t("common.getDirections")}
-                  </a>
-                ) : (
-                  <Button href="/catering" variant="outline-light">
-                    {t("common.bookEvent")}
-                  </Button>
-                )}
               </li>
             ))}
           </ul>
