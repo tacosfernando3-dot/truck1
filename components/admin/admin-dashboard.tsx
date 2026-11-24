@@ -569,9 +569,6 @@ export function AdminDashboard() {
           <Button type="submit" className="mt-4 w-full">
             Enter dashboard
           </Button>
-          <p className="mt-4 text-center text-xs text-muted">
-            Default password: <code className="text-gold">compadres</code>
-          </p>
           <Link
             href="/"
             className="mt-4 block text-center text-sm text-muted hover:text-white"
