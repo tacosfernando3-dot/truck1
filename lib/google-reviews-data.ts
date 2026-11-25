@@ -29,9 +29,49 @@ export type GoogleReviewsPayload = {
   shareUrl: string;
   writeReviewUrl: string;
   reviews: GoogleReview[];
-  source: "places" | "cms" | "cache";
+  source: "places" | "maps" | "cms" | "cache";
   updatedAt: string;
 };
+
+/** Format a publishedAt ISO timestamp into a live relative string. */
+export function formatReviewRelativeTime(
+  publishedAt: string | undefined,
+  fallback?: string,
+  nowMs: number = Date.now(),
+): string | undefined {
+  if (!publishedAt) return fallback;
+  const then = Date.parse(publishedAt);
+  if (!Number.isFinite(then)) return fallback;
+
+  const diffSec = Math.max(0, Math.round((nowMs - then) / 1000));
+  if (diffSec < 60) return "just now";
+  const mins = Math.round(diffSec / 60);
+  if (mins < 60) return `${mins} minute${mins === 1 ? "" : "s"} ago`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  const days = Math.round(hours / 24);
+  if (days < 14) return `${days} day${days === 1 ? "" : "s"} ago`;
+  const weeks = Math.round(days / 7);
+  if (weeks < 8) return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+  const months = Math.round(days / 30);
+  if (months < 18) return `${months} month${months === 1 ? "" : "s"} ago`;
+  const years = Math.round(days / 365);
+  return `${years} year${years === 1 ? "" : "s"} ago`;
+}
+
+export function withFreshRelativeTimes(
+  reviews: GoogleReview[],
+  nowMs: number = Date.now(),
+): GoogleReview[] {
+  return reviews.map((review) => ({
+    ...review,
+    relativeTime: formatReviewRelativeTime(
+      review.publishedAt,
+      review.relativeTime,
+      nowMs,
+    ),
+  }));
+}
 
 /** Seeded fallback when Places + CMS are unavailable. */
 export const CACHED_GOOGLE_REVIEWS: GoogleReviewsPayload = {

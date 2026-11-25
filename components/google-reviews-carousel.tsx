@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import { useI18n, useT } from "@/lib/i18n";
 import {
   CACHED_GOOGLE_REVIEWS,
+  formatReviewRelativeTime,
   type GoogleReview,
   type GoogleReviewsPayload,
 } from "@/lib/google-reviews-data";
@@ -47,13 +48,17 @@ function ReviewCard({
   locale: string;
 }) {
   const body = reviewBody(review, locale);
+  const when = formatReviewRelativeTime(
+    review.publishedAt,
+    review.relativeTime,
+  );
   return (
     <article className="flex h-full flex-col rounded-xl border border-border-dark bg-surface-dark/90 p-5 backdrop-blur">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="truncate font-semibold text-white">{review.author}</p>
-          {review.relativeTime ? (
-            <p className="mt-0.5 text-xs text-muted">{review.relativeTime}</p>
+          {when ? (
+            <p className="mt-0.5 text-xs text-muted">{when}</p>
           ) : null}
         </div>
         <Stars rating={review.rating} size="sm" />
