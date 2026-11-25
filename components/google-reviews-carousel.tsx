@@ -7,7 +7,7 @@ import {
   CACHED_GOOGLE_REVIEWS,
   type GoogleReview,
   type GoogleReviewsPayload,
-} from "@/lib/google-reviews";
+} from "@/lib/google-reviews-data";
 import { cn } from "@/lib/utils";
 
 function Stars({ rating, size = "md" }: { rating: number; size?: "sm" | "md" }) {

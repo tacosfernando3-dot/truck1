@@ -1,7 +1,20 @@
 import { galleryItems } from "@/data/gallery";
 import { business } from "@/data/locations";
 import { menuCategories, menuItems } from "@/data/menu";
-import type { BusinessDayHours, CmsContent } from "@/lib/cms/types";
+import { CACHED_GOOGLE_REVIEWS } from "@/lib/google-reviews-data";
+import type {
+  BusinessDayHours,
+  CmsContent,
+  CmsGoogleReviews,
+} from "@/lib/cms/types";
+
+/** Matches the live Google listing (rating + count); review texts sync via Places or admin. */
+export const DEFAULT_GOOGLE_REVIEWS: CmsGoogleReviews = {
+  rating: CACHED_GOOGLE_REVIEWS.rating,
+  userRatingCount: CACHED_GOOGLE_REVIEWS.userRatingCount,
+  updatedAt: CACHED_GOOGLE_REVIEWS.updatedAt,
+  reviews: structuredClone(CACHED_GOOGLE_REVIEWS.reviews),
+};
 
 export const DEFAULT_BUSINESS_HOURS: BusinessDayHours[] = [
   { day: "Monday", open: true, opens: "11:00", closes: "20:00" },
@@ -46,6 +59,7 @@ export function getDefaultCms(): CmsContent {
       footerBlurb:
         "Bold flavor on wheels. Catch us in Elmhurst, Queens and book us for your next event.",
       hours: structuredClone(DEFAULT_BUSINESS_HOURS),
+      googleReviews: structuredClone(DEFAULT_GOOGLE_REVIEWS),
     },
   };
 }

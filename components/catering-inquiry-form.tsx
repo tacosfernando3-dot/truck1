@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/button";
+import { SelectMenu } from "@/components/select-menu";
 import { formatPhoneInput } from "@/lib/cms/utils";
 import { useT } from "@/lib/i18n";
 
@@ -47,6 +48,22 @@ const packageOptions = [
 
 export function CateringInquiryForm() {
   const t = useT();
+  const eventOptions = useMemo(
+    () =>
+      eventTypeOptions.map((option) => ({
+        value: option.value,
+        label: t(option.key),
+      })),
+    [t],
+  );
+  const packageMenuOptions = useMemo(
+    () =>
+      packageOptions.map((option) => ({
+        value: option.value,
+        label: t(option.key),
+      })),
+    [t],
+  );
   const [form, setForm] = useState<FormState>(initial);
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
@@ -216,21 +233,16 @@ export function CateringInquiryForm() {
           <label htmlFor="eventType" className="text-sm text-muted">
             {t("cateringForm.eventType")}
           </label>
-          <select
+          <SelectMenu
             id="eventType"
             className={fieldClass}
             value={form.eventType}
-            onChange={(e) => update("eventType", e.target.value)}
+            onChange={(value) => update("eventType", value)}
+            placeholder={t("cateringForm.selectType")}
+            options={eventOptions}
             aria-invalid={!!errors.eventType}
             aria-describedby={errors.eventType ? "eventType-error" : undefined}
-          >
-            <option value="">{t("cateringForm.selectType")}</option>
-            {eventTypeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(option.key)}
-              </option>
-            ))}
-          </select>
+          />
           {errors.eventType && (
             <p id="eventType-error" className="mt-1 text-sm text-red-400" role="alert">
               {errors.eventType}
@@ -300,21 +312,16 @@ export function CateringInquiryForm() {
           <label htmlFor="packageId" className="text-sm text-muted">
             {t("cateringForm.package")}
           </label>
-          <select
+          <SelectMenu
             id="packageId"
             className={fieldClass}
             value={form.packageId}
-            onChange={(e) => update("packageId", e.target.value)}
+            onChange={(value) => update("packageId", value)}
+            placeholder={t("cateringForm.selectPackage")}
+            options={packageMenuOptions}
             aria-invalid={!!errors.packageId}
             aria-describedby={errors.packageId ? "packageId-error" : undefined}
-          >
-            <option value="">{t("cateringForm.selectPackage")}</option>
-            {packageOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(option.key)}
-              </option>
-            ))}
-          </select>
+          />
           {errors.packageId && (
             <p id="packageId-error" className="mt-1 text-sm text-red-400" role="alert">
               {errors.packageId}

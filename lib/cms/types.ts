@@ -2,6 +2,26 @@ import type { GalleryItem, MenuItem } from "@/lib/types";
 
 export type GallerySocial = "instagram" | "facebook" | "tiktok";
 
+export type CmsGoogleReview = {
+  id: string;
+  author: string;
+  rating: number;
+  text: string;
+  textEs?: string;
+  relativeTime?: string;
+  publishedAt?: string;
+  profilePhotoUrl?: string;
+  authorUrl?: string;
+};
+
+/** Homepage Google reviews carousel snapshot (editable in admin / refreshed via Places). */
+export type CmsGoogleReviews = {
+  rating: number;
+  userRatingCount: number;
+  reviews: CmsGoogleReview[];
+  updatedAt: string;
+};
+
 export type Weekday =
   | "Monday"
   | "Tuesday"
@@ -45,6 +65,8 @@ export type CmsBusiness = {
   footerBlurb: string;
   /** Weekly open/closed schedule */
   hours: BusinessDayHours[];
+  /** Cached Google reviews shown on the homepage */
+  googleReviews: CmsGoogleReviews;
 };
 
 export type CmsContent = {

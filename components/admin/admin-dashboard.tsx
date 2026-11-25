@@ -22,13 +22,16 @@ import {
   Pencil,
   Phone,
   Plus,
+  RefreshCw,
   Save,
   Settings,
+  Star,
   Trash2,
   Utensils,
 } from "lucide-react";
 import { Button } from "@/components/button";
 import { MenuCard } from "@/components/menu-card";
+import { SelectMenu } from "@/components/select-menu";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -38,6 +41,7 @@ import type {
   BusinessDayHours,
   CmsBusiness,
   CmsContent,
+  CmsGoogleReview,
   Weekday,
 } from "@/lib/cms/types";
 import { autoDescribeMenuItem } from "@/lib/cms/menu-copy";
@@ -411,6 +415,77 @@ export function AdminDashboard() {
         business: { ...prev.business, hours },
       };
     });
+  }
+
+  function updateGoogleReviews(
+    patch: Partial<CmsBusiness["googleReviews"]> & {
+      reviews?: CmsGoogleReview[];
+    },
+  ) {
+    setContent((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        business: {
+          ...prev.business,
+          googleReviews: {
+            ...prev.business.googleReviews,
+            ...patch,
+            updatedAt: new Date().toISOString(),
+          },
+        },
+      };
+    });
+  }
+
+  function updateGoogleReview(
+    id: string,
+    patch: Partial<CmsGoogleReview>,
+  ) {
+    setContent((prev) => {
+      if (!prev) return prev;
+      const reviews = prev.business.googleReviews.reviews.map((review) =>
+        review.id === id ? { ...review, ...patch } : review,
+      );
+      return {
+        ...prev,
+        business: {
+          ...prev.business,
+          googleReviews: {
+            ...prev.business.googleReviews,
+            reviews,
+            userRatingCount: Math.max(
+              prev.business.googleReviews.userRatingCount,
+              reviews.length,
+            ),
+            updatedAt: new Date().toISOString(),
+          },
+        },
+      };
+    });
+  }
+
+  async function syncGoogleReviews() {
+    setStatus("Syncing Google reviews…");
+    try {
+      const res = await fetch("/api/admin/google-reviews/sync", {
+        method: "POST",
+      });
+      const data = (await res.json().catch(() => null)) as {
+        error?: string;
+        googleReviews?: CmsBusiness["googleReviews"];
+      } | null;
+      if (!res.ok || !data?.googleReviews) {
+        setStatus(data?.error || "Google sync failed.");
+        return;
+      }
+      updateBusiness({ googleReviews: data.googleReviews });
+      setStatus(
+        `Synced ${data.googleReviews.reviews.length} Google review${data.googleReviews.reviews.length === 1 ? "" : "s"}. Hit Save to publish.`,
+      );
+    } catch {
+      setStatus("Google sync failed.");
+    }
   }
 
   function addCategory() {
@@ -1587,7 +1662,7 @@ export function AdminDashboard() {
                       />
                     </Field>
                     <Field label="Price range">
-                      <select
+                      <SelectMenu
                         value={
                           ["$", "$$", "$$$", "$$$$"].includes(
                             content.business.priceRange,
@@ -1595,16 +1670,17 @@ export function AdminDashboard() {
                             ? content.business.priceRange
                             : "$$"
                         }
-                        onChange={(e) =>
-                          updateBusiness({ priceRange: e.target.value })
+                        onChange={(priceRange) =>
+                          updateBusiness({ priceRange })
                         }
                         className={fieldClass}
-                      >
-                        <option value="$">$ · inexpensive</option>
-                        <option value="$$">$$ · moderate</option>
-                        <option value="$$$">$$$ · pricey</option>
-                        <option value="$$$$">$$$$ · fine dining</option>
-                      </select>
+                        options={[
+                          { value: "$", label: "$ · inexpensive" },
+                          { value: "$$", label: "$$ · moderate" },
+                          { value: "$$$", label: "$$$ · pricey" },
+                          { value: "$$$$", label: "$$$$ · fine dining" },
+                        ]}
+                      />
                     </Field>
                   </div>
                 </section>
@@ -1697,6 +1773,156 @@ export function AdminDashboard() {
                         </div>
                       ),
                     )}
+                  </div>
+                </section>
+
+                <section className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1212] to-[#120d0d]">
+                  <div className="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                        <Star className="h-4 w-4 text-yellow" aria-hidden />
+                      </span>
+                      <div>
+                        <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
+                          Google reviews
+                        </h2>
+                        <p className="text-[11px] text-muted">
+                          Homepage carousel · Save after edits or sync
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => void syncGoogleReviews()}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-1.5 text-[11px] font-semibold tracking-wide text-white uppercase transition hover:border-yellow/40 hover:text-yellow"
+                    >
+                      <RefreshCw className="h-3.5 w-3.5" aria-hidden />
+                      Sync
+                    </button>
+                  </div>
+                  <div className="space-y-3 p-5">
+                    <div className="grid grid-cols-2 gap-3">
+                      <Field label="Avg rating">
+                        <input
+                          type="number"
+                          min={1}
+                          max={5}
+                          step={0.1}
+                          value={content.business.googleReviews.rating}
+                          onChange={(e) =>
+                            updateGoogleReviews({
+                              rating: Number(e.target.value) || 5,
+                            })
+                          }
+                          className={fieldClass}
+                        />
+                      </Field>
+                      <Field label="Total on Google">
+                        <input
+                          type="number"
+                          min={0}
+                          step={1}
+                          value={content.business.googleReviews.userRatingCount}
+                          onChange={(e) =>
+                            updateGoogleReviews({
+                              userRatingCount: Number(e.target.value) || 0,
+                            })
+                          }
+                          className={fieldClass}
+                        />
+                      </Field>
+                    </div>
+
+                    <div className="space-y-2">
+                      {content.business.googleReviews.reviews.map((review) => (
+                        <div
+                          key={review.id}
+                          className="space-y-2 rounded-xl border border-white/10 bg-black/20 p-3"
+                        >
+                          <div className="grid grid-cols-[1fr_4.5rem_auto] gap-2">
+                            <input
+                              value={review.author}
+                              onChange={(e) =>
+                                updateGoogleReview(review.id, {
+                                  author: e.target.value,
+                                })
+                              }
+                              className={cn(fieldClass, "mt-0 min-h-9 text-sm")}
+                              placeholder="Author"
+                              aria-label="Review author"
+                            />
+                            <input
+                              type="number"
+                              min={1}
+                              max={5}
+                              value={review.rating}
+                              onChange={(e) =>
+                                updateGoogleReview(review.id, {
+                                  rating: Number(e.target.value) || 5,
+                                })
+                              }
+                              className={cn(fieldClass, "mt-0 min-h-9 text-sm")}
+                              aria-label="Review rating"
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                updateGoogleReviews({
+                                  reviews:
+                                    content.business.googleReviews.reviews.filter(
+                                      (entry) => entry.id !== review.id,
+                                    ),
+                                })
+                              }
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 text-muted transition hover:border-red/40 hover:text-red"
+                              aria-label={`Delete review by ${review.author}`}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                            </button>
+                          </div>
+                          <textarea
+                            value={review.text}
+                            onChange={(e) =>
+                              updateGoogleReview(review.id, {
+                                text: e.target.value,
+                              })
+                            }
+                            rows={2}
+                            className={cn(
+                              fieldClass,
+                              "mt-0 min-h-[4rem] resize-y text-sm",
+                            )}
+                            placeholder="Review text"
+                            aria-label="Review text"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        updateGoogleReviews({
+                          reviews: [
+                            ...content.business.googleReviews.reviews,
+                            {
+                              id: `review-${Date.now()}`,
+                              author: "",
+                              rating: 5,
+                              text: "",
+                            },
+                          ],
+                          userRatingCount: Math.max(
+                            content.business.googleReviews.userRatingCount,
+                            content.business.googleReviews.reviews.length + 1,
+                          ),
+                        })
+                      }
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-white/20 px-3 py-2 text-[11px] font-semibold tracking-wide text-muted uppercase transition hover:border-yellow/40 hover:text-yellow"
+                    >
+                      <Plus className="h-3.5 w-3.5" aria-hidden />
+                      Add review
+                    </button>
                   </div>
                 </section>
 

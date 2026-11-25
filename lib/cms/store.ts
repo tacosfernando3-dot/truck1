@@ -2,10 +2,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { getDefaultCms } from "@/lib/cms/defaults";
 import { joinMenuImage, splitMenuImage } from "@/lib/cms/image-focus";
+import { DEFAULT_GOOGLE_REVIEWS } from "@/lib/cms/defaults";
 import type {
   BusinessDayHours,
   CmsBusiness,
   CmsContent,
+  CmsGoogleReviews,
 } from "@/lib/cms/types";
 import {
   instagramHandleFromUrl,
@@ -14,33 +16,120 @@ import {
 import type { GalleryItem, MenuItem } from "@/lib/types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/server";
 
-/** Packed into footer_blurb when the `hours` column is not yet migrated. */
+/** Packed into footer_blurb when dedicated columns are not yet migrated. */
 const HOURS_PACK_START = "\n<!--lc-hours:";
 const HOURS_PACK_END = "-->";
+const REVIEWS_PACK_START = "\n<!--lc-greviews:";
+const REVIEWS_PACK_END = "-->";
 
-function packFooterWithHours(footerBlurb: string, hours: BusinessDayHours[]) {
-  const clean = unpackFooterWithHours(footerBlurb).footerBlurb;
-  return `${clean}${HOURS_PACK_START}${JSON.stringify(hours)}${HOURS_PACK_END}`;
+function normalizeGoogleReviews(value: unknown): CmsGoogleReviews {
+  const defaults = DEFAULT_GOOGLE_REVIEWS;
+  if (!value || typeof value !== "object") {
+    return structuredClone(defaults);
+  }
+  const raw = value as Partial<CmsGoogleReviews>;
+  const reviews = Array.isArray(raw.reviews)
+    ? raw.reviews
+        .filter((r) => r && typeof r === "object")
+        .map((r, index) => {
+          const row = r as Partial<CmsGoogleReviews["reviews"][number]>;
+          const author = String(row.author ?? "").trim();
+          const rating = Number(row.rating ?? 0);
+          if (!author || rating < 1) return null;
+          return {
+            id: String(row.id ?? `review-${index}-${author}`),
+            author,
+            rating,
+            text: String(row.text ?? "").trim(),
+            textEs:
+              typeof row.textEs === "string" ? row.textEs.trim() : undefined,
+            relativeTime:
+              typeof row.relativeTime === "string"
+                ? row.relativeTime.trim()
+                : undefined,
+            publishedAt:
+              typeof row.publishedAt === "string"
+                ? row.publishedAt.trim()
+                : undefined,
+            profilePhotoUrl:
+              typeof row.profilePhotoUrl === "string"
+                ? row.profilePhotoUrl.trim()
+                : undefined,
+            authorUrl:
+              typeof row.authorUrl === "string"
+                ? row.authorUrl.trim()
+                : undefined,
+          };
+        })
+        .filter(Boolean)
+    : defaults.reviews;
+
+  return {
+    rating: Number(raw.rating ?? defaults.rating) || defaults.rating,
+    userRatingCount:
+      Number(raw.userRatingCount ?? defaults.userRatingCount) ||
+      defaults.userRatingCount,
+    reviews: (reviews as CmsGoogleReviews["reviews"]).length
+      ? (reviews as CmsGoogleReviews["reviews"])
+      : structuredClone(defaults.reviews),
+    updatedAt:
+      typeof raw.updatedAt === "string" && raw.updatedAt
+        ? raw.updatedAt
+        : new Date().toISOString(),
+  };
 }
 
-function unpackFooterWithHours(footerBlurb: string): {
+function unpackFooterMeta(footerBlurb: string): {
   footerBlurb: string;
   hours?: BusinessDayHours[];
+  googleReviews?: CmsGoogleReviews;
 } {
-  const start = footerBlurb.lastIndexOf(HOURS_PACK_START);
-  if (start < 0) return { footerBlurb };
-  const jsonStart = start + HOURS_PACK_START.length;
-  const end = footerBlurb.indexOf(HOURS_PACK_END, jsonStart);
-  if (end < 0) return { footerBlurb };
-  const raw = footerBlurb.slice(jsonStart, end);
-  try {
-    return {
-      footerBlurb: footerBlurb.slice(0, start).trimEnd(),
-      hours: normalizeBusinessHours(JSON.parse(raw)),
-    };
-  } catch {
-    return { footerBlurb: footerBlurb.slice(0, start).trimEnd() };
+  let blurb = footerBlurb;
+  let hours: BusinessDayHours[] | undefined;
+  let googleReviews: CmsGoogleReviews | undefined;
+
+  const hoursStart = blurb.lastIndexOf(HOURS_PACK_START);
+  if (hoursStart >= 0) {
+    const jsonStart = hoursStart + HOURS_PACK_START.length;
+    const end = blurb.indexOf(HOURS_PACK_END, jsonStart);
+    if (end >= 0) {
+      try {
+        hours = normalizeBusinessHours(
+          JSON.parse(blurb.slice(jsonStart, end)),
+        );
+      } catch {
+        /* ignore */
+      }
+      blurb = `${blurb.slice(0, hoursStart)}${blurb.slice(end + HOURS_PACK_END.length)}`;
+    }
   }
+
+  const reviewsStart = blurb.lastIndexOf(REVIEWS_PACK_START);
+  if (reviewsStart >= 0) {
+    const jsonStart = reviewsStart + REVIEWS_PACK_START.length;
+    const end = blurb.indexOf(REVIEWS_PACK_END, jsonStart);
+    if (end >= 0) {
+      try {
+        googleReviews = normalizeGoogleReviews(
+          JSON.parse(blurb.slice(jsonStart, end)),
+        );
+      } catch {
+        /* ignore */
+      }
+      blurb = `${blurb.slice(0, reviewsStart)}${blurb.slice(end + REVIEWS_PACK_END.length)}`;
+    }
+  }
+
+  return { footerBlurb: blurb.trimEnd(), hours, googleReviews };
+}
+
+function packFooterMeta(
+  footerBlurb: string,
+  hours: BusinessDayHours[],
+  googleReviews: CmsGoogleReviews,
+) {
+  const clean = unpackFooterMeta(footerBlurb).footerBlurb;
+  return `${clean}${HOURS_PACK_START}${JSON.stringify(hours)}${HOURS_PACK_END}${REVIEWS_PACK_START}${JSON.stringify(googleReviews)}${REVIEWS_PACK_END}`;
 }
 
 const CMS_PATH = path.join(process.cwd(), "data", "cms.json");
@@ -108,7 +197,7 @@ function normalizeBusiness(
   const legacyStreet =
     business.address?.trim() || business.area?.trim() || "";
   const instagram = business.instagram?.trim() || defaults.instagram;
-  const packed = unpackFooterWithHours(business.footerBlurb ?? "");
+  const packed = unpackFooterMeta(business.footerBlurb ?? "");
 
   return {
     name: business.name?.trim() || defaults.name,
@@ -135,6 +224,9 @@ function normalizeBusiness(
     zip: business.zip?.trim() || defaults.zip,
     footerBlurb: packed.footerBlurb.trim() || defaults.footerBlurb,
     hours: normalizeBusinessHours(business.hours ?? packed.hours),
+    googleReviews: normalizeGoogleReviews(
+      business.googleReviews ?? packed.googleReviews,
+    ),
   };
 }
 
@@ -203,7 +295,7 @@ function mapGallery(row: GalleryRow): GalleryItem {
 }
 
 function mapBusiness(row: BusinessRow): CmsBusiness {
-  const packed = unpackFooterWithHours(row.footer_blurb ?? "");
+  const packed = unpackFooterMeta(row.footer_blurb ?? "");
   return normalizeBusiness({
     name: row.name,
     shortName: row.short_name,
@@ -225,6 +317,7 @@ function mapBusiness(row: BusinessRow): CmsBusiness {
     zip: row.zip,
     footerBlurb: packed.footerBlurb,
     hours: row.hours ?? packed.hours ?? [],
+    googleReviews: packed.googleReviews ?? DEFAULT_GOOGLE_REVIEWS,
   });
 }
 
@@ -409,10 +502,18 @@ async function writeCmsToSupabase(content: CmsContent) {
     updated_at: new Date().toISOString(),
   };
 
+  const packedFooter = packFooterMeta(
+    b.footerBlurb,
+    b.hours,
+    b.googleReviews,
+  );
+
+  // Always pack hours + google reviews into footer for persistence without
+  // dedicated columns. Prefer writing hours column when it exists.
   const withColumn = await supabase.from("business_profile").upsert(
     {
       ...baseRow,
-      footer_blurb: b.footerBlurb,
+      footer_blurb: packedFooter,
       hours: b.hours,
     },
     { onConflict: "id" },
@@ -424,11 +525,10 @@ async function writeCmsToSupabase(content: CmsContent) {
       /hours/i.test(withColumn.error.message);
     if (!missingHoursColumn) throw new Error(withColumn.error.message);
 
-    // Fallback until `hours` jsonb column is migrated: pack into footer_blurb.
     const packed = await supabase.from("business_profile").upsert(
       {
         ...baseRow,
-        footer_blurb: packFooterWithHours(b.footerBlurb, b.hours),
+        footer_blurb: packedFooter,
       },
       { onConflict: "id" },
     );

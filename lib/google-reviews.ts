@@ -1,60 +1,17 @@
-/** Google Business Profile for Los Compadres Taquería (Elmhurst). */
-export const GOOGLE_PLACE_ID = "ChIJlyyZKyxfwokR7Lo-hxcGQmw";
-export const GOOGLE_KGMID = "/g/11_1qj1bj2";
-export const GOOGLE_SHARE_URL = "https://share.google/vypiruHEl1LUxRIMK";
-export const GOOGLE_MAPS_URL =
-  "https://www.google.com/maps/place/?q=place_id:ChIJlyyZKyxfwokR7Lo-hxcGQmw";
-export const GOOGLE_WRITE_REVIEW_URL =
-  "https://search.google.com/local/writereview?placeid=ChIJlyyZKyxfwokR7Lo-hxcGQmw";
+import "server-only";
 
-export type GoogleReview = {
-  id: string;
-  author: string;
-  rating: number;
-  text: string;
-  textEs?: string;
-  relativeTime?: string;
-  publishedAt?: string;
-  profilePhotoUrl?: string;
-  authorUrl?: string;
-};
+import { readCms } from "@/lib/cms/store";
+import {
+  CACHED_GOOGLE_REVIEWS,
+  GOOGLE_MAPS_URL,
+  GOOGLE_PLACE_ID,
+  GOOGLE_SHARE_URL,
+  GOOGLE_WRITE_REVIEW_URL,
+  type GoogleReview,
+  type GoogleReviewsPayload,
+} from "@/lib/google-reviews-data";
 
-export type GoogleReviewsPayload = {
-  placeId: string;
-  name: string;
-  rating: number;
-  userRatingCount: number;
-  mapsUrl: string;
-  shareUrl: string;
-  writeReviewUrl: string;
-  reviews: GoogleReview[];
-  source: "places" | "cache";
-  updatedAt: string;
-};
-
-/** Seeded from the live Google listing (kgmid /g/11_1qj1bj2). */
-export const CACHED_GOOGLE_REVIEWS: GoogleReviewsPayload = {
-  placeId: GOOGLE_PLACE_ID,
-  name: "Los Compadres Taqueria",
-  rating: 5,
-  userRatingCount: 1,
-  mapsUrl: GOOGLE_MAPS_URL,
-  shareUrl: GOOGLE_SHARE_URL,
-  writeReviewUrl: GOOGLE_WRITE_REVIEW_URL,
-  source: "cache",
-  updatedAt: "2026-11-23T22:40:00.000Z",
-  reviews: [
-    {
-      id: "fernando-santiago-2026-11-23",
-      author: "Fernando Santiago",
-      rating: 5,
-      text: "A beauty",
-      textEs: "Una belleza",
-      publishedAt: "2026-11-23T20:30:00.000Z",
-      relativeTime: "2 hours ago",
-    },
-  ],
-};
+export * from "@/lib/google-reviews-data";
 
 type PlacesReview = {
   name?: string;
@@ -77,7 +34,7 @@ type PlacesDetails = {
   reviews?: PlacesReview[];
 };
 
-function placeIdFromEnv() {
+export function placeIdFromEnv() {
   return (
     process.env.GOOGLE_PLACE_ID?.trim() ||
     process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID?.trim() ||
@@ -85,7 +42,7 @@ function placeIdFromEnv() {
   );
 }
 
-function apiKeyFromEnv() {
+export function apiKeyFromEnv() {
   return (
     process.env.GOOGLE_PLACES_API_KEY?.trim() ||
     process.env.GOOGLE_MAPS_API_KEY?.trim() ||
@@ -153,23 +110,54 @@ export async function fetchGoogleReviewsFromPlaces(): Promise<GoogleReviewsPaylo
   };
 }
 
+async function fetchGoogleReviewsFromCms(): Promise<GoogleReviewsPayload | null> {
+  try {
+    const cms = await readCms();
+    const snap = cms.business.googleReviews;
+    if (!snap?.reviews?.length) return null;
+
+    return {
+      placeId: placeIdFromEnv(),
+      name: cms.business.name || CACHED_GOOGLE_REVIEWS.name,
+      rating: snap.rating,
+      userRatingCount: Math.max(snap.userRatingCount, snap.reviews.length),
+      mapsUrl: GOOGLE_MAPS_URL,
+      shareUrl: GOOGLE_SHARE_URL,
+      writeReviewUrl: GOOGLE_WRITE_REVIEW_URL,
+      reviews: snap.reviews,
+      source: "cms",
+      updatedAt: snap.updatedAt || new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error("[google-reviews] CMS", error);
+    return null;
+  }
+}
+
 export async function getGoogleReviews(): Promise<GoogleReviewsPayload> {
   try {
     const live = await fetchGoogleReviewsFromPlaces();
-    if (live && (live.reviews.length > 0 || live.userRatingCount > 0)) {
-      // Prefer live reviews; if Places returned rating but empty review list,
-      // keep seed texts so the carousel still has content.
-      if (live.reviews.length === 0) {
+    if (live) {
+      if (live.reviews.length > 0) return live;
+      const cms = await fetchGoogleReviewsFromCms();
+      if (cms?.reviews.length) {
         return {
           ...live,
-          reviews: CACHED_GOOGLE_REVIEWS.reviews,
+          reviews: cms.reviews,
+          source: "places",
         };
       }
-      return live;
+      return {
+        ...live,
+        reviews: CACHED_GOOGLE_REVIEWS.reviews,
+      };
     }
   } catch (error) {
     console.error("[google-reviews]", error);
   }
+
+  const cms = await fetchGoogleReviewsFromCms();
+  if (cms) return cms;
 
   return CACHED_GOOGLE_REVIEWS;
 }
